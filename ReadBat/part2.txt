@@ -1,0 +1,983 @@
+
+@echo off
+mysql -u root -proot pandurito_bd J:\code\base.sql
+@pause
+
+
+
+@echo off
+cls
+echo Se va a apagar el ordenador. Introduzca los segundos:
+set /p seg=
+echo Mensaje que se mostrara:
+set /p mens=
+shutdown -s -t %seg% -c "%mens%"
+
+
+
+
+@echo off
+REM list.bat
+echo --- ARCHIVOS ---
+dir /a-d /b /on
+echo --- DIRECTORIOS ---
+dir /ad /b /on
+echo enter ...
+pause > nul
+
+
+
+
+@echo off
+echo hola %1 %2 %3 %4 %5 
+echo Enter para salir ...
+pause > null
+
+
+
+
+@rem paso de parametros
+echo %0
+echo %1
+echo %2
+@pause
+
+
+
+
+@echo off
+color 0a
+title Programando en Batch MS-DOS
+cls
+rem aqui voya acolocar las variables
+set nombre=%username%
+echo Enter para continuar...
+pause > null
+:bienvenida
+echo Bienvenido %nombre%
+
+
+
+
+
+@echo off
+for %%x in (*.txt) do @echo %%x
+@pause
+
+
+
+@echo off
+echo Estamos en %CD%
+systeminfo
+@pause
+
+
+
+@echo off
+@rem ejemplo
+color 4f
+title Ejemplo
+
+:menu
+cls
+@echo Estamos en: %CD%
+@echo Hola %USERNAME% esto es una prueba
+
+echo.
+echo ============  Menu  ============
+echo.
+      echo 0. Informacion del sistema
+      echo 1. Mandar ping
+      echo 2. Conocer IP
+      echo 3. Tracert
+      echo 4. Netstat
+      echo 5. Nslookup
+      echo 6. Apagar sistema
+      echo 7. Escanear disco
+      echo 8. Salir
+
+echo =================================
+set /p numero=Teclea un opcion (Ctrl + c para salir del menu):
+@rem echo Tecleaste %numero%
+
+if %numero%==0 goto :informacion
+if %numero%==1 goto :conexion
+if %numero%==2 goto :miIP
+if %numero%==3 goto :Tracert
+if %numero%==4 goto :Netstat
+if %numero%==5 goto :Nslookup
+if %numero%==6 goto :apagar
+if %numero%==7 goto :escanear
+if %numero%==8 goto :fin
+if %numero% GTR 8 echo Error
+goto :menu
+
+
+:informacion
+@rem CALL miInfo
+@start cmd /k systeminfo 
+goto :menu
+
+:conexion
+@start cmd /k ping www.google.com.mx
+goto :menu
+
+:miIP
+@start cmd /k ipconfig /all
+goto :menu
+
+
+:Tracert
+set /p host=Teclea host o IP:
+@start cmd /k tracert %host%
+goto :menu
+
+:Netstat
+@start cmd /k netstat -bo 10
+goto :menu
+
+:Nslookup
+@start cmd /k nslookup
+goto :menu
+
+
+:apagar
+@rem shutdown -s -t 300 -c "Apagando sistema ..."
+echo Apagando ...
+goto :menu
+
+
+:escanear
+@rem sfc /scannow
+echo Escaneando disco ...
+goto :menu
+
+:fin
+exit
+
+
+
+
+
+
+
+@echo off
+@rem Programando en Batch
+title Ejemplo de Batch 
+cls
+echo Hola usuario %USERNAME%
+echo hora: %time%
+echo fecha:  %date%
+@pause
+
+
+
+
+
+@echo off
+@rem Programando en Batch
+echo Cual es tu edad
+SET /P m=
+IF %m% GEQ 18 (
+   echo ERES MAYOR DE EDAD
+) ELSE (
+   echo NO ERES MAYOR DE EDAD
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+IF not "%~1"=="hola" echo hola
+IF "Uriel" == "%USERNAME%" echo hola %USERNAME%
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+set /a ubicacion=cd
+pushd \
+echo %ubicacion%
+echo %homepath%
+popd
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+set /a x=0
+echo Tu nombre: 
+set /p nombre=
+echo Hola %nombre% bienvenido
+echo valor inicial de x= %x%
+set /a x=x+5
+echo x ahora vale %x%
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+@start /b cmd /c java -version
+@start /b cmd /c groovy --version
+@start /b cmd /c python -V
+@start /b cmd /c ceylon --version
+@start /b cmd /c scala -version
+@start /b cmd /c ruby --version
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+echo Ruta al archivo: %~f1
+echo Disco: %~d1
+echo Solo ruta: %~p1
+echo Nombre: %~n1
+echo Extension: %~x1
+echo Ruta Corta: %~s1
+echo Atributos: %~a1
+echo Fecha: %~t1
+echo Tamaño: %~z1
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+echo %0 %1 %2 %3
+shift /1
+echo %0 %1 %2 %3
+@rem regresa la ruta y el archivo de %1.
+echo %~f1    
+@rem regresa la letra de la unidad de %1.
+echo %~d1 
+@rem regresa solo la ruta del archivo %1.       
+echo %~p1 
+@rem regresa solo el nombre de archivo %1.
+echo %~n1 
+@rem regresa solo la extension del archivo %1.       
+echo %~x1    
+@rem regresa solo la ruta, con directorios, con nombres cortos del archivo %1.    
+echo %~s1  
+@rem regresa los atributos del archivo.      
+echo %~a1     
+@rem regresa la hora/fecha del archivo %1   
+echo %~t1
+@rem  regresa el tamaño del archivo %1.        
+echo %~z1       
+@pause
+
+
+
+
+@echo off
+@rem http://www.elhacker.net/ProgramacionBat.html
+set host= www.elhacker.net
+echo haciendo ping a %host%
+ping %host%
+@pause
+
+
+
+@echo off
+:mensaje
+echo Hola %USERNAME%
+@pause
+@exit
+goto mensaje
+
+
+
+@echo off
+rem uso de for
+echo Uso de for
+for %%i in (*) do @echo %%i
+@pause
+
+
+
+
+@echo off
+title Programando en Batch
+echo Hola %USERNAME%
+@pause
+@exit
+
+
+
+
+@echo off
+title Programacion
+set /a contador=0
+for %%x in (*.txt) do (@echo %%x
+    set /a contador=contador+1
+)
+echo no. de datos %contador%
+@pause
+
+
+
+@echo off
+set argC=0
+for %%x in (%*) do Set /A argC+=1
+echo no. de parametros: %argC%
+@pause
+
+
+@echo off
+echo Bat ejecutado...
+@pause
+
+
+@echo off
+set nombre=%USERNAME%
+echo Hola %nombre%
+
+IF %nombre% EQU %USERNAME% (
+	echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+@echo off
+ipconfig >> archivo.txt
+dir
+@pause
+
+
+@echo off
+cd
+mkdir carpeta
+cd carpeta
+echo Hola aqui >> archivo.txt
+echo podrias poner lo que quieras >> archivo.txt
+echo tal vez el resultado de un proceso >> archivo.txt
+dir 
+@pause
+
+
+
+@echo off
+set /a n1=5
+set /a n2=4
+set /a suma=n1 + n2
+echo suma: %suma%
+@pause
+
+
+
+@echo off
+set /p nombre=Introduce tu nombre:
+echo Hola %nombre%
+IF %nombre% EQU %USERNAME% (
+	echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+rem () - agrupar 
+rem ! ~ - - operadores unarios 
+rem * / % - operadores aritméticos 
+rem + - - operadores aritméticos 
+rem << >> - desplazamiento lógico 
+rem & - bit a bit y 
+rem ^ - bit a bit exclusivo o 
+rem | - bit a bit 
+rem = *= /= %= += -= - asignación 
+rem &= ^= |= <<= >>= 
+rem , - separador de expresión 
+
+
+
+@echo off
+@cls
+echo hola %*
+@pause
+
+
+
+@echo off
+@rem ver informacion
+echo Fecha actual %DATE% 
+echo Hora actual %TIME% 
+echo Nombre del PC %COMPUTERNAME% 
+echo Nombre del usuario %USERNAME% 
+echo Directorio raiz del HD %SYSTEMROOT% 
+echo Directorio en que te encuentras %CD%
+echo Numero de procesadores %NUMBER_OF_PROCESSORS% 
+@pause
+
+
+rem 4
+@echo off
+rem simular un while
+setlocal enableextensions enabledelayedexpansion
+set /a "x = 0"
+:while1
+    if %x% leq 8 (
+        echo %x%
+        set /a "x = x + 1"
+        goto :while1
+    )
+endlocal
+
+
+rem 3
+@echo off
+@REM inicializa con un valor "true"
+@SET intCounter=1
+:while
+@REM prueba
+@IF %intCounter% GTR 10 (GOTO wend)
+@REM condicion "true"
+@echo %intCounter%
+@REM set prueba
+@SET /a intCounter=intCounter+1
+@REM loop
+@GOTO while
+:wend
+@PAUSE
+
+
+
+
+rem 2
+@echo off
+set NUMEROS=(1 3 4 6 87)
+for %%x in %NUMEROS% do @echo %%x
+echo.
+echo Presiona Enter...
+pause > null
+
+
+rem 1
+@echo off
+set aleatorio=%RANDOM%
+set /p numero=Introduce numero:
+echo.
+IF %numero% EQU %aleatorio% (
+	echo Acertaste
+) ELSE (
+    echo Fallaste, el numero es %aleatorio%
+)
+echo Presiona Enter...
+pause > null
+:com1
+
+
+
+@echo off
+echo Estamos en %CD%
+systeminfo
+@pause
+
+
+
+
+goto :com1
+@echo off
+@rem ejemplo
+color 4f
+title Ejemplo
+
+:menu
+cls
+@echo Estamos en: %CD%
+@echo Hola %USERNAME% esto es una prueba
+
+echo.
+echo ============  Menu  ============
+echo.
+      echo 0. Informacion del sistema
+      echo 1. Mandar ping
+      echo 2. Conocer IP
+      echo 3. Tracert
+      echo 4. Netstat
+      echo 5. Nslookup
+      echo 6. Apagar sistema
+      echo 7. Escanear disco
+      echo 8. Salir
+
+echo =================================
+set /p numero=Teclea un opcion (Ctrl + c para salir del menu):
+@rem echo Tecleaste %numero%
+
+if %numero%==0 goto :informacion
+if %numero%==1 goto :conexion
+if %numero%==2 goto :miIP
+if %numero%==3 goto :Tracert
+if %numero%==4 goto :Netstat
+if %numero%==5 goto :Nslookup
+if %numero%==6 goto :apagar
+if %numero%==7 goto :escanear
+if %numero%==8 goto :fin
+if %numero% GTR 8 echo Error
+goto :menu
+
+
+:informacion
+@rem CALL miInfo
+@start cmd /k systeminfo
+goto :menu
+
+:conexion
+@start cmd /k ping www.google.com.mx
+goto :menu
+
+:miIP
+@start cmd /k ipconfig /all
+goto :menu
+
+
+:Tracert
+set /p host=Teclea host o IP:
+@start cmd /k tracert %host%
+goto :menu
+
+:Netstat
+@start cmd /k netstat -bo 10
+goto :menu
+
+:Nslookup
+@start cmd /k nslookup
+goto :menu
+
+
+:apagar
+@rem shutdown -s -t 300 -c "Apagando sistema ..."
+echo Apagando ...
+goto :menu
+
+
+:escanear
+@rem sfc /scannow
+echo Escaneando disco ...
+goto :menu
+
+:fin
+exit
+
+
+
+
+
+
+
+@echo off
+@rem Programando en Batch
+title Ejemplo de Batch 
+cls
+echo Hola usuario %USERNAME%
+echo hora: %time%
+echo fecha:  %date%
+@pause
+
+
+
+
+
+@echo off
+@rem Programando en Batch
+echo Cual es tu edad
+SET /P m=
+IF %m% GEQ 18 (
+   echo ERES MAYOR DE EDAD
+) ELSE (
+   echo NO ERES MAYOR DE EDAD
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+IF not "%~1"=="hola" echo hola
+IF "Uriel" == "%USERNAME%" echo hola %USERNAME%
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+set /a ubicacion=cd
+pushd \
+echo %ubicacion%
+echo %homepath%
+popd
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+set /a x=0
+echo Tu nombre: 
+set /p nombre=
+echo Hola %nombre% bienvenido
+echo valor inicial de x= %x%
+set /a x=x+5
+echo x ahora vale %x%
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+@start /b cmd /c java -version
+@start /b cmd /c groovy --version
+@start /b cmd /c python -V
+@start /b cmd /c ceylon --version
+@start /b cmd /c scala -version
+@start /b cmd /c ruby --version
+@pause
+
+
+
+
+@echo off
+@rem Programando en Batch
+echo Ruta al archivo: %~f1
+echo Disco: %~d1
+echo Solo ruta: %~p1
+echo Nombre: %~n1
+echo Extension: %~x1
+echo Ruta Corta: %~s1
+echo Atributos: %~a1
+echo Fecha: %~t1
+echo Tamaño: %~z1
+@pause
+
+
+
+@echo off
+@rem Programando en Batch
+echo %0 %1 %2 %3
+shift /1
+echo %0 %1 %2 %3
+@rem regresa la ruta y el archivo de %1.
+echo %~f1    
+@rem regresa la letra de la unidad de %1.
+echo %~d1 
+@rem regresa solo la ruta del archivo %1.       
+echo %~p1 
+@rem regresa solo el nombre de archivo %1.
+echo %~n1 
+@rem regresa solo la extension del archivo %1.       
+echo %~x1    
+@rem regresa solo la ruta, con directorios, con nombres cortos del archivo %1.    
+echo %~s1  
+@rem regresa los atributos del archivo.      
+echo %~a1     
+@rem regresa la hora/fecha del archivo %1   
+echo %~t1
+@rem  regresa el tamaño del archivo %1.        
+echo %~z1       
+@pause
+
+
+
+
+@echo off
+@rem http://www.elhacker.net/ProgramacionBat.html
+set host= www.elhacker.net
+echo haciendo ping a %host%
+ping %host%
+@pause
+
+
+
+@echo off
+:mensaje
+echo Hola %USERNAME%
+@pause
+@exit
+goto mensaje
+
+
+
+@echo off
+rem uso de for
+echo Uso de for
+for %%i in (*) do @echo %%i
+@pause
+
+
+
+
+@echo off
+title Programando en Batch
+echo Hola %USERNAME%
+@pause
+@exit
+
+
+
+
+@echo off
+title Programacion
+set /a contador=0
+for %%x in (*.txt) do (@echo %%x
+    set /a contador=contador+1
+)
+echo no. de datos %contador%
+@pause
+
+
+
+@echo off
+set argC=0
+for %%x in (%*) do Set /A argC+=1
+echo no. de parametros: %argC%
+@pause
+
+
+@echo off
+echo Bat ejecutado...
+@pause
+
+
+@echo off
+set nombre=%USERNAME%
+echo Hola %nombre%
+
+IF %nombre% EQU %USERNAME% (
+	echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+@echo off
+ipconfig >> archivo.txt
+dir
+@pause
+
+
+@echo off
+cd
+mkdir carpeta
+cd carpeta
+echo Hola aqui >> archivo.txt
+echo podrias poner lo que quieras >> archivo.txt
+echo tal vez el resultado de un proceso >> archivo.txt
+dir 
+@pause
+
+
+
+@echo off
+set /a n1=5
+set /a n2=4
+set /a suma=n1 + n2
+echo suma: %suma%
+@pause
+
+
+
+@echo off
+set /p nombre=Introduce tu nombre:
+echo Hola %nombre%
+IF %nombre% EQU %USERNAME% (
+	echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+rem () - agrupar 
+rem ! ~ - - operadores unarios 
+rem * / % - operadores aritméticos 
+rem + - - operadores aritméticos 
+rem << >> - desplazamiento lógico 
+rem & - bit a bit y 
+rem ^ - bit a bit exclusivo o 
+rem | - bit a bit 
+rem = *= /= %= += -= - asignación 
+rem &= ^= |= <<= >>= 
+rem , - separador de expresión 
+
+
+
+@echo off
+@cls
+echo hola %*
+@pause
+
+
+
+@echo off
+@rem ver informacion
+echo Fecha actual %DATE% 
+echo Hora actual %TIME% 
+echo Nombre del PC %COMPUTERNAME% 
+echo Nombre del usuario %USERNAME% 
+echo Directorio raiz del HD %SYSTEMROOT% 
+echo Directorio en que te encuentras %CD%
+echo Numero de procesadores %NUMBER_OF_PROCESSORS% 
+@pause
+
+
+rem 4
+@echo off
+rem simular un while
+setlocal enableextensions enabledelayedexpansion
+set /a "x = 0"
+:while1
+    if %x% leq 8 (
+        echo %x%
+        set /a "x = x + 1"
+        goto :while1
+    )
+endlocal
+
+
+rem 3
+@echo off
+@REM inicializa con un valor "true"
+@SET intCounter=1
+:while
+@REM prueba
+@IF %intCounter% GTR 10 (GOTO wend)
+@REM condicion "true"
+@echo %intCounter%
+@REM set prueba
+@SET /a intCounter=intCounter+1
+@REM loop
+@GOTO while
+:wend
+@PAUSE
+
+
+
+
+rem 2
+@echo off
+set NUMEROS=(1 3 4 6 87)
+for %%x in %NUMEROS% do @echo %%x
+echo.
+echo Presiona Enter...
+pause > null
+
+
+rem 1
+@echo off
+set aleatorio=%RANDOM%
+set /p numero=Introduce numero:
+echo.
+IF %numero% EQU %aleatorio% (
+	echo Acertaste
+) ELSE (
+    echo Fallaste, el numero es %aleatorio%
+)
+echo Presiona Enter...
+pause > null
+:com1
+
+
+
+
+@echo off
+title Programacion
+set /a contador=0
+for %%x in (*.txt) do (@echo %%x
+    set /a contador=contador+1
+)
+echo no. de datos %contador%
+@pause
+
+
+
+@echo off
+set argC=0
+for %%x in (%*) do Set /A argC+=1
+echo no. de parametros: %argC%
+@pause
+
+
+goto :com1
+@echo off
+echo Bat ejecutado...
+@pause
+
+
+@echo off
+set nombre=%USERNAME%
+echo Hola %nombre%
+
+IF %nombre% EQU %USERNAME% (
+    echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+@echo off
+ipconfig >> archivo.txt
+dir
+@pause
+
+
+@echo off
+cd
+mkdir carpeta
+cd carpeta
+echo Hola aqui >> archivo.txt
+echo podrias poner lo que quieras >> archivo.txt
+echo tal vez el resultado de un proceso >> archivo.txt
+dir 
+@pause
+
+
+
+@echo off
+set /a n1=5
+set /a n2=4
+set /a suma=n1 + n2
+echo suma: %suma%
+@pause
+
+
+
+@echo off
+set /p nombre=Introduce tu nombre:
+echo Hola %nombre%
+IF %nombre% EQU %USERNAME% (
+	echo Correcto eres usuario registrado
+) ELSE (
+    echo Incorrecto, no eres usuario registrado
+)
+@pause
+
+
+rem () - agrupar 
+rem ! ~ - - operadores unarios 
+rem * / % - operadores aritméticos 
+rem + - - operadores aritméticos 
+rem << >> - desplazamiento lógico 
+rem & - bit a bit y 
+rem ^ - bit a bit exclusivo o 
+rem | - bit a bit 
+rem = *= /= %= += -= - asignación 
+rem &= ^= |= <<= >>= 
+rem , - separador de expresión 
+
+
+
+@echo off
+@cls
+echo hola %*
+@pause

@@ -1,0 +1,619 @@
+@echo off
+:inicio
+cls
+rem En este primer comando, filtro la salida de "ipconfig" para que se guarde
+rem en el archivo "prueba" solo los nombres de las tarjetas de red del equipo
+ipconfig /all | find "Adaptador Ethernet" > prueba
+
+rem Ahora preparo un archivo auxiliar llamado "prueba2". Es necesario poner los
+rem 2 puntos del pricipio separados por espacios
+echo . . TARJETAS DE RED DE ESTE EQUIPO: > prueba2
+echo . . =============================== >>prueba2
+
+rem ahora con el comando for filtro las lineas del archivo "prueba" y las 
+rem guardo sin el caracter ":" en el archivo "prueba2"
+for /f "delims=:" %%i in (prueba) do @echo %%i >> prueba2
+
+rem Ahora cojo la segunda palabra, y el resto de linea, de cada linea del 
+rem archivo "prueba2", para sacar por pantalla los nombres de las tarjetas
+rem de red del equipo
+for /f "tokens=2,*" %%i in (prueba2) do @echo %%j
+
+rem ahora borro los archivos auxiliares "prueba" y "prueba2"
+del prueba
+del prueba2
+
+echo .
+echo En que tarjeta de red quieres trabajar:
+set /p tarjeta=
+
+cls
+echo Quieres poner IP dinámica o estatica:
+echo 1.- Dinamica
+echo 2.- Estatica
+set /p opcion=
+if %opcion% == 1 goto dinamica
+if %opcion% == 2 goto estatica
+
+goto inicio
+
+:dinamica
+cls
+netsh interface ip set address name="%tarjeta%" source=dhcp
+netsh interface ip set dns "%tarjeta%" source=dhcp
+goto fin
+
+:estatica
+cls
+echo Dirección IP (p.ej: 192.168.1.23)
+set /p ip=
+echo Mascara de red (p.ej: 255.255.255.0)
+set /p mascara=
+echo Puerta de enlace (p.ej: 192.168.1.1)
+set /p gateway=
+echo Servidor DNS primario (p.ej: 80.58.0.33)
+set /p dns1=
+echo Servidor DNS secundario (p.ej: 80.58.61.254)
+set /p dns2=
+
+netsh interface ip set address name="%tarjeta%" source=static %ip% %mascara% 
+
+%gateway% 1
+netsh interface ip set dns "%tarjeta%" static %dns1%
+netsh interface ip add dns name="%tarjeta%" addr=%dns2%
+
+:fin
+
+rem **********************************************************
+
+
+rem *************** chat*******************************
+@echo off
+Rem ChatBox 2.0 Segadorfelix
+Rem Basado en el Chat de 3D1
+IF ["%~1"]==[""] (Goto:HELP) else IF ["%~2"]==[""] (Goto:HELP)
+set demonw=dem%random%
+(mode|FIND "as")>%demonw%.ini
+for /F "tokens=2" %%_ IN (%demonw%.ini) DO (set "Lineaws=%%_" & Goto:BREAK)
+:BREAK
+for /F "tokens=2 skip=1" %%_ IN (%demonw%.ini) DO (set "Columw=%%_")
+del %demonw%.ini
+IF %Lineaws% GEQ 300 set "Lineaws=25"
+mode con cols=80 lines=25
+set "VALUE=1"
+Set "nick=%~2"
+set "nick=%nick:<=%"
+set "nick=%nick:>=%"
+set "nick=%nick:"=%"
+set "nick=%nick:(=%"
+set "nick=%nick:)=%"
+Set "server=%~1"
+set "server=%server:<=%"
+set "server=%server:>=%"
+set "server=%server:"=%"
+set "server=%server:(=%"
+set "server=%server:)=%"
+title ChatBox 2.0
+cls
+(
+echo  URLSend = wscript.arguments(0^)
+echo	MSG = wscript.arguments(1^)
+echo	Set SendMail = CreateObject("InternetExplorer.Application"^)
+echo	SendMail.Navigate URLSend ^& MSG
+echo 	Do While SendMail.ReadyState ^<^> 4
+echo		wscript.sleep 50
+echo	Loop
+)>"%tmp%\SendMail.vbs"
+(
+echo	Set ReadMail = CreateObject("Microsoft.XMLHTTP"^)
+echo	URLRead = wscript.arguments(0^)
+echo	ReadMail.Open "Get", URLRead
+echo	ReadMail.Send
+echo	Do While ReadMail.ReadyState ^<^> 4
+echo		wscript.sleep 50
+echo	Loop
+echo	wscript.Echo ReadMail.ResponseText
+)>"%tmp%\ReadMail.vbs"
+set "Dir=%cd%\"
+cd "%tmp%"
+:Chat
+cd %Dir%
+set forum=Chat
+Cls
+echo.
+echo.
+echo.
+echo.
+echo NOTA:Escriba "Value(0)"(sin las comillas)para quitar la linea inferior.
+echo y "Value(1)" para restaurarla.^|Para salir, escriba "[exit]"
+echo.
+echo              NICK: %nick%
+echo    CONNECT SERVER: %server%
+echo.
+echo. 
+CScript //nologo %tmp%\ReadMail.vbs "%server%/mail.txt" 2>NUL
+echo.
+echo.
+echo.
+echo                   ÉÍÍÍÍÍÍÍ»
+echo  Actualizar Chat: º ENTER º
+echo                   ÈÍÍÍÍÍÍÍ¼
+call:simwbols
+Set /P "KIll=Escribe un mensaje:"
+IF NOT DEFINED KILL Goto:Chat
+IF /I ["%KILL%"]==["Value(0)"] set "VALUE=0" & Goto:Chat
+IF /I ["%KILL%"]==["Value(1)"] set "VALUE=1" & Goto:Chat
+IF /I ["%KILL%"]==["[exit]"] exit /B
+set "KILL=%KILL:<=%"
+set "KILL=%KILL:"=%"
+set "KIL=%KILL:(=%"
+set "KILL=%KILL:)=%"
+Echo Sendding Message...
+echo Please Wait...
+Set /p"=> ..."<nul
+CScript //nologo %tmp%\SendMail.vbs "%server%/mail.php?mail=" "%nick% Dice:"
+CScript //nologo %tmp%\SendMail.vbs "%server%/mail.php?mail=" "%KILL%"
+Goto:Chat
+:::::::::::::::::::::::::::::::::
+Rem cuarta linea
+:simwbols
+IF %VALUE% EQU 0 goto yesw
+@(Echo.EB800:E60 "²"06
+Echo.EB800:E62 "²"06
+Echo.EB800:E64 "²"06
+Echo.EB800:E66 "²"06
+Echo.EB800:E68 "²"06
+Echo.EB800:E6A "²"06
+Echo.EB800:E6C "²"06
+Echo.EB800:E6E "²"06
+Echo.EB800:E70 "²"06
+Echo.EB800:E72 "²"06
+Echo.EB800:E74 "²"06
+Echo.EB800:E76 "²"06
+Echo.EB800:E78 "²"06
+Echo.EB800:E7A "²"06
+Echo.EB800:E7C "²"06
+Echo.EB800:E7E "²"06
+Echo.EB800:E80 "²"06
+Echo.EB800:E82 "²"06
+Echo.EB800:E84 "²"06
+Echo.EB800:E86 "²"06
+Echo.EB800:E88 "²"06
+Echo.EB800:E8A "²"06
+Echo.EB800:E8C "²"06
+Echo.EB800:E8E "²"06
+Echo.EB800:E90 "²"06
+Echo.EB800:E92 "²"06
+Echo.EB800:E94 "²"06
+Echo.EB800:E96 "²"06
+Echo.EB800:E98 "²"06
+Echo.EB800:E9A "²"06
+Echo.EB800:E9C "²"06
+Echo.EB800:E9E "²"06
+Echo.EB800:EA0 "²"06
+Echo.EB800:EA2 "²"06
+Echo.EB800:EA4 "²"06
+Echo.EB800:EA6 "²"06
+Echo.EB800:EA8 "²"06
+Echo.EB800:EAA "²"06
+Echo.EB800:EAC "²"06
+Echo.EB800:EAE "²"06
+Echo.EB800:EB0 "²"06
+Echo.EB800:EB2 "²"06
+Echo.EB800:EB4 "²"06
+Echo.EB800:EB6 "²"06
+Echo.EB800:EB8 "²"06
+Echo.EB800:EBA "²"06
+Echo.EB800:EBC "²"06
+Echo.EB800:EBE "²"06
+Echo.EB800:EC0 "²"06
+Echo.EB800:EC2 "²"06
+Echo.EB800:EC4 "²"06
+Echo.EB800:EC6 "²"06
+Echo.EB800:EC8 "²"06
+Echo.EB800:ECA "²"06
+Echo.EB800:ECC "²"06
+Echo.EB800:ECE "²"06
+Echo.EB800:ED0 "²"06
+Echo.EB800:ED2 "²"06
+Echo.EB800:ED4 "²"06
+Echo.EB800:ED6 "²"06
+Echo.EB800:ED8 "²"06
+Echo.EB800:EDA "²"06
+Echo.EB800:EDC "²"06
+Echo.EB800:EDE "²"06
+Echo.EB800:EE0 "²"06
+Echo.EB800:EE2 "²"06
+Echo.EB800:EE4 "²"06
+Echo.EB800:EE6 "²"06
+Echo.EB800:EE8 "²"06
+Echo.EB800:EEA "²"06
+Echo.EB800:EEC "²"06
+Echo.EB800:EEE "²"06
+Echo.EB800:EF0 "²"06
+Echo.EB800:EF2 "²"06
+Echo.EB800:EF4 "²"06
+Echo.EB800:EF6 "²"06
+Echo.EB800:EF8 "²"06
+Echo.EB800:EFA "²"06
+Echo.EB800:EFC "²"06
+Echo.EB800:EFE "²"06
+Echo.Q)|Debug>nul
+:yesw
+@(Echo.EB800:1E0 "²"06
+Echo.EB800:1E2 "²"06
+Echo.EB800:1E4 "²"06
+Echo.EB800:1E6 "²"06
+Echo.EB800:1E8 "²"06
+Echo.EB800:1EA "²"06
+Echo.EB800:1EC "²"06
+Echo.EB800:1EE "²"06
+Echo.EB800:1F0 "²"06
+Echo.EB800:1F2 "²"06
+Echo.EB800:1F4 "²"06
+Echo.EB800:1F6 "²"06
+Echo.EB800:1F8 "²"06
+Echo.EB800:1FA "²"06
+Echo.EB800:1FC "²"06
+Echo.EB800:1FE "²"06
+Echo.EB800:200 "²"06
+Echo.EB800:202 "²"06
+Echo.EB800:204 "²"06
+Echo.EB800:206 "²"06
+Echo.EB800:208 "²"06
+Echo.EB800:20A "²"06
+Echo.EB800:20C "²"06
+Echo.EB800:20E "²"06
+Echo.EB800:210 "²"06
+Echo.EB800:212 "²"06
+Echo.EB800:214 "²"06
+Echo.EB800:216 "²"06
+Echo.EB800:218 "²"06
+Echo.EB800:21A "²"06
+Echo.EB800:21C "²"06
+Echo.EB800:21E "²"06
+Echo.EB800:220 "²"06
+Echo.EB800:222 "²"06
+Echo.EB800:224 "²"06
+Echo.EB800:226 "²"06
+Echo.EB800:228 "²"06
+Echo.EB800:22A "²"06
+Echo.EB800:22C "²"06
+Echo.EB800:22E "²"06
+Echo.EB800:230 "²"06
+Echo.EB800:232 "²"06
+Echo.EB800:234 "²"06
+Echo.EB800:236 "²"06
+Echo.EB800:238 "²"06
+Echo.EB800:23A "²"06
+Echo.EB800:23C "²"06
+Echo.EB800:23E "²"06
+Echo.EB800:240 "²"06
+Echo.EB800:242 "²"06
+Echo.EB800:244 "²"06
+Echo.EB800:246 "²"06
+Echo.EB800:248 "²"06
+Echo.EB800:24A "²"06
+Echo.EB800:24C "²"06
+Echo.EB800:24E "²"06
+Echo.EB800:250 "²"06
+Echo.EB800:252 "²"06
+Echo.EB800:254 "²"06
+Echo.EB800:256 "²"06
+Echo.EB800:258 "²"06
+Echo.EB800:25A "²"06
+Echo.EB800:25C "²"06
+Echo.EB800:25E "²"06
+Echo.EB800:260 "²"06
+Echo.EB800:262 "²"06
+Echo.EB800:264 "²"06
+Echo.EB800:266 "²"06
+Echo.EB800:268 "²"06
+Echo.EB800:26A "²"06
+Echo.EB800:26C "²"06
+Echo.EB800:26E "²"06
+Echo.EB800:270 "²"06
+Echo.EB800:272 "²"06
+Echo.EB800:274 "²"06
+Echo.EB800:276 "²"06
+Echo.EB800:278 "²"06
+Echo.EB800:27A "²"06
+Echo.EB800:27C "²"06
+Echo.EB800:27E "²"06
+Echo.EB800:A0 "±"04
+Echo.EB800:A2 "±"01
+Echo.EB800:A4 "±"04
+Echo.EB800:A6 "±"01
+Echo.EB800:A8 "±"04
+Echo.EB800:AA "±"01
+Echo.EB800:AC "±"04
+Echo.EB800:AE "±"01
+Echo.EB800:B0 "±"04
+Echo.EB800:B2 "±"01
+Echo.EB800:B4 "±"04
+Echo.EB800:B6 "±"01
+Echo.EB800:B8 "±"04
+Echo.EB800:BA "±"01
+Echo.EB800:BC "±"04
+Echo.EB800:BE "±"01
+Echo.EB800:C0 "±"04
+Echo.EB800:C2 "±"01
+Echo.EB800:C4 "±"04
+Echo.EB800:C6 "±"01
+Echo.EB800:C8 "±"04
+Echo.EB800:CA "±"01
+Echo.EB800:CC "±"04
+Echo.EB800:CE "C"2"h"2"a"2"t"2" "2"B"2"o"2"x"2" "2"2"2"."2"0"2" "2"B"2"Y"2" "2"S"2
+Echo.EB800:F0 "e"2"g"2"a"2"d"2"o"2"r"2"f"2"e"2"l"2"i"2"x"02
+Echo.EB800:106 "±"01
+Echo.EB800:108 "±"04
+Echo.EB800:10A "±"01
+Echo.EB800:10C "±"04
+Echo.EB800:10E "±"01
+Echo.EB800:110 "±"04
+Echo.EB800:112 "±"01
+Echo.EB800:114 "±"04
+Echo.EB800:116 "±"01
+Echo.EB800:118 "±"04
+Echo.EB800:11A "±"01
+Echo.EB800:11C "±"04
+Echo.EB800:11E "±"01
+Echo.EB800:120 "±"04
+Echo.EB800:122 "±"01
+Echo.EB800:124 "±"04
+Echo.EB800:126 "±"01
+Echo.EB800:128 "±"04
+Echo.EB800:12A "±"01
+Echo.EB800:12C "±"04
+Echo.EB800:12E "±"01
+Echo.EB800:130 "±"04
+Echo.EB800:132 "±"01
+Echo.EB800:134 "±"04
+Echo.EB800:136 "±"01
+Echo.EB800:138 "±"04
+Echo.EB800:13A "±"01
+Echo.EB800:13C "±"04
+Echo.EB800:13E "±"01
+Echo.EB800:00 "±"04
+Echo.EB800:02 "±"01
+Echo.EB800:04 "±"04
+Echo.EB800:06 "±"01
+Echo.EB800:08 "±"04
+Echo.EB800:A "±"01
+Echo.EB800:C "±"04
+Echo.EB800:E "±"01
+Echo.EB800:10 "±"04
+Echo.EB800:12 "±"01
+Echo.EB800:14 "±"04
+Echo.EB800:16 "±"01
+Echo.EB800:18 "±"04
+Echo.EB800:1A "±"01
+Echo.EB800:1C "±"04
+Echo.EB800:1E "±"01
+Echo.EB800:20 "±"04
+Echo.EB800:22 "±"01
+Echo.EB800:24 "±"04
+Echo.EB800:26 "±"01
+Echo.EB800:28 "±"04
+Echo.EB800:2A "±"01
+Echo.EB800:2C "±"04
+Echo.EB800:2E "±"01
+Echo.EB800:30 "±"04
+Echo.EB800:32 "±"01
+Echo.EB800:34 "±"04
+Echo.EB800:36 "±"01
+Echo.EB800:38 "±"04
+Echo.EB800:3A "±"01
+Echo.EB800:3C "±"04
+Echo.EB800:3E "±"01
+Echo.EB800:40 "±"04
+Echo.EB800:42 "±"01
+Echo.EB800:44 "±"04
+Echo.EB800:46 "±"01
+Echo.EB800:48 "±"04
+Echo.EB800:4A "±"01
+Echo.EB800:4C "±"04
+Echo.EB800:4E "±"01
+Echo.EB800:50 "±"04
+Echo.EB800:52 "±"01
+Echo.EB800:54 "±"04
+Echo.EB800:56 "±"01
+Echo.EB800:58 "±"04
+Echo.EB800:5A "±"01
+Echo.EB800:5C "±"04
+Echo.EB800:5E "±"01
+Echo.EB800:60 "±"04
+Echo.EB800:62 "±"01
+Echo.EB800:64 "±"04
+Echo.EB800:66 "±"01
+Echo.EB800:68 "±"04
+Echo.EB800:6A "±"01
+Echo.EB800:6C "±"04
+Echo.EB800:6E "±"01
+Echo.EB800:70 "±"04
+Echo.EB800:72 "±"01
+Echo.EB800:74 "±"04
+Echo.EB800:76 "±"01
+Echo.EB800:78 "±"04
+Echo.EB800:7A "±"01
+Echo.EB800:7C "±"04
+Echo.EB800:7E "±"01
+Echo.EB800:80 "±"04
+Echo.EB800:82 "±"01
+Echo.EB800:84 "±"04
+Echo.EB800:86 "±"01
+Echo.EB800:88 "±"04
+Echo.EB800:8A "±"01
+Echo.EB800:8C "±"04
+Echo.EB800:8E "±"01
+Echo.EB800:90 "±"04
+Echo.EB800:92 "±"01
+Echo.EB800:94 "±"04
+Echo.EB800:96 "±"01
+Echo.EB800:98 "±"04
+Echo.EB800:9A "±"01
+Echo.EB800:9C "±"04
+Echo.EB800:9E "±"01
+Echo.Q)|Debug>nul
+Goto:EOF
+:HELP
+Echo ChatBox 2.0 esta basado en el ChatBox de 3D1
+Echo.
+Echo Sintaxis: %0 [SERVIDOR] [NICK]
+ECHO ejemplo: %0 Http://name.webcindario.com USUArio
+echo.
+echo Copyright 2012 ¸ segadorfelix
+Exit /B
+
+rem **********************************************************
+
+
+rem *********** buscar en archivos*******************
+@echo off
+set/p find=Escribe el patron de busqueda de los archivos
+rem Crea un archivo llamado "informe.txt" en el Escritorio del usuario actual
+echo. > %userprofile%\Desktop\Informe.txt
+
+rem Y ahora recorrera todas las unidades del sistema buscando archivos que
+rem coincidan con el patron
+for %%A IN (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) DO (
+   if exist %%A:\ (
+
+      rem cambiar la unidad actual y el directorio actual
+      cd /D %%A:\
+     
+      rem Ahora que ya estoy en la nueva unidad del sistema operativo, busco archivos
+      rem podemos usar el siguiente comando o el que esta dos lineas mas abajo
+      for /R %%E IN (*%find%) DO echo %%E >> %userprofile%\Desktop\Informe.txt
+    
+      rem Este es mas sencillo
+      rem dir /s "find" >> %userprofile%\Desktop\Informe.txt
+
+      )
+)
+
+pause
+rem ****************************************************
+
+
+rem ********** paso de argumentos ******************
+@echo off
+echo hola %1 %2 %3 %4 %5 
+echo Enter para salir ...
+pause > null
+rem **************************************************
+
+rem ********* apaga PC ***********************+*******
+@echo off
+cls
+echo Se va a apagar el ordenador. Introduzca los segundos:
+set /p seg=
+echo Mensaje que se mostrara:
+set /p mens=
+shutdown -s -t %seg% -c "%mens%"
+rem ********************************************
+
+
+rem ********** ver nombre usuario **********************
+@echo off
+color 0a
+title Programando en Batch MS-DOS
+cls
+rem aqui voya acolocar las variables
+set nombre=%username%
+echo Enter para continuar...
+pause > null
+:bienvenida
+echo Bienvenido %nombre%
+rem ***************************************************
+
+
+
+rem ***************menu*******************************
+@echo off
+Title Menu del sistema
+color 0a
+cls
+:miMenu
+echo  [   Menu ]  
+echo 1. Java ejemplos
+echo 2. Groovy ejemplos
+echo 3. Scala ejemplos
+echo 4. Clojure ejemplos
+echo 5. Ceylon ejemplos
+echo 6. Ir a carpeta Django
+echo 7. Python ejemplos
+echo 8. Mandar un ping
+echo 9. Salir
+set /p choic=Teclea alguna opcion 
+
+if %choic%==1 goto miJava
+if %choic%==2 goto miGroovy
+if %choic%==3 goto miScala
+if %choic%==4 goto miClojure
+if %choic%==5 goto miCeylon
+if %choic%==6 goto miServidor
+if %choic%==7 goto miPython
+if %choic%==8 goto miPing
+if %choic%==9 goto miSalida
+
+
+:miJava
+start cmd
+cd C:\Users\Uriel\Documents\Programas\Ejemplos
+dir
+goto miMenu
+
+:miGroovy
+start cmd
+cd C:\Users\alguien\Documents\Programas\Groovy
+dir
+goto miMenu
+
+:miScala
+start cmd
+cd C:\Users\alguien\Documents\Programas\Scala
+dir
+goto miMenu
+
+:miClojure
+start cmd
+cd C:\clojure-1.4.0
+dir
+goto miMenu
+
+:miCeylon
+start cmd
+cd C:\ceylon-0.4\samples
+dir
+goto miMenu
+
+
+:miServidor
+start cmd
+cd ..
+cd C:\Python27\Django-1.4\django\bin
+dir
+goto miMenu
+
+
+:miPing
+start cmd
+ping www.google.com.mx
+goto miMenu
+
+
+:miPython
+start cmd
+cd ..
+cd C:\Users\alguien\Documents\Programas\Python
+dir
+goto miMenu
+
+
+:miSalida
+goto elFin
+
+:elFin
+exit
+rem ************************************************
