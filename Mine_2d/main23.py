@@ -1,9 +1,11 @@
 from colorama import Back, init
-
+import copy
 init(autoreset=True)
 world = [[Back.LIGHTWHITE_EX + '    ' for i in range(32)] for j in range(21)] # matriz por comprension, representa
 # 20x 30 y ponemos 32 para poner los numeros y 31- 1 y 21-1 nos da 30 y
 # 20, 30 x 20
+world2 = [[Back.LIGHTWHITE_EX + '    ' for i in range(32)] for j in range(21)] # matriz por comprension, representa
+
 ESPACIONEGRO = Back.BLACK + '    ' # variables que usaremos mas tarde para determinar un pixel negro, azul y verde
 PASTO = Back.GREEN + '    '
 AGUA = Back.BLUE + '    '
@@ -11,8 +13,8 @@ AGUA = Back.BLUE + '    '
 
 
 
-
 def draw_worldempty():
+
     for i in range(len(world)):  # recorremos las filas de la matriz con len
         if i == 0:
             for j in range(len(world[i])):  # selecciona todos los elementos de esas fila
@@ -31,19 +33,19 @@ def draw_world(): # seleccionamos las filas que queremos pintar y el numero de c
     for i in range(14, 21):
         for j in range(30):
             world[i][j + 1] = ESPACIONEGRO # j + 1 es para evitar que se pinten los numeros
-            tierra = world[i][j]
+            
 
     # la parte verde
     for i in range(13, 14):
         for j in range(30):
             world[i][j + 1] = PASTO
-            pasto = world[i][j + 1] # j + 1 es para evitar que se pinten los numeros
+           
 
         # La parte de agua
         for i in range(13, 18):
             for j in range(25, 28):
                 world[i][j + 1] = AGUA
-                lago = world[i][j + 1] # j + 1 es para evitar que se pinten los numeros
+                
     # 1PARTE VERDE DEL PRIMER ARBOL
     world[6][5] = Back.GREEN + '    '
     # 2PARTE VERDE DEL PRIMER ARBOL
@@ -193,6 +195,192 @@ def draw_world(): # seleccionamos las filas que queremos pintar y el numero de c
     world[4][29] = Back.LIGHTYELLOW_EX + '    '
 
 
+def draw_world2empty():
+
+    for i in range(len(world2)):  # recorremos las filas de la matriz con len
+        if i == 0:
+            for j in range(len(world2[i])):  # selecciona todos los elementos de esas fila
+                world2[i][j] = str(j)  # cada uno se convierte en un string
+        for l in range(32):  # seleccionar a los primeros valores de cada fila, si l es 0 entonces vemos que es la
+            # primera
+            if l == 0:
+                world2[i][l] = str(i)  # i representa a todas las filas y l representa al primer elementos de cada
+                # fila y entonces
+                # seleccionamos a todos los primeros elementos de cada fila para convertirlos
+
+
+def draw_world2(): # seleccionamos las filas que queremos pintar y el numero de columnas que pintaremos, y cambiamos
+    # los pixeles balncos según el color que corresponda
+    # La parte negra
+    for i in range(14, 21):
+        for j in range(30):
+            world2[i][j + 1] = ESPACIONEGRO # j + 1 es para evitar que se pinten los numeros
+            
+
+    # la parte verde
+    for i in range(13, 14):
+        for j in range(30):
+            world2[i][j + 1] = PASTO
+           
+
+        # La parte de agua
+        for i in range(13, 18):
+            for j in range(25, 28):
+                world2[i][j + 1] = AGUA
+                
+    # 1PARTE VERDE DEL PRIMER ARBOL
+    world2[6][5] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL PRIMER ARBOL
+    world2[7][4] = Back.GREEN + '    '
+    world2[7][5] = Back.GREEN + '    '
+    world2[7][6] = Back.GREEN + '    '
+    # 3PARTE VERDE DEL PRIMER ARBOL
+    world2[8][3] = Back.GREEN + '    '
+    world2[8][4] = Back.GREEN + '    '
+    world2[8][5] = Back.GREEN + '    '
+    world2[8][6] = Back.GREEN + '    '
+    world2[8][7] = Back.GREEN + '    '
+    # TALLO DEL PRIMER ARBOL
+    world2[9][5] = Back.RED + '    '
+    world2[10][5] = Back.RED + '    '
+    world2[11][5] = Back.RED + '    '
+    world2[12][5] = Back.RED + '    '
+
+    # 1PARTE VERDE DEL SEGUNDO ARBOL
+    world2[6][11] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL SEGUNDO ARBOL
+    world2[7][10] = Back.GREEN + '    '
+    world2[7][11] = Back.GREEN + '    '
+    world2[7][12] = Back.GREEN + '    '
+    # 3PARTE VERDE DEL SEGUNDO ARBOL
+    world2[8][9] = Back.GREEN + '    '
+    world2[8][10] = Back.GREEN + '    '
+    world2[8][11] = Back.GREEN + '    '
+    world2[8][12] = Back.GREEN + '    '
+    world2[8][13] = Back.GREEN + '    '
+    # TALLO DEL SEGUNDO ARBOL
+    world2[9][11] = Back.RED + '    '
+    world2[10][11] = Back.RED + '    '
+    world2[11][11] = Back.RED + '    '
+    world2[12][11] = Back.RED + '    '
+
+    # 1PARTE VERDE DEL TERCER ARBOL
+    world2[6][17] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL TERCER ARBOL
+    world2[7][16] = Back.GREEN + '    '
+    world2[7][17] = Back.GREEN + '    '
+    world2[7][18] = Back.GREEN + '    '
+    # 3PARTE VERDE DEL TERCER ARBOL
+    world2[8][15] = Back.GREEN + '    '
+    world2[8][16] = Back.GREEN + '    '
+    world2[8][17] = Back.GREEN + '    '
+    world2[8][18] = Back.GREEN + '    '
+    world2[8][19] = Back.GREEN + '    '
+    # TALLO DEL TERCER ARBOL
+    world2[9][17] = Back.RED + '    '
+    world2[10][17] = Back.RED + '    '
+    world2[11][17] = Back.RED + '    '
+    world2[12][17] = Back.RED + '    '
+
+    # 1PARTE VERDE DEL CUARTO ARBOL - ARBOL GRANDE
+    world2[3][22] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL CUARTO ARBOL - ARBOL GRANDE
+    world2[4][21] = Back.GREEN + '    '
+    world2[4][22] = Back.GREEN + '    '
+    world2[4][23] = Back.GREEN + '    '
+    # 3PARTE VERDE DEL CUARTO ARBOL - ARBOL GRANDE
+    world2[5][20] = Back.GREEN + '    '
+    world2[5][21] = Back.GREEN + '    '
+    world2[5][22] = Back.GREEN + '    '
+    world2[5][23] = Back.GREEN + '    '
+    world2[5][24] = Back.GREEN + '    '
+    # 4PARTE VERDE DEL CUARTO ARBOL - ARBOL GRANDE
+    world2[6][19] = Back.GREEN + '    '
+    world2[6][20] = Back.GREEN + '    '
+    world2[6][21] = Back.GREEN + '    '
+    world2[6][22] = Back.GREEN + '    '
+    world2[6][23] = Back.GREEN + '    '
+    world2[6][24] = Back.GREEN + '    '
+    world2[6][25] = Back.GREEN + '    '
+    # TALLO DEL CUARTO ARBOL - ARBOL GRANDE
+    world2[7][22] = Back.RED + '    '
+    world2[8][22] = Back.RED + '    '
+    world2[9][22] = Back.RED + '    '
+    world2[10][22] = Back.RED + '    '
+    world2[11][22] = Back.RED + '    '
+    world2[12][22] = Back.RED + '    '
+
+    # 1PARTE VERDE DEL QUINTO ARBOL - ARBOL PEQUEÑO 1
+    world2[8][25] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL QUINTO ARBOL - ARBOL PEQUEÑO 1
+    world2[9][24] = Back.GREEN + '    '
+    world2[9][25] = Back.GREEN + '    '
+    world2[9][26] = Back.GREEN + '    '
+    # TALLO DEL QUINTO ARBOL . ARBOL PEQUEÑO 1
+    world2[10][25] = Back.RED + '    '
+    world2[11][25] = Back.RED + '    '
+    world2[12][25] = Back.RED + '    '
+
+    # 1PARTE VERDE DEL SEXTO ARBOL - ARBOL PEQUEÑO 2
+    world2[8][29] = Back.GREEN + '    '
+    # 2PARTE VERDE DEL SEXTO ARBOL - ARBOL PEQUEÑO 2
+    world2[9][28] = Back.GREEN + '    '
+    world2[9][29] = Back.GREEN + '    '
+    world2[9][30] = Back.GREEN + '    '
+    # TALLO DEL SEXTO ARBOL . ARBOL PEQUEÑO 2
+    world2[10][29] = Back.RED + '    '
+    world2[11][29] = Back.RED + '    '
+    world2[12][29] = Back.RED + '    '
+
+    # piedras en parte inferior
+    world2[17][2] = Back.WHITE + '    '
+    world2[14][5] = Back.WHITE + '    '
+    world2[18][5] = Back.WHITE + '    '
+    world2[14][5] = Back.WHITE + '    '
+    world2[16][7] = Back.WHITE + '    '
+    world2[19][7] = Back.WHITE + '    '
+    world2[16][10] = Back.WHITE + '    '
+    world2[19][15] = Back.WHITE + '    '
+    world2[18][23] = Back.WHITE + '    '
+    world2[17][23] = Back.WHITE + '    '
+    world2[16][23] = Back.WHITE + '    '
+    world2[15][23] = Back.WHITE + '    '
+    world2[15][25] = Back.WHITE + '    '
+    world2[19][29] = Back.WHITE + '    '
+    # piedras en parte superior
+    world2[12][7] = Back.WHITE + '    '
+    world2[11][7] = Back.WHITE + '    '
+    world2[12][8] = Back.WHITE + '    '
+    world2[11][8] = Back.WHITE + '    '
+    world2[11][9] = Back.WHITE + '    '
+    world2[12][9] = Back.WHITE + '    '
+    world2[10][8] = Back.WHITE + '    '
+    world2[12][12] = Back.WHITE + '    '
+    world2[12][15] = Back.WHITE + '    '
+    world2[12][16] = Back.WHITE + '    '
+    world2[11][16] = Back.WHITE + '    '
+    world2[12][20] = Back.WHITE + '    '
+    world2[12][30] = Back.WHITE + '    '
+
+    # Sol
+    world2[1][30] = Back.LIGHTYELLOW_EX + '    '
+    world2[2][30] = Back.LIGHTYELLOW_EX + '    '
+    world2[3][30] = Back.LIGHTYELLOW_EX + '    '
+    world2[1][29] = Back.LIGHTYELLOW_EX + '    '
+    world2[2][29] = Back.LIGHTYELLOW_EX + '    '
+    world2[3][29] = Back.LIGHTYELLOW_EX + '    '
+    world2[1][28] = Back.LIGHTYELLOW_EX + '    '
+    world2[2][28] = Back.LIGHTYELLOW_EX + '    '
+    world2[3][28] = Back.LIGHTYELLOW_EX + '    '
+    world2[2][27] = Back.LIGHTYELLOW_EX + '    '
+    world2[4][27] = Back.LIGHTYELLOW_EX + '    '
+    world2[4][29] = Back.LIGHTYELLOW_EX + '    '
+
+
+
+
+
+
 def draw_player(yi, xi):   # Mismo proceso que el anterior para dibujar al avatar
 
     # Avatar
@@ -201,30 +389,34 @@ def draw_player(yi, xi):   # Mismo proceso que el anterior para dibujar al avata
     world[yi-1][xi-1] = Back.CYAN + '    ' # pies
     world[yi+1][xi-1] = Back.CYAN + '    ' # cabeza
 def fill(yi, xi):
-    world[yi][xi] =  Back.LIGHTWHITE_EX + '    '
-    world[yi][xi-1] = Back.LIGHTWHITE_EX + '    '
-    world[yi-1][xi-1] =  Back.LIGHTWHITE_EX + '    '
-    world[yi+1][xi-1] =  Back.LIGHTWHITE_EX + '    '
+   
+    world[yi][xi] = world2[yi][xi]
+    world[yi][xi-1] =  world2[yi][xi-1]
+    world[yi-1][xi-1] =   world2[yi-1][xi-1]
+    world[yi+1][xi-1] =   world2[yi+1][xi-1]
 
 def arbol(yi,xi):
-    global world
-    if world[yi][xi] == Back.RED + '    ':
-        print('AAA')
+    global world2
+    if world2[yi][xi] == Back.RED + '    ':
+      
         return True
-    print(world[yi][xi])
+   
     return False
 
     
 def piedra(yi,xi):
-    global world
-    if world[yi][xi] == Back.WHITE + '    ':
-        print('BBB')
+    global world2
+    if world2[yi][xi] == Back.WHITE + '    ':
+        
         return True
-    print(world[yi][xi])
     return False
 
 def destroy(yi, xi):
-    world [yi][xi] = Back.LIGHTWHITE_EX + '    '
+    if not world [yi][xi] == Back.LIGHTWHITE_EX + '    ':
+        world [yi][xi] = Back.LIGHTWHITE_EX + '    '
+        world2 [yi][xi] = Back.LIGHTWHITE_EX + '    '
+
+
 def collect(yi, xi):
     countwood = 0  #inicia la cuenta en 0
     countrock = 0
@@ -247,6 +439,7 @@ def collect(yi, xi):
 def move_player2(wood, rock): #Recibe los valores en el modulo para guardar la cuenta de collect
     xi = 3
     yi = 11
+    
     #hacemos un bucle para jugar el tiempo deseado
     while True:
         moves = input('$ ').split() #aqui recibe los comandos en una string yse convierte el string en una lista para manejarla
@@ -254,7 +447,7 @@ def move_player2(wood, rock): #Recibe los valores en el modulo para guardar la c
         for i in moves:
             if i == 'right':
                 # es necesario para que el jugador no tenga un clon
-                fill(yi,xi)
+                fill(yi, xi)
                 xi +=1
                 
             elif i == 'left':
@@ -277,8 +470,8 @@ def move_player2(wood, rock): #Recibe los valores en el modulo para guardar la c
             wood += ex[0]
             rock += ex[1]  #guarda la cuenta de cada bucle
         if "destroy" in moves: #se llama a la funcion destroy se si se ingreso el comando destroy
-                destroy(xi, yi)
-                
+                destroy(yi, xi)
+        
         if xi in range(1, 31) and yi in range(1, 21): # se verifica que el jugador este dentro del mundo
                 draw_player(yi, xi)
                 print('$ Welcome to minecraft world XYZ')
@@ -294,18 +487,6 @@ def move_player2(wood, rock): #Recibe los valores en el modulo para guardar la c
                 print("Stone blocks:", rock)
         else:
                 print("Invalid operation") # si el jugador se sale del mundo sale operacion invalida
+        
 
 
-def main():
-    draw_worldempty()
-    draw_world() # llamamos a las funciones anteriores porque nos serviran pora que se ejecute
-    wood = 0
-    rock = 0
-    
-    while True:
-        option = input('$ ').strip()#se ingresa el init para iniciar el programa
-        if option == 'init':
-            break
-    move_player2(wood, rock)   #se ejecutan las funciones
-    
-main()
