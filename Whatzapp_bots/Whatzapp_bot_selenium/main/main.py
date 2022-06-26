@@ -49,24 +49,28 @@ def send(contatos,n,imagen):
    
     print(contatos)
     while len(contatos)>=1:
-        frase3 =frases()
-        sleep(8)
-        a = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]')
-        a.click()
-        sleep(4)
-        a.send_keys(contatos[0])
-        sleep(4)
-        driver.find_element(By.XPATH,f"//span[@title='{contatos[0]}']").click()
-        sleep(5)
-        driver.find_element(By.XPATH,'//span[@data-testid="clip"]').click()
-        sleep(5)
-        driver.find_element(By.XPATH,'//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]').send_keys(imagen)
-        sleep(7)
-        driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]').send_keys(frase3)
-        sleep(6)
-        driver.find_element(By.XPATH,'//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div').click()
-        sleep(15)
-        del contatos[0]
+        try:
+            frase3 =frases()
+            sleep(16)
+            a = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]')
+            a.click()
+            sleep(8)
+            a.send_keys(contatos[0])
+            sleep(8)
+            driver.find_element(By.XPATH,f"//span[@title='{contatos[0]}']").click()
+            sleep(10)
+            driver.find_element(By.XPATH,'//span[@data-testid="clip"]').click()
+            sleep(10)
+            driver.find_element(By.XPATH,'//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]').send_keys(imagen)
+            sleep(14)
+            driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[2]').send_keys(frase3)
+            sleep(12)
+            driver.find_element(By.XPATH,'//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div').click()
+            sleep(30)
+            del contatos[0]
+        except Exception:
+            del contatos[0]
+            continue
 def main():
     send(contatos=numeros(),n=tiempo(),imagen=imagenes())
 
