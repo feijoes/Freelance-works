@@ -88,32 +88,19 @@ def Enpezar():
         with open("../numeros.txt","r") as f:
                 for i, _ in enumerate(f):
                         pass
+        n = i //bots
+        l = [[0,i-n*(bots-1)]]
+        count = bots - 1
+        for j in range(count):
+                if j == bots-1:
+                        l.append([i-n+1,i])
+                        continue
+                l.append([i-n*count+1,i-n*(count-1)])
+                count-=1
                 
-        if bots == 1:
-                list = [[0,i]]
-        if bots == 2:
-                if i % bots == 0:
-                        n = i / bots
-                else:
-                     n = i // bots
-                     
-                list = [[0,int(n)],[int(n+1),int(i)]]
-        if bots == 3:
-                
-                n = i // bots        
-                list = [[0,int(i-n*3)],[int((i-n*2)),i-n*2],[int(i-n),i]]
-        if bots == 4:
-                if i % bots == 0:
-                        n = i / bots
-                else:
-                     n = (i+1) // bots
-                    
-                print(i,n)
-                list =[[0,i-n*3],[i-n*3+1,i-n*2],[i-n*2+1,i-n],[i-n+1,i]]
-                
-        print(list)
-        for p in list:
-               subprocess.Popen(['python','../main/main.py', str(p[0]) , str(p[1]), str(i)])
+        print(f"numeros de bots {bots}")
+        for p in l:
+               subprocess.Popen(['python','./main/main.py', str(p[0]) , str(p[1]), str(i)])
         sys.exit(0)
 
                     
