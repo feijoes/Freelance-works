@@ -36,8 +36,8 @@ def main():
                         images.append(filename)
                         imagenes.insert(pos_img,filename.split('/')[-1])
                         pos_img += 1
-        tk.Button(ws, text='Imagenes', command=ImageOpen).place(x=200, y=150)
-        imagenes.place(x=200,y=150)
+        tk.Button(ws, text='Imagenes', command=ImageOpen).place(x=200, y=205)
+        imagenes.place(x=200,y=210)
         ncontactos = tk.Label(ws, text = "Numeros de contactos: 0")
         def Contactos():
                 filename = filedialog.askopenfilename(initialdir = "/",title = "Select a File",filetypes =[('all files', '.*'),("text files",".txt"),('image files', ('.png', '.jpg'))])
@@ -74,6 +74,9 @@ def main():
         tiempo = tk.Entry(ws,width=10)
         tiempo.place(x=200,y=50)
         tk.Label(ws, text="Tiempo em Minutos por mensaje").place(x=200, y=25)
+        tiempo2 = tk.Entry(ws, width=10)
+        tiempo2.place(x=200, y=170)
+        tk.Label(ws, text="Tiempo de espera em Minutos").place(x=200, y=140)
         def Enpezar():
 
                 bots = int(inputb.get())
@@ -95,10 +98,10 @@ def main():
                         l.append([i-n*count+1,i-n*(count-1)])
                         count-=1
                 print(f"Numeros de bots {bots}")
-                print(f"Cada bot enviara mensaje a cada {int(tiempo.get()) * 60} minutos")
+                print(f"Cada bot enviara mensaje a cada {int(tiempo.get())} minutos")
                 for bot, p in enumerate(l):
-                        subprocess.Popen(['python','./main/main.py', str(p[0]) , str(p[1]), str(i), str(bot),str(int(tiempo.get()) * 60 )])
+                        subprocess.Popen(['python','./main/main.py', str(p[0]) , str(p[1]), str(i), str(bot),str(int(tiempo.get()) * 60 ),str(int(tiempo2.get()) * 60 )])
                 sys.exit(0)
         enpezar = tk.Button(ws,text="Empezar",command=Enpezar,width=10,font=("Times New Roman",20))
-        enpezar.place(x=200,y=300)
+        enpezar.place(x=200,y=335)
         ws.mainloop()

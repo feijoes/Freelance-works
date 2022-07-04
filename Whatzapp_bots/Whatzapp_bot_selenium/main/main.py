@@ -29,11 +29,11 @@ def numeros():
             numeros2.append(i.strip('\n'))
     d = open(__file__[:-12]+"notsend.txt", 'r')
     numeros = d.readlines()
-    notnumeros = set()
+    notnumeros = []
     for i in numeros:
-        notnumeros.add(i.strip('\n'))
+        notnumeros.append(i.strip('\n'))
     d.close()
-    return [x for x in numeros2 if x not in notnumeros]
+    return list(set([x for x in numeros2 if x not in notnumeros]))
 def imagenes():
     with open(__file__[:-12]+'imagenes.txt', 'r') as f:
         imagenes = f.readlines()
@@ -45,7 +45,8 @@ def send(contatos,imagen):
     api ="https://web.whatsapp.com/send?phone="
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get("https://web.whatsapp.com/")
-    input(f"Presiona enter para enpezar el bot {sys.argv[4]}")
+    print(f"tiempo para scanear")
+    sleep(int(sys.argv[6]))
     while len(contatos) >= 1:
         try:
             driver.get(api+contatos[0])
