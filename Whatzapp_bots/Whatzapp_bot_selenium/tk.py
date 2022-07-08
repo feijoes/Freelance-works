@@ -43,13 +43,19 @@ def main():
                 filename = filedialog.askopenfilename(initialdir = "/",title = "Select a File",filetypes =[('all files', '.*'),("text files",".txt"),('image files', ('.png', '.jpg'))])
                 if filename:
                         with open(filename,"r") as f:
-                                contactos = []
-                                for i, z in enumerate(f):
-                                        contactos.append(z)
+                                contactos = f.read().splitlines()
+                        contactos=set(contactos)
+                        try:
+                                contactos.remove('')
+                        except: pass
+                        i = len(contactos)
+
                         file = open(os.path.join("numeros.txt"), "w")
-                        file.writelines(contactos)
+                        for i in contactos:
+                                file.write(i+'\n')
+
                         file.close()
-                        ncontactos.configure(text = f"Numeros de contactos: {str(i + 1)}")
+                        ncontactos.configure(text = f"Numeros de contactos: {str(i+1)}")
         tk.Button(ws, text='Archivo de los Contactos', command=Contactos).place(x=40, y=30)
         ncontactos.place(x=40,y=55)
 
@@ -72,7 +78,10 @@ def main():
         inputb = tk.Entry(ws,width=20)
         inputb.place(x=200,y=110)
         tiempo = tk.Entry(ws,width=10)
-        tiempo.place(x=200,y=50)
+        tiempo.place(x=220,y=50)
+        tiempo3 = tk.Entry(ws,width=10)
+        tiempo3.place(x=300,y=50)
+        tk.Label(ws, text="min").place(x=190, y=50)
         tk.Label(ws, text="Tiempo em Minutos por mensaje").place(x=200, y=25)
         tiempo2 = tk.Entry(ws, width=10)
         tiempo2.place(x=200, y=170)
@@ -100,7 +109,7 @@ def main():
                 print(f"Numeros de bots {bots}")
                 print(f"Cada bot enviara mensaje a cada {int(tiempo.get())} minutos")
                 for bot, p in enumerate(l):
-                        subprocess.Popen(['python','./main/main.py', str(p[0]) , str(p[1]), str(i), str(bot),str(int(tiempo.get()) * 60 ),str(int(tiempo2.get()) * 60 )])
+                        subprocess.Popen(['python','./main/main.py', str(p[0]) , str(p[1]), str(i), str(bot),str(int(tiempo.get()) * 60 ),str(int(tiempo2.get())),str(int(tiempo3.get()) * 60)])
                 sys.exit(0)
         enpezar = tk.Button(ws,text="Empezar",command=Enpezar,width=10,font=("Times New Roman",20))
         enpezar.place(x=200,y=335)

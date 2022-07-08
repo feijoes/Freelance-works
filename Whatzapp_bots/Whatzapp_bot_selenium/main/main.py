@@ -5,10 +5,10 @@ import random
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-
+from selenium.webdriver.chrome.options import Options
 
 def frases():
-    with open('/frases.txt', 'r') as f:
+    with open(__file__[:-12]+'frases.txt', 'r') as f:
         frases = f.readlines()
         frases2 = []
         for i in frases:
@@ -26,7 +26,7 @@ def numeros():
         numeros = f.readlines()[:max+1] if min == 0 else f.readlines()[min-1:] if max == n else f.readlines()[min:max+1]
         numeros2 = []
         for i in numeros:
-            numeros2.append(i.strip('\n'))
+            numeros2.append(i)
     d = open(__file__[:-12]+"notsend.txt", 'r')
     numeros = d.readlines()
     notnumeros = []
@@ -42,16 +42,21 @@ def imagenes():
         return imagen
 
 def send(contatos,imagen):
+    chrome_options = Options()
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    chrome_options.add_argument('--log-level=3')
     api ="https://web.whatsapp.com/send?phone="
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
     driver.get("https://web.whatsapp.com/")
-    print(f"tiempo para scanear")
-    sleep(int(sys.argv[6]))
+    for i in range(int(sys.argv[6]),0,-1):
+        print(f"tiempo restante {i} minutos")
+        sleep(60)
     while len(contatos) >= 1:
         try:
             driver.get(api+contatos[0])
-            sleep(int(sys.argv[5]))
+            sleep(int(random.choice([int(sys.argv[5]),int(sys.argv[7])])))
             frase3 = frases()
+            sleep(15)
             driver.find_element(By.XPATH, '//span[@data-testid="clip"]').click()
             sleep(10)
             driver.find_element(By.XPATH, '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]').send_keys(imagen)
@@ -62,14 +67,21 @@ def send(contatos,imagen):
             sleep(30)
             with open(__file__[:-12]+"notsend.txt", "a") as s:
                 s.write(f"{contatos[0]}\n")
+                s.write('\n')
             del contatos[0]
         except Exception as e:
             print(f"Bot {sys.argv[4]} no pudo enviar mensaje para {contatos[0]}")
+            print(e)
             with open(__file__[:-12]+"error.txt", "a") as s:
                 s.write(f"{contatos[0]}\n")
             del contatos[0]
             continue
-    print(f"BOT {sys.argv[4]} Terminado")
+    numerobot = sys.argv[4]
+    print()
+    print("---------------------------------------")
+    print(f"BOT {numerobot} Terminado")
+    print('---------------------------------------')
+    print()
     while True:
         sleep(3)
 def main():
