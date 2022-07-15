@@ -10,6 +10,7 @@ def main():
         import subprocess
         import sys
         import tkinter.ttk as ttk
+        from os import walk
         ws = tk.Tk()
         ws.title('Whatzapp Bot')
         ws.geometry("400x400")
@@ -87,7 +88,13 @@ def main():
         tiempo2.place(x=200, y=170)
         tk.Label(ws, text="Tiempo de espera em Minutos").place(x=200, y=140)
         def Enpezar():
-
+                filenames = next(walk(__file__[:-5]+"errores"), (None, None, []))[2]  # [] if no file    
+                for i in filenames:
+                        a=open(".\\errores\\" + i)
+                        b=a.readlines()
+                        a.close()
+                        c=open("allnotsend.txt","w")
+                        c.writelines(b)
                 bots = int(inputb.get())
                 if images:
                         a = open(os.path.join("imagenes.txt"),"w")

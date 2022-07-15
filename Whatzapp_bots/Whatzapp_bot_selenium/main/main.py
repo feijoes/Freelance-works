@@ -65,7 +65,9 @@ def send(contatos,imagen):
             sleep(17)
             driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div').click()
             sleep(30)
-            with open(__file__[:-12]+"notsend.txt", "a") as s:
+            with open(__file__[:-12] + "notsend" + sys.argv[5] + ".txt", "w") as s:
+                pass
+            with open(__file__[:-12]+"notsend"+sys.argv[5]+".txt", "a") as s:
                 s.write(f"{contatos[0]}\n")
                 s.write('\n')
             del contatos[0]
