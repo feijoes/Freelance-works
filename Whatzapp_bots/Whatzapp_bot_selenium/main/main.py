@@ -26,13 +26,14 @@ def numeros():
         numeros = f.readlines()[:max+1] if min == 0 else f.readlines()[min-1:] if max == n else f.readlines()[min:max+1]
         numeros2 = []
         for i in numeros:
-            numeros2.append(i)
-    d = open(__file__[:-12]+"notsend.txt", 'r')
+            numeros2.append(i.strip('\n'))
+    d = open(__file__[:-12]+"allnotsend.txt", 'r')
     numeros = d.readlines()
     notnumeros = []
     for i in numeros:
         notnumeros.append(i.strip('\n'))
     d.close()
+
     return list(set([x for x in numeros2 if x not in notnumeros]))
 def imagenes():
     with open(__file__[:-12]+'imagenes.txt', 'r') as f:
@@ -45,9 +46,11 @@ def send(contatos,imagen):
     chrome_options = Options()
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     chrome_options.add_argument('--log-level=3')
+
     api ="https://web.whatsapp.com/send?phone="
     driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
     driver.get("https://web.whatsapp.com/")
+    print(f"contactos: {contatos}")
     for i in range(int(sys.argv[6]),0,-1):
         print(f"tiempo restante {i} minutos")
         sleep(60)
@@ -65,11 +68,9 @@ def send(contatos,imagen):
             sleep(17)
             driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div').click()
             sleep(30)
-            with open(__file__[:-12] + "notsend" + sys.argv[5] + ".txt", "w") as s:
-                pass
-            with open(__file__[:-12]+"notsend"+sys.argv[5]+".txt", "a") as s:
-                s.write(f"{contatos[0]}\n")
-                s.write('\n')
+            with open(__file__[:-12]+"notsend\\notsend"+sys.argv[4]+".txt", "a") as s:
+                s.write(f"{contatos[0]}")
+
             del contatos[0]
         except Exception as e:
             print(f"Bot {sys.argv[4]} no pudo enviar mensaje para {contatos[0]}")

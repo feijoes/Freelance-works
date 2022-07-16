@@ -88,19 +88,37 @@ def main():
         tiempo2.place(x=200, y=170)
         tk.Label(ws, text="Tiempo de espera em Minutos").place(x=200, y=140)
         def Enpezar():
-                filenames = next(walk(__file__[:-5]+"errores"), (None, None, []))[2]  # [] if no file    
+                filenames = next(walk(__file__[:-5]+"notsend"), (None, None, []))[2]  # [] if no file
                 for i in filenames:
-                        a=open(".\\errores\\" + i)
+                        a=open(".\\notsend\\" + i)
                         b=a.readlines()
                         a.close()
-                        c=open("allnotsend.txt","w")
-                        c.writelines(b)
+
+                        c=open("allnotsend.txt","a")
+                        for i in b:
+                                if b:
+                                        c.write(i+'\n')
+                        c.close()
+                with open(__file__[:-5]+'allnotsend.txt') as f:
+                        file_one = f.read().splitlines()
+
+                with open(__file__[:-5]+'numeros.txt') as f:
+                        file_two = f.read().splitlines()
+
+
+                result = list(set(file_one) ^ set(file_two))
+
+                with open("numeros.txt.txt", "w") as f:
+                        for line in result:
+                                f.write(line + "\n")
+
                 bots = int(inputb.get())
                 if images:
                         a = open(os.path.join("imagenes.txt"),"w")
                         for z in images:
                                 a.write(z)
                         a.close()
+
                 with open(__file__[:-5]+"numeros.txt", "r") as f:
                         for i, _ in enumerate(f):
                                 pass
