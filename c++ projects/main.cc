@@ -201,3 +201,21 @@ int main() {
 
     return 0;
 }
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    string str;
+    
+    cout <<"Cadena de texto:"<< endl; 
+    cin >> str;
+    
+
+    int length = str.size();
+
+    cout<<"Character at last position: "<<str.at(length-1)<<endl;
+
+}
