@@ -1,13 +1,23 @@
 const express = require("express");
 const app = express();
 const { ErrorHandlerMiddleware, NotFound } = require('./middlewares/middleware')
+const productoRouter = require("./routers/ProductoRouter")
+const UserRouter = require('./routers/AuthenticationRouter')
+const passport = require('passport')
+require("./db/Connecion")
+require('./config/passport')(passport)
+
+
+app.use(passport.initialize());
 app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
 
-app.use("/api/v1/todo",tasks)
+
+app.use("/",productoRouter);
 
 // Login Logout and Register
-app.use("/api/v1/",authenticate)
+app.use('/',UserRouter);
 
 app.use(NotFound)
 
