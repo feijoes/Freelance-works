@@ -14,10 +14,12 @@ app.use(express.urlencoded({extended:true}))
 
 
 
-app.use("/",productoRouter);
 
-// Login Logout and Register
+
+// Login and Register
 app.use('/',UserRouter);
+
+app.use("/",passport.authenticate('jwt',{session:false}),productoRouter);
 
 app.use(NotFound)
 

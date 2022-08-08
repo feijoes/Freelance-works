@@ -1,4 +1,5 @@
 const fs = require('fs');
+const passport = require('passport');
 const path = require('path');
 const User = require('mongoose').model('User');
 
@@ -10,8 +11,18 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 const options = {
     jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKet: PUB_KEY,
-    algoti
+    algorithms: ["RS256"]
 };
 
-// TODO
-module.exports = (passport) => {}
+const strategy =  new JwtStrategy(options,(payload,done)=>{
+    User.findOne({_id:payload.sub}).then((user)=>{
+            if (user){
+                return done(null,user)
+            }   
+            return done(null, false)
+    }).catch(err => done(err,null))
+})
+
+module.exports = (passport) => {
+    passport.use(strategy)
+}
