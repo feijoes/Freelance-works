@@ -119,6 +119,7 @@ Para las pruebas unitarias cada operador debe tener sus propias pruebas (que pue
 Toda clase/método implementado debe tener sus propias pruebas unitarias.
  */
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 /*
@@ -136,17 +137,16 @@ class Solution {
   public static int getIndex(String s) {
     int n = s.length();
     int oneMore = 0;
-
     for (int i = 0; i < n; i++) {
       char curr = s.charAt(i);
+
       switch (curr) {
         case '(':
           oneMore++;
           break;
         case ')':
           if (oneMore == 0) {
-            
-            return i+1;
+            return i-1;
           } else {
             oneMore--;
           }
@@ -158,39 +158,69 @@ class Solution {
 
   public static String calculate(String s) {
     Stack<Character> stackant = new Stack<Character>();
-    String news = "";
-    int sing=0;
-    for (int i=0; i < s.length();i++){
+    Stack<Character> stackatual = new Stack<Character>();
 
-      if (s.charAt(i) == '('){
-        calculate(s.substring(i+1, getIndex(s.substring(i+1))));
-      }
-      if (s.charAt(i) == '^'){
-        int before =1;
-        int next=1;
-        while (i+next < s.length()){
-          if (Character.isDigit(s.charAt(i + next))){next++;}
-          else{break;}
-         
-        }
-        while (Character.isDigit(s.charAt(i -before))){
+    boolean first = false;
+    String response ="";
+    int res = 0;
+    int sig = 0;
+    int n = s.length();
+    Character factorial;
+    boolean isInside = false;
+    for (int i = 0; i < n; i++) {
+      char curr = s.charAt(i);
+      switch (curr) {
+        case '+':
+          int before = 1;
+          while(Character.isDigit(s.charAt(i-before))){
+            before--;
+          }
+          int next = 1;
+          while(Character.isDigit(s.charAt(i+ next))){
+            next++;
+          }
+          break;
+        case '*': sig = 2;
+          break;
+        case '(': isInside = true;
+          break;
+        case ')':
+        isInside = false;
+          break;
+        case '^':
+        before = 1;
+        while(Character.isDigit(s.charAt(i-before))){
           before--;
         }
-        news = s.replace(s.substring(before,next+1), ""+(int)Math.pow(Integer.parseInt(s.substring(before,i)), Integer.parseInt(s.substring(before,i))));
+        next = 1;
+        while(Character.isDigit(s.charAt(i+ next))){
+          next++;
+        }
+        s = s.replaceAll(s.substring(before,i), ""+Math.pow(Integer.parseInt(s.substring(before,i)),Integer.parseInt(s.substring(i,next))));
+          break;
+        case ' ':
+          break;
+        case '!':
+          factorial = s.charAt(i-1);
+          break;
+        default:
+          if (isInside) {
+             response = calculate(s.substring(i, getIndex(s.substring(i))));
+          }
+          if( first){
+
+          }
+          else{
+            stackant.push(curr);}
       }
-      if(s.charAt(i) == '!'){
-        sing=3;
-      }
-      
-      
     }
-    return news;
+    return s;
   }
 }
 
 public class Main {
 
   public static void main(String args[]) {
-    System.out.println(Solution.calculate("10^4 "));
+    System.out.println(Solution.calculate("2^2"));
   }
 }
