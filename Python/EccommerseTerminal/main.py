@@ -7,14 +7,13 @@ def main():
      while True:
         os.system('cls')
         num = inpu()
-        
+        if num == 9:
+             carrito(prodocutos,usuarios)
         if num == 8:
             fin(prodocutos,usuarios)
             break
         if num == 1:
             prodocutos, usuarios=IngresarDatos( prodocutos, usuarios)
-            print(usuarios)
-            input()
         if num == 2:
              prodocutos, usuarios=ConsultaDatos( prodocutos, usuarios)
         if num == 3:
