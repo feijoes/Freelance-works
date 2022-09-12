@@ -1,0 +1,3 @@
+mesa,12.5
+silla,5.0
+celular,21.5

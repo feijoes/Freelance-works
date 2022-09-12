@@ -1,18 +1,32 @@
 
+from functions import *
+
+def main():
+     prodocutos = read_produc()
+     usuarios = read_usuarios()
+     while True:
+        os.system('cls')
+        num = inpu()
+        
+        if num == 8:
+            fin(prodocutos,usuarios)
+            break
+        if num == 1:
+            prodocutos, usuarios=IngresarDatos( prodocutos, usuarios)
+            print(usuarios)
+            input()
+        if num == 2:
+             prodocutos, usuarios=ConsultaDatos( prodocutos, usuarios)
+        if num == 3:
+             prodocutos, usuarios=ModificacionDatos( prodocutos, usuarios)
+        if num == 4:
+             prodocutos, usuarios=EliminacionDatos( prodocutos, usuarios)
+        if num == 5:
+             prodocutos, usuarios=Ordenar( prodocutos, usuarios)
+        if num == 6:
+            prodocutos, usuarios= ListaU( prodocutos, usuarios)
+        if num == 7:
+             prodocutos, usuarios=Estadisticas( prodocutos, usuarios)
+main()
 
 
-from functions import menu
-
-
-if __name__ == "__main__":
-    opciones = "Menu ecommerce, opciones \n1 Ingresar Datos \n2 Consulta de datos\n3 Modificacion de datos\n4 Eliminacion de Datos\n5 Ordenar\n6 Listar datos\n7 Estadisticas\n8 Salir"
-    while True:
-        num = input(opciones)
-        if num.isnumeric():
-            if int(num) <= 8 and int(num) >0:
-                break
-            else:
-                print("numero invalido")
-        else:
-            print("no es un numero")
-        menu(num)
