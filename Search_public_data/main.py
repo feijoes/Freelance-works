@@ -1,3 +1,4 @@
+from operator import truediv
 from os import walk
 import threading
 
@@ -10,10 +11,10 @@ class Process(object):
     BasePath: str
     
     def __init__(self,folder) -> None:
-        self.BasePath = "./files/"+folder  + "/"
+        self.BasePath = "./files/"+folder  
     
     def readFile(self, filename:str ,names:list[str]) -> list[dict[str:str]]:
-        
+
         return pd.read_csv(self.BasePath + filename ,
                            sep=';',names=names, 
                            encoding='latin-1')
@@ -30,24 +31,21 @@ class Empresas(Process):
    
     def __init__(self) -> None:
         super().__init__('EMPRESAS')
-        dataframes= []
-        for i in self.getFileNames():
-            print('lendo '+i)
-            dataframes.append(self.separate(i))
-            print('terminou '+i)
-        print('concatenando')
-        self.empresas = pd.concat(dataframes, axis=1, ignore_index=False)
-        print('concatenando terminou')
-        print(self.empresas)
+        self.empresas = self.separate('ALL')
+        print(self.empresas.head())
 
     def separate(self,nome_arquivo:str):
         return self.readFile(nome_arquivo, ['cnpj' ,'Nome Social' , 'naturezaJuridico',  'qualificacao',   'capital'  ,'porte' ,'responsavel'])
     
-    def filtrar(self,dados:dict={},ou=False,nao=False,e=False):
-        #for file in self.getFileNames():
-        #for lista in self.readFile("K3241.K03200Y6.D20813.EMPRECSV"): 
-            #all(x in lista for x in dados.keys())
-        print(self.readFile("K3241.K03200Y6.D20813.EMPRECSV"))        
+    def filtrar(self,dados:list[dict]=[],nao:dict={}):
+        listaFiltrada = []
+        for lista in self.readFile("./files/EMPRESASALL"): 
+            for i in dados:
+                if all(x in lista for x in i.values()):
+                    if all(not x in lista for x in nao.values()):
+                        listaFiltrada.append(lista)
+        return listaFiltrada
+             
         
 
 class Establecimentos(Process,threading.Thread):
@@ -69,8 +67,5 @@ class start(object):
         self.empresas = Empresas()
         self.establecimentos = Establecimentos()
 start()
-"""temos que ver como faz para q seja mais rapido pq ele ta lendo os arquivos e botando em um so mas ta demorando demais e n sei o q fazer
-pensei em fazer uma clase multitreding para q cada uma leia um arquivo diferente mas o problema esta na juncao de todas, tem q juntar todas sai facilita tudo pq o 
-panda ja tem coisa de filtros
-"""
+
 
