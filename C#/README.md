@@ -1,3 +1,4 @@
+
 # Activities
 
 ## 1 Formula:

@@ -19,7 +19,9 @@ public class Formula
     }
     
     public static double Calcular(double x,double y,double z,double w){
+
         return (((x*0.045)+(2.33*y))/(Math.Pow(2.1*z,(x+((7.3*w)/(9.2*z-(x*y)))))-(4.5*z/w))*z*y*z*w);
     }
 }
+
 
