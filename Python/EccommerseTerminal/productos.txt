@@ -1,0 +1,8 @@
+Mesa;$120
+celular;$300
+Cámara;$220
+Pantalla Led;$350
+Teclado;$10
+Mouse;$7
+lámpara;$25
+Mesa;$75
