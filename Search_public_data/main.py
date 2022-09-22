@@ -1,21 +1,27 @@
+from asyncore import read
 import time
+from unicodedata import name
 from pandas import DataFrame
 from re import  search
 from os import walk
 import threading
 import pandas as pd
-
+import tkinter as tk
+from tkinter import font as tkFont  
 class Process(object):
     
     BasePath: str
     campos:list
     info: DataFrame
-    def __init__(self,folder) -> None:
-        self.BasePath = "./files/"+folder  
+    def __init__(self,folder,names) -> None:
+        self.BasePath = "./files/"+folder
+        self.campos = names
     
+    def read(self):
+        self.info = self.readFile('ALL',self.campos)
     def readFile(self, filename:str ,names:list[str]) -> list[dict[str:str]]:
 
-        return pd.read_csv(self.BasePath+filename,
+        return pd.read_csv(self.BasePath + "/test",
                            sep=';',names=names, 
                            encoding='latin-1')
         # with open(self.BasePath + filename,encoding="latin-1") as f:
@@ -24,30 +30,21 @@ class Process(object):
     def filtrar(self,dados:list[dict]=[],nao:dict={}):
         listaFiltrada = []
         newlista =[]
-        """
-        for lista in self.info: 
-            for i in dados:
-                for chave in i.keys():
-                   
-                    
-        return listaFiltrada"""
         for index,i in enumerate(dados):
-            
-            for chave in i.keys():
-                for j in self.info[chave]:
-                    
-                    if search(i[chave],str(j)):
-                        if chave in nao.keys():
-                            
-                            if not search(nao[chave],j):
-                                listaFiltrada.append(index) 
-                        else:
-                            listaFiltrada.append(index)
-        
+           
+           for chave in i.keys():
+               for j in self.info[chave]:
+                   
+                   if search(i[chave],str(j)):
+                       if chave in nao.keys():
+                           
+                           if not search(nao[chave],j):
+                               listaFiltrada.append(index) 
+                       else:
+                           listaFiltrada.append(index)
+    
         for i in listaFiltrada:
             newlista.append(self.info.iloc[i])
-            
-            
         return newlista
                         
     def getFileNames(self) -> list[str]:
@@ -60,16 +57,9 @@ class Empresas(Process):
     info:DataFrame
     
     def __init__(self) -> None:
-        super().__init__('EMPRESAS')
-        self.campos = ['cnpj' ,'nomeSocial' , 'naturezaJuridico',
-                        'qualificacao','capital','porte' ,'responsavel']
-        self.info = self.separate('ALL')
+        super().__init__('EMPRESAS',['cnpj' ,'nomeSocial' , 'naturezaJuridico',
+                        'qualificacao','capital','porte' ,'responsavel'])
         
-        print(self.filtrar([{'cnpj':'41273602'},{'cnpj':'41273601'}]))
-        
-
-    def separate(self,nome_arquivo:str):
-        return self.readFile(nome_arquivo, self.campos)
     
 class Establecimentos(Process,threading.Thread):
     def __init__(self) -> None:
@@ -124,10 +114,34 @@ class start(object):
             datos[i] = input(f"digite {i}: ")
         tipo.filtrar("",datos)
         
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title('Whatzapp Bot')
+        self.geometry("500x500")
+        self.maxsize(500,500)
         
+        tk.Button(self, text='Empresas',height= 3, width=10, command=lambda: self.comecar(Empresas()),font=tkFont.Font(family='Helvetica', size=10, weight='bold')).place(x=70, y=330)
+        tk.Button(self, text='Socios',height= 3, width=10, command=lambda:self.comecar(Socios()),font=tkFont.Font(family='Helvetica', size=10, weight='bold')).place(x=350, y=330)
+        tk.Button(self, text='Estabelecimentos',height= 4, width=14, command=lambda:self.comecar(Establecimentos()),font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=200, y=325) 
+    def comecar(self,tipo):
+        list = self.winfo_children()
+        for l in list:
+            l.destroy()
+        
+            
+        tk.Label(self, text="Lendo Arquivo....",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=220)
+        tk.Label(self, text="Isso pode demorar um pouco",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=240)  
+        tipo.read()
+        
+        
+        
+
                 
 t = time.process_time()      
-start()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
 
 #do some stuff
 elapsed_time = time.process_time() - t
