@@ -1,13 +1,12 @@
-from asyncore import read
+
 import time
-from unicodedata import name
 from pandas import DataFrame
-from re import  search
+from re import  I, search
 from os import walk
 import threading
 import pandas as pd
 import tkinter as tk
-from tkinter import font as tkFont  
+from tkinter import Canvas, font as tkFont,Entry  
 class Process(object):
     
     BasePath: str
@@ -116,6 +115,7 @@ class start(object):
         
 class App(tk.Tk):
     def __init__(self):
+        self.dados = []
         super().__init__()
         self.title('Whatzapp Bot')
         self.geometry("500x500")
@@ -124,15 +124,89 @@ class App(tk.Tk):
         tk.Button(self, text='Empresas',height= 3, width=10, command=lambda: self.comecar(Empresas()),font=tkFont.Font(family='Helvetica', size=10, weight='bold')).place(x=70, y=330)
         tk.Button(self, text='Socios',height= 3, width=10, command=lambda:self.comecar(Socios()),font=tkFont.Font(family='Helvetica', size=10, weight='bold')).place(x=350, y=330)
         tk.Button(self, text='Estabelecimentos',height= 4, width=14, command=lambda:self.comecar(Establecimentos()),font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=200, y=325) 
+    
+    def GetDados(self,children,campos,var):
+        dado={}
+        for i in range(len(campos)):
+            dado[campos[i]] = children[i].get()
+            children[i].delete(0, tk.END)
+        
+        dado["nao"] = var.get() == 1
+        return dado
+    
+    def finalizar(self,campos,var):
+        self.dados.append(self.GetDados([self.children[i] for i in self.children if "entry" in i],campos,var))
+        self.apagar()
+        x = 50
+        y = 100
+        campos.append('nao')
+        for c,i in enumerate(campos):
+            
+            cell = Entry(self, width=10)
+            cell.grid(row=0, column=c)
+            cell.insert(0,f'{i}')
+        dados = []
+        for r,i in enumerate(self.dados):
+            row = {}
+            for (c,j) in enumerate(i.values()):
+                row[campos[c]] = j
+                cell = Entry(self, width=10)
+                cell.grid(row=r+1, column=c)
+                cell.insert(0,f'{j}')
+            dados.append(row)
+        print(r,c)
+        tk.Button(self, text='Novo dados?',height= 2, width=14,   
+                font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=0,y=r*20+40) 
+                
+            
+    def Dados(self,tipo):
+        
+        x = 50
+        y = 100
+        var = tk.IntVar()
+        tk.Checkbutton(self,text="Nao",variable=var).place(x=400,y=50)
+        for i in tipo.campos:
+            tk.Label(self, text=i.upper(),font=tkFont.Font(family='Helvetica', size=9, weight='bold')).place(x=x,y=y)
+            tk.Entry(self,width=20).place(x=x,y=y+20)
+            if x >= 250:
+                y+=100
+                x = 50
+            else:
+                x += 130
+        tk.Button(self, text='Novo dados?',height= 2, width=14, 
+                  command=lambda:self.dados.append(self.GetDados([self.children[i] for i in self.children if "entry" in i],tipo.campos,var)),
+                  font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=400, y=325) 
+        
+        tk.Button(self,text='finalizar',height=2,width=10,
+                  command=lambda:self.finalizar(tipo.campos,var),
+                  font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=300, y=325) 
+        
+            
+        
+              
+    
     def comecar(self,tipo):
-        list = self.winfo_children()
-        for l in list:
-            l.destroy()
+        self.apagar()
         
             
         tk.Label(self, text="Lendo Arquivo....",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=220)
         tk.Label(self, text="Isso pode demorar um pouco",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=240)  
         tipo.read()
+        self.apagar()
+        
+        tk.Label(self, text="Arquivo lido",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=200,y=0)
+        self.Dados(tipo)
+        
+        
+        
+            
+            
+        
+    def apagar(self):
+        list = self.winfo_children()
+        for l in list:
+            l.destroy()
+            
         
         
         
