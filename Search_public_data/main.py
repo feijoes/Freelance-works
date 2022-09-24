@@ -23,7 +23,9 @@ class Process(object):
     def read(self):
         self.info = self.readFile('ALL',self.campos)
     async def readFile(self, filename:str ,names:list[str]) -> list[dict[str:str]]:
+        
         return pd.read_csv(self.BasePath+'/EMPRESAS'+filename,sep=';',names=names, encoding='latin-1')
+    
     def filtrar(self,dados:list[dict]=[],nao:list[dict]=[]):
         print(dados,nao)
         listaFiltrada = []
