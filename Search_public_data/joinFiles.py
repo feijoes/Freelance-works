@@ -1,7 +1,7 @@
 import shutil
 from os import walk
 import sys
-import panda as pd
+import pandas as pd
 
 """ 
 Arquivo python para leer todos os arquivos em uma pasta e juntar todos em 1 arquivo
@@ -26,9 +26,18 @@ def joinfiles(BasePath,filename):
         for f in next(walk(BasePath), (None, None, []))[2]:
             with open(BasePath + f,'rb') as fd:
                 shutil.copyfileobj(fd, wfd)
-              
-def translateFile():
-  pd.read_csv("/files/atributos/F.K03200$Z.D20910",sep=';',names =["id","motivo"], 
-  encoding='latin-1')
+             
+def get():
+    ['naturezaJuridico',
+'qualificacao','capital','porte' ,'responsavel']
+    path = './files/atributos/'
+    for f in next(walk(path), (None, None, []))[2]:
+        info= pd.read_csv(path + f,sep=';',names =["num","atributo"], 
+        encoding='latin-1')
+        
 
-translateFile()
+def atributo(a,num):
+    return a.loc[a['num'] == num]['atributo'][1]
+
+
+get()

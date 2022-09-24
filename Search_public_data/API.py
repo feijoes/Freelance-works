@@ -3,8 +3,10 @@ from typing import Union
 from fastapi import FastAPI
 
 app = FastAPI()
+with open("./files/EMPRESAS/test") as f:
+    a = f.readlines()
 
-
-@app.post("/")
+@app.get("/")
 async def read_root():
+    print(a)
     return {"Hello": "World"}
