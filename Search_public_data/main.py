@@ -1,49 +1,42 @@
 
+from operator import index
 import time
 from pandas import DataFrame
-from re import  I, search
+from re import  search
 from os import walk
 import threading
 import pandas as pd
 import tkinter as tk
-from tkinter import Canvas, font as tkFont,Entry  
+import itertools
+
+from tkinter import font as tkFont,Entry
+
+
 class Process(object):
-    
+
     BasePath: str
     campos:list
     info: DataFrame
     def __init__(self,folder,names) -> None:
         self.BasePath = "./files/"+folder
         self.campos = names
-    
     def read(self):
         self.info = self.readFile('ALL',self.campos)
-    def readFile(self, filename:str ,names:list[str]) -> list[dict[str:str]]:
-
-        return pd.read_csv(self.BasePath + "/test",
-                           sep=';',names=names, 
-                           encoding='latin-1')
-        # with open(self.BasePath + filename,encoding="latin-1") as f:
-        #    return list(map(lambda x:x.strip().replace('"',"").split(';'),f.readlines(4)))
-            
-    def filtrar(self,dados:list[dict]=[],nao:dict={}):
+    async def readFile(self, filename:str ,names:list[str]) -> list[dict[str:str]]:
+        return pd.read_csv(self.BasePath+'/EMPRESAS'+filename,sep=';',names=names, encoding='latin-1')
+    def filtrar(self,dados:list[dict]=[],nao:list[dict]=[]):
+        print(dados,nao)
         listaFiltrada = []
-        newlista =[]
-        for index,i in enumerate(dados):
-           
+        for i in dados:
            for chave in i.keys():
-               for j in self.info[chave]:
-                   
+               for index,j in enumerate(self.info[chave]):  
                    if search(i[chave],str(j)):
-                       if chave in nao.keys():
-                           
-                           if not search(nao[chave],j):
+                       if chave in [*itertools.chain.from_iterable(nao)]:
+                            if not search(nao[chave],j):
                                listaFiltrada.append(index) 
                        else:
                            listaFiltrada.append(index)
-    
-        for i in listaFiltrada:
-            newlista.append(self.info.iloc[i])
+        newlista = [self.info.iloc[i] for i in listaFiltrada]
         return newlista
                         
     def getFileNames(self) -> list[str]:
@@ -134,11 +127,9 @@ class App(tk.Tk):
         dado["nao"] = var.get() == 1
         return dado
     
-    def finalizar(self,campos,var):
+    def finalizar(self,campos,var,tipo):
         self.dados.append(self.GetDados([self.children[i] for i in self.children if "entry" in i],campos,var))
         self.apagar()
-        x = 50
-        y = 100
         campos.append('nao')
         for c,i in enumerate(campos):
             
@@ -152,11 +143,19 @@ class App(tk.Tk):
                 row[campos[c]] = j
                 cell = Entry(self, width=10)
                 cell.grid(row=r+1, column=c)
-                cell.insert(0,f'{j}')
+                cell.insert(0,f'{j}' or "X")
             dados.append(row)
-        print(r,c)
         tk.Button(self, text='Novo dados?',height= 2, width=14,   
-                font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=0,y=r*20+40) 
+                font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=0,y=r*20+40)
+        tk.Button(self, text='Confirmar',height= 2, width=14, command=lambda:self.buscar(dados,tipo),   
+                font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=110,y=r*20+40) 
+    
+    def buscar(self,dados,tipo):
+       self.apagar()
+       tipo.filtrar([{key : val for key, val in sub.items() if key != "nao" and val} for sub in dados if not sub["nao"]],
+                          [{key : val for key, val in sub.items() if key != "nao" and val} for sub in dados if sub["nao"]])
+       
+        
                 
             
     def Dados(self,tipo):
@@ -178,7 +177,7 @@ class App(tk.Tk):
                   font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=400, y=325) 
         
         tk.Button(self,text='finalizar',height=2,width=10,
-                  command=lambda:self.finalizar(tipo.campos,var),
+                  command=lambda:self.finalizar(tipo.campos,var,tipo),
                   font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=300, y=325) 
         
             
@@ -190,28 +189,19 @@ class App(tk.Tk):
         
             
         tk.Label(self, text="Lendo Arquivo....",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=220)
-        tk.Label(self, text="Isso pode demorar um pouco",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=240)  
+        tk.Label(self, text="Isso pode demorar um pouco",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=150,y=240) 
+        
         tipo.read()
         self.apagar()
         
         tk.Label(self, text="Arquivo lido",font=tkFont.Font(family='Helvetica', size=8, weight='bold')).place(x=200,y=0)
         self.Dados(tipo)
         
-        
-        
-            
-            
-        
     def apagar(self):
         list = self.winfo_children()
         for l in list:
             l.destroy()
-            
-        
-        
-        
-
-                
+   
 t = time.process_time()      
 if __name__ == "__main__":
     app = App()
