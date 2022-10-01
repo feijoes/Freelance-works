@@ -139,10 +139,12 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1')
         for row in df.itertuples() :
+            if row.identificadorSocio:
+                identificadorSocio = ["PESSOA JURÍDICA", "PESSOA FÍSICA"," ESTRANGEIRO"][int(row.identificadorSocio)]
             try:
                 a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
                 ("{row.cnpjBasico}",
-                "{row.identificadorSocio}",
+                "{identificadorSocio}",
                 "{row.nomeSociorazaoSocial}",
                 "{row.cnpjcpfSocio}","{row.qualificacaoCodigoSocio}",
                 "{row.dataEntradaSociedade}","{row.dataSituacaoCadastral}",
@@ -169,7 +171,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             if row.situacaoCadastral <5:
                 a = situ[row.situacaoCadastral-1]
             else:a = situ[-1]
-            ma=['MATRIX','AFILIAL']
+            ma=['MATRIX','FILIAL']
             m=ma[row.matriz-1]
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             ("{row.cnpjBasico}",
@@ -201,6 +203,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
        
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1',)
+        
         for row in df.itertuples() :
         
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
@@ -210,9 +213,13 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             "{row.dataExclusao}",
             "{row.opcaoMei}",
             "{row.dataOpcaoMei}","{row.dataExclusaoMei}")"""
-            print(a)
             cursor.execute(a)
+
         print("terminado simples")
+conn.commit()
+cursor.close()
+conn.close()
+
 """     
 empresasArquivos = ["naturezaJuridico","qualificacao"]
     establecimentosArquivos = ["cnae","municipio","pais"]
