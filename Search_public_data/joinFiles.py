@@ -1,3 +1,4 @@
+import csv
 import shutil
 from os import walk
 import pandas as pd
@@ -10,7 +11,7 @@ como usar:
     python joinFiles.py NomeDaPasta LocalDoNovoArquivo+NomeArquivo
 exemplo:
     python joinFiles.py EMPRESAS todasEmpresas
-    
+     
 ira buscar os arquivos na pasta ./files/EMPRESAS/ e criara o arquivo em ./files/todasEmpresas
     
 A pasta com os arquivos tem que estar dentro de ./files/
@@ -20,9 +21,14 @@ depois ira traduzilos
 joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
 Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so mudar a linha abaixo
 """
-
-
-
+for saida,BasePath in {'EMPRESASALL':'EMPRESAS','SOCIOSALL':'SOCIOS','SIMPLESALL':'SIMPLES','ESTABELECIMENTOSALL':'ESTABELECIMENTOS'}.items():
+    with open(saida,'wb') as wfd:
+        for f in next(walk(__file__[:-12]+'files/'+BasePath+'/'), (None, None, []))[2]:
+            print
+            with open(__file__[:-12]+'files/'+BasePath +"/"+ f,'rb') as fd:
+                print(fd)
+                shutil.copyfileobj(fd, wfd)
+print('end arquivos')
 estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
@@ -79,37 +85,37 @@ cursor = conn.cursor()
 try:
     cursor.execute('''CREATE DATABASE public;''')
 except: pass
-#for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D20910.MUNICCSV",'naturezaJuridico':"F.K03200$Z.D20910.NATJUCSV",
-#                    "pais":"F.K03200$Z.D20910.PAISCSV","qualificacao":"F.K03200$Z.D20910.QUALSCSV"}.items():
-#    try:cursor.execute(f'''
-#		CREATE TABLE {chave} (
-#			codigo nvarchar(50) primary key,
-#			descricao nvarchar(50)
-#			);
-#               ''')
-#    except:pass
-#    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
-#        encoding='latin-1')
-#    for row in df.itertuples():
-#        try:
-#            a= f"""INSERT INTO public.{chave.lower()} (codigo, descricao) VALUES ("{row.codigo}","{row.descricao}")"""
-#            cursor.execute(a)
-#        except:
-#            print
-#
-#print("terminado atributos")
+for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D20910.MUNICCSV",'naturezaJuridico':"F.K03200$Z.D20910.NATJUCSV",
+                    "pais":"F.K03200$Z.D20910.PAISCSV","qualificacao":"F.K03200$Z.D20910.QUALSCSV"}.items():
+    try:cursor.execute(f'''
+		CREATE TABLE {chave} (
+			codigo nvarchar(50) primary key,
+			descricao nvarchar(50)
+			);
+               ''')
+    except:pass
+    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
+        encoding='latin-1',)
+    for row in df.itertuples():
+        try:
+            a= f"""INSERT INTO public.{chave.lower()} (codigo, descricao) VALUES ("{row.codigo}","{row.descricao}")"""
+            cursor.execute(a)
+        except:
+            pass
+
+print("terminado atributos")
 for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIMENTOS':["ESTABELECIMENTOSALL",estabelecimentoSQL,estabelecimento],'SOCIOS':["SOCIOSALL",sociosSQL,socios],"SIMPLES":["SIMPLESALL",simplesSQL,simples]}.items():
     if chave == 'EMPRESAS':
         cursor.execute('USE public')
-        cursor.execute(f"DROP TABLE {chave}")
+        cursor.execute(f"DROP TABLE IF EXISTS {chave}")
         cursor.execute(f'''
         	    CREATE TABLE {chave} (
                 {''.join(empresasSQL)}
         		);
                    ''')
         
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1')
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+            encoding='latin-1',quoting=3, error_bad_lines=False)
         for row in df.itertuples() :
                 por=['NÃO INFORMADO','MICRO EMPRESA','EMPRESA DE PEQUENO PORTE','DEMAIS']
                 if row.porte == 0:
@@ -136,8 +142,8 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                    ''')
             
      
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1')
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+            encoding='latin-1',quoting=3, error_bad_lines=False)
         for row in df.itertuples() :
             if row.identificadorSocio:
                 identificadorSocio = ["PESSOA JURÍDICA", "PESSOA FÍSICA"," ESTRANGEIRO"][int(row.identificadorSocio)]
@@ -164,8 +170,8 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
         
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',)
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+            encoding='latin-1',quoting=3, error_bad_lines=False)
         for row in df.itertuples():
             situ = ['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA']
             if row.situacaoCadastral <5:
@@ -201,8 +207,8 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
        
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',)
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+            encoding='latin-1',quoting=3, error_bad_lines=False)
         
         for row in df.itertuples() :
         

@@ -144,7 +144,7 @@ def app():
             a= cursor.fetchall()
             colunas =["cnpjBasico","nomeSocial","natureza_juridico_Empresa","empresa_qualificacao","capital","porte","responsavel","cnpjOrdem","cnpjDv","matriz","nomeFantasia","situacaoCadastral","dataSituacaoCadastral","nomeCidadeExterior","estabelecimento_Pais","dataAtividade","cnae_principal","tipoLogradouro","logradouro","numero","complemento","bairro","cep","uf","estabelecimento_municipio","ddd1","telefone1","dddFax" ,"fax","correioEletronico","situacaoEspecial","dataSituacaoEspecial","identificadorSocio","nomeSociorazaoSocial","cnpjcpfSocio","dataEntradaSociedade","dataSituacaoCadastral","nomeCidadeExterior","paisSocio","qualificacao_repre","nomeRepresentante","qualificacao_socio","faixaEtaria"]     
             frame= pd.DataFrame(a,columns=colunas)
-            frame.to_xml("test")
+            frame.to_csv("pesquisa")
             
                     
                
