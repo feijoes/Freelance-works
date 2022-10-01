@@ -23,7 +23,7 @@ Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so 
 
 
 
-estabelecimento = ['cnpjBasico',"cpnjOrdem","cnpjDv",
+estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
     "pais","dataAtividade","cnaePrincipal",
@@ -35,9 +35,9 @@ estabelecimento = ['cnpjBasico',"cpnjOrdem","cnpjDv",
     "correioEletronico","situacaoEspecial","dataSituacaoEspecial" ]
 estabelecimentoSQL = ["cnpjBasico nvarchar(200) primary key,"]
 
-for i in estabelecimentoSQL[1:-1]:
+for i in estabelecimento[1:-1]:
     estabelecimentoSQL.append(f"{i} nvarchar(200),")
-estabelecimentoSQL.append("dataSituacaoEspecial nvarchar")
+estabelecimentoSQL.append("dataSituacaoEspecial nvarchar(200)")
 
 empresas =['cnpjBasico' ,'nomeSocial' , 'naturezaJuridico',
     'qualificacaoCodigo','capital','porte' ,'responsavel']
@@ -49,23 +49,23 @@ for i in empresas[1:-1]:
 empresasSQL.append("responsavel nvarchar(200)")
 
 socios = ['cnpjBasico',"identificadorSocio","nomeSociorazaoSocial",
-    "cnpjcpfSocio","qualificacaoCodigo" ,'dataEntradaSociedade',
+    "cnpjcpfSocio","qualificacaoCodigoSocio" ,'dataEntradaSociedade',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
-    "pais","represetante","nomeRepresentante",
+    "paisSocio","represetante","nomeRepresentante",
     'qualificacoesRepresentante','faixaEtaria']
 
 sociosSQL = ["cnpjBasico nvarchar(200) primary key,"]
 
 for i in socios[1:-1]:
     sociosSQL.append(f"{i} varchar(200),")
-sociosSQL.append("faixaEtaria varchar")
+sociosSQL.append("faixaEtaria varchar(200)")
 
 simples = ["cnpjBasico","opcaoSimples","dataOpcao","dataExclusao","opcaoMei","dataOpcaoMei","dataExclusaoMei"]
 simplesSQL = ["cnpjBasico nvarchar(200) primary key,"]
 
 for i in simples[1:-1]:
     simplesSQL.append(f"{i} varchar(200),")
-simplesSQL.append("dataExclusaoMei varchar")
+simplesSQL.append("dataExclusaoMei varchar(200)")
 
         
 
@@ -76,33 +76,32 @@ conn = mysql.connector.connect(host='localhost',
                                          password='225236')
 print("feita conecao")
 cursor = conn.cursor()
-for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D20910.MUNICCSV",'naturezaJuridico':"F.K03200$Z.D20910.NATJUCSV",
-                    "pais":"F.K03200$Z.D20910.PAISCSV","qualificacao":"F.K03200$Z.D20910.QUALSCSV"}.items():
-    try:cursor.execute(f'''
-		CREATE TABLE {chave} (
-			codigo nvarchar(50) primary key,
-			descricao nvarchar(50)
-			);
-               ''')
-    except:pass
-    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
-        encoding='latin-1')
-    for row in df.itertuples():
-        try:
-            a= f"""INSERT INTO public.{chave.lower()} (codigo, descricao) VALUES ("{row.codigo}","{row.descricao}")"""
-            cursor.execute(a)
-        except:
-            print
-
-print("terminado atributos")
+try:
+    cursor.execute('''CREATE DATABASE public;''')
+except: pass
+#for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D20910.MUNICCSV",'naturezaJuridico':"F.K03200$Z.D20910.NATJUCSV",
+#                    "pais":"F.K03200$Z.D20910.PAISCSV","qualificacao":"F.K03200$Z.D20910.QUALSCSV"}.items():
+#    try:cursor.execute(f'''
+#		CREATE TABLE {chave} (
+#			codigo nvarchar(50) primary key,
+#			descricao nvarchar(50)
+#			);
+#               ''')
+#    except:pass
+#    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
+#        encoding='latin-1')
+#    for row in df.itertuples():
+#        try:
+#            a= f"""INSERT INTO public.{chave.lower()} (codigo, descricao) VALUES ("{row.codigo}","{row.descricao}")"""
+#            cursor.execute(a)
+#        except:
+#            print
+#
+#print("terminado atributos")
 for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIMENTOS':["ESTABELECIMENTOSALL",estabelecimentoSQL,estabelecimento],'SOCIOS':["SOCIOSALL",sociosSQL,socios],"SIMPLES":["SIMPLESALL",simplesSQL,simples]}.items():
     if chave == 'EMPRESAS':
         cursor.execute('USE public')
-        try:
-            cursor.execute(f"DROP TABLE {chave}")
-        except:
-            pass
-        
+        cursor.execute(f"DROP TABLE {chave}")
         cursor.execute(f'''
         	    CREATE TABLE {chave} (
                 {''.join(empresasSQL)}
@@ -111,69 +110,74 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
         
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1')
-        print(df)
         for row in df.itertuples() :
-                a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES ("{row.cnpjBasico}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{row.porte}","{row.responsavel}")"""
+                por=['NÃO INFORMADO','MICRO EMPRESA','EMPRESA DE PEQUENO PORTE','DEMAIS']
+                if row.porte == 0:
+                    c=por[0]
+                if row.porte == 1:
+                    c=por[1]
+                if row.porte == 3:
+                    c=por[2]
+                if row.porte == 5:
+                    c=por[3]
+                a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
+                ("{row.cnpjBasico}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{c}","{row.responsavel}")"""
                 cursor.execute(a)
                 
-        print("terminado atributos")
+        print("terminado empresas")
     if chave == 'SOCIOS':
         cursor.execute('USE public')
-        try:
-            cursor.execute(f"DROP TABLE {chave} ")
-        except:
-            pass
-        try:
-            cursor.execute(f'''
+        cursor.execute(f"DROP TABLE IF EXISTS {chave} ")
+        cursor.execute(f'''
         	    CREATE TABLE {chave} (
-                {''.join(empresasSQL)}
+                {''.join(valor[1])}
         		)
                 
                    ''')
             
-        except:
-            pass
+     
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1')
-        print(df)
         for row in df.itertuples() :
             try:
                 a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
                 ("{row.cnpjBasico}",
                 "{row.identificadorSocio}",
                 "{row.nomeSociorazaoSocial}",
-                "{row.cnpjcpfSocio}","{row.qualificacaoCodigo}",
+                "{row.cnpjcpfSocio}","{row.qualificacaoCodigoSocio}",
                 "{row.dataEntradaSociedade}","{row.dataSituacaoCadastral}",
-                "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{row.represetante}","{row.nomeRepresentante}","{row.qualificacoesRepresentante}","{row.faixaEtaria}")"""
+                "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.paisSocio}","{row.represetante}","{row.nomeRepresentante}","{row.qualificacoesRepresentante}","{row.faixaEtaria}")"""
                 
                 cursor.execute(a)
             except:
                 pass
-        print("terminado atributos")
+        print("terminado socios")
     if chave == 'ESTABELECIMENTOS':
         cursor.execute('USE public')
-        try:
-            cursor.execute(f"DROP TABLE {chave}")
-        except:
-            pass
-        try:
-            cursor.execute(f'''
+        cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()}")
+        
+        cursor.execute(f'''
          	    CREATE TABLE {chave} (
-                {''.join(empresasSQL)}
+                {''.join(valor[1])}
          		);
                    ''')
-        except:
-            pass
+        
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1',)
-        for row in df.itertuples() :
+        for row in df.itertuples():
+            situ = ['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA']
+            if row.situacaoCadastral <5:
+                a = situ[row.situacaoCadastral-1]
+            else:a = situ[-1]
+            ma=['MATRIX','AFILIAL']
+            m=ma[row.matriz-1]
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             ("{row.cnpjBasico}",
-            "{row.cpnjOrdem}",
+            "{row.cnpjOrdem}",
             "{row.cnpjDv}",
-            "{row.matriz}",
+            "{m}",
             "{row.nomeFantasia}",
-            "{row.situacaoCadastral}","{row.dataSituacaoCadastral}",
+            "{a}","{row.dataSituacaoCadastral}",
             "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{row.dataAtividade}",
             "{row.cnaePrincipal}","{row.cnaeSecundario}","{row.tipoLogradouro}","{row.logradouro}",
             "{row.numero}",
@@ -186,22 +190,19 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             print("terminado estabelecimentos")
     if chave == "SIMPLES":
         cursor.execute('USE public')
-        try:
-            cursor.execute(f"DROP TABLE {chave};")
-        except:
-            pass
-        try:
-            cursor.execute(f'''
+        cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()};")
+        
+        
+        cursor.execute(f'''
          	    CREATE TABLE {chave} (
-                {''.join(simplesSQL)}
+                {''.join(valor[1])}
          		);
                    ''')
-        except:
-            pass
+       
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1',)
-        print(df)
         for row in df.itertuples() :
+        
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             ("{row.cnpjBasico}",
             "{row.opcaoSimples}",
@@ -209,9 +210,9 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             "{row.dataExclusao}",
             "{row.opcaoMei}",
             "{row.dataOpcaoMei}","{row.dataExclusaoMei}")"""
-    
+            print(a)
             cursor.execute(a)
-        print("terminado atributos")
+        print("terminado simples")
 """     
 empresasArquivos = ["naturezaJuridico","qualificacao"]
     establecimentosArquivos = ["cnae","municipio","pais"]

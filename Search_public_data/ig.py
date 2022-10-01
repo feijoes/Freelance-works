@@ -1,7 +1,13 @@
 import PySimpleGUI as sg
-
+import pandas as pd
+import mysql.connector
 def app():
-
+    conn = mysql.connector.connect(host='localhost',
+                                         database='public',
+                                         user='root',
+                                         password='225236')
+    print("feita conecao")
+    cursor = conn.cursor()
     sg.theme('Dark Grey 13')
     
     # INPUTS:
@@ -13,18 +19,17 @@ def app():
     # bairro - bairro            # ate - Capital social ate
 
     layout = [
-        [sg.Text("Razão social ou nome fantasia:"), sg.Input(key="rs"), sg.Text("Atividade Principal (CNAE):"), sg.Input(key="cnae.descricao")],
-        [sg.Checkbox("Incluir Atividade Secundária", key="ias")],
-        [sg.Text("Natureza Jurídica: "), sg.Input(key="naturezajuridico.descricao")],
+        [sg.Text("Razão social ou nome fantasia:"), sg.Input(key="estabelecimentos.nomeFantasia"), sg.Text("Atividade Principal (CNAE):"), sg.Input(key="cnae_principal.descricao")],
+        [sg.Text("Natureza Jurídica: "), sg.Input(key="natureza_juridico_Empresa.descricao")],
         [sg.Text("Situação cadastral: "), sg.Combo(['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA'])],
-        [sg.Text("Estado (UF)"), sg.Input(key="uf", size=(3, 1)), sg.Text("Municipio"), sg.Input(key="municipio.descrisao")],
-        [sg.Text("Bairro"), sg.Input(key="Bairro"), sg.Text("CEP"), sg.Input(key="CEP", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="DDD", size=(2,1))],
+        [sg.Text("Estado (UF)"), sg.Input(key="estabelecimentos.uf", size=(3, 1)), sg.Text("Municipio"), sg.Input(key="municipio.descricao")],
+        [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"), sg.Text("CEP"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
         [sg.Text("Data de abertura - A partir de"), sg.Input(key="socio.dataOpcao"), sg.Text("Data de abertura - Até"), sg.Input(key="dataate")],
-        [sg.Text("Capital Social - A partir de"), sg.Input(key="apartir"), sg.Text("Capital Social - Ate"), sg.Input(key="ate")],
-        [sg.Checkbox("Somente mei", key="sm"), sg.Checkbox("Excluir MEI", key="em"), sg.Checkbox("Somente Matriz", key="sma"), sg.Checkbox("Somente fixo", key="sf")],
-        [sg.Checkbox("Somente filial", key="sfl"), sg.Checkbox("Com contato de telefone", key="st"), sg.Checkbox("Somente celular", key="sc")],
-        [sg.Checkbox("Com e-mail", key="ce")],
-        [sg.Button("PESQUISAR", size=(20, 2)), sg.Button("BUSCA SIMPLIFICADA", size=(20, 2))],
+        [sg.Text("Capital Social - A partir de"), sg.Input(key="empresas.capital"), sg.Text("Capital Social - Ate"), sg.Input(key="ate")],
+        [sg.Checkbox("Somente mei", key="sm"), sg.Checkbox("Excluir MEI", key="em"), sg.Checkbox("Somente Matriz", key="simples.opcaoMei"), sg.Checkbox("Somente fixo", key="sf")],
+        [sg.Checkbox("Somente filial", key="sfl"), sg.Checkbox("Com contato de telefone", key="estabelecimentos.telefone1"), sg.Checkbox("Somente celular", key="sc")],
+        [sg.Checkbox("Com e-mail", key="estabelecimentos.correioEletronico")],
+        [sg.Button("PESQUISAR", size=(20, 2))],
         [sg.Text("", key="response")]
         ]
 
@@ -38,20 +43,81 @@ def app():
     while True:
         evento, valores = window.read()
         if evento == sg.WIN_CLOSED:
-            sg.popup_yes_no("teste")
+            break
         elif evento == "PESQUISAR":
             # pegando todos os dados:
-            razao, atividade, natural, estado, municipio, bairro, cep, ddd, datade, dataate, apartir, ate = valores["rs"], valores['CNAE'], valores['NJ'], valores['UF'], valores['mn'], valores['Bairro'], valores['CEP'], valores['DDD'], valores['datade'], valores['dataate'], valores['apartir'], valores['ate']
-            print(razao, atividade, natural, estado, municipio, bairro, cep, ddd, datade, dataate, apartir, ate)
-            # transformando todos os valores em apenas uma string
-            all_valores = valores["ias"], valores["sm"], valores["em"], valores["sma"], valores["sf"], valores["sfl"], valores["st"], valores["sc"], valores["ce"]
+            example = """
+            select empresas.cnpjBasico
+            ,public.empresas.nomeSocial
+            ,public.naturezajuridico.descricao natureza_juridico_Empresa
+            ,qualificacao_Empresa.descricao empresa_qualificacao
+            ,empresas.capital
+            ,empresas.porte,
+             public.empresas.responsavel
+            ,public.estabelecimentos.cnpjOrdem
+            ,public.estabelecimentos.cnpjDv, 
+            public.estabelecimentos.matriz,
+             public.estabelecimentos.nomeFantasia, 
+             public.estabelecimentos.situacaoCadastral
+             ,public.estabelecimentos.dataSituacaoCadastral
+             , public.estabelecimentos.nomeCidadeExterior
+             , estabelecimento_pais.descricao estabelecimento_Pais
+             , public.estabelecimentos.dataAtividade
+             , cnae_principal.descricao cnae_principal
+             , public.estabelecimentos.tipoLogradouro
+             , public.estabelecimentos.logradouro
+             , public.estabelecimentos.numero
+             ,public.estabelecimentos.complemento
+             ,public.estabelecimentos.bairro
+             ,public.estabelecimentos.cep
+             , public.estabelecimentos.uf
+             ,estabelecimento_municipio.descricao estabelecimento_municipio
+             , public.estabelecimentos.ddd1
+             ,public.estabelecimentos.telefone1
+             , public.estabelecimentos.dddFax 
+             , public.estabelecimentos.fax
+             , public.estabelecimentos.correioEletronico
+             , public.estabelecimentos.situacaoEspecial,public.estabelecimentos.dataSituacaoEspecial,
+             socios.identificadorSocio,
+             public.socios.nomeSociorazaoSocial,
+             public.socios.cnpjcpfSocio,
+             public.socios.dataEntradaSociedade,
+             public.socios.dataSituacaoCadastral,
+             public.socios.nomeCidadeExterior
+             ,socios.paisSocio
+             ,qualificacao_repre.descricao qualificacao_repre,
+             public.socios.nomeRepresentante,
+             qualificacao_socio.descricao qualificacao_socio
+             ,public.socios.faixaEtaria 
+             from empresas 
+             left outer join simples on empresas.cnpjBasico = simples.cnpjBasico
+             inner join socios on socios.cnpjBasico = empresas.cnpjBasico
+             inner join estabelecimentos on empresas.cnpjBasico = estabelecimentos.cnpjBasico
+             left outer join pais estabelecimento_pais on estabelecimentos.pais =estabelecimento_pais.codigo
+             left outer join municipio estabelecimento_municipio on estabelecimentos.municipio= estabelecimento_municipio.codigo
+             left outer join naturezajuridico on empresas.naturezaJuridico=naturezajuridico.codigo
+             left outer join qualificacao qualificacao_Empresa on empresas.qualificacaoCodigo=qualificacao_Empresa.codigo 
+             left outer join qualificacao qualificacao_socio on socios.qualificacaoCodigoSocio = qualificacao_socio.codigo
+             left outer join qualificacao qualificacao_repre on socios.qualificacoesRepresentante = qualificacao_repre.codigo
+             left outer join cnae  cnae_principal on estabelecimentos.cnaePrincipal  = cnae_principal.codigo
+             left outer join cnae  cnae_secundario on estabelecimentos.cnaeSecundario  = cnae_secundario.codigo
+             left outer join pais socios_Pais on socios.paisSocio = socios_Pais.codigo
+             where 
+             """
+            for chave,valor in valores.items():
+                num = 1
+                if num:
+                    num-=1
+                    if valor:
+                        example+= f'{chave} like "%{valor}%"'
+                else:
+                    if valor:
+                        example+= f' and {chave} like "%{valor}%"'
+            cursor.execute(example)
+            a= cursor.fetchall()
+            print(a)
             
-            """
-            c = {f'pais.descricao': '{estado}', 'municipio.descricao': '{municipio}'}
-            dados = 'select cnpjBasico, porte,nomeSocial, naturezajuridico.descricao, qualificacao.descricao, capital, porte, responsavel iner join'
-
-            for chave, valor in c:
-                a += f'where {chave} ="{valor.upper()}" and'
-                a[:-3]
-            """
+                    
+                    
+                                
 app()
