@@ -21,14 +21,13 @@ depois ira traduzilos
 joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
 Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so mudar a linha abaixo
 """
-for saida,BasePath in {'EMPRESASALL':'EMPRESAS','SOCIOSALL':'SOCIOS','SIMPLESALL':'SIMPLES','ESTABELECIMENTOSALL':'ESTABELECIMENTOS'}.items():
-    with open(saida,'wb') as wfd:
-        for f in next(walk(__file__[:-12]+'files/'+BasePath+'/'), (None, None, []))[2]:
-            print
-            with open(__file__[:-12]+'files/'+BasePath +"/"+ f,'rb') as fd:
-                print(fd)
-                shutil.copyfileobj(fd, wfd)
-print('end arquivos')
+
+
+with open('output_file.txt','wb') as wfd:
+    for f in ['seg1.txt','seg2.txt','seg3.txt']:
+        with open(f,'rb') as fd:
+            shutil.copyfileobj(fd, wfd)
+            
 estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
@@ -74,7 +73,9 @@ for i in simples[1:-1]:
 simplesSQL.append("dataExclusaoMei varchar(200)")
 
         
-
+with open('config.txt','r') as f:
+    f.
+    
 print("terminado parte1")
 conn = mysql.connector.connect(host='localhost',
                                          database='public',
@@ -82,6 +83,7 @@ conn = mysql.connector.connect(host='localhost',
                                          password='225236')
 print("feita conecao")
 cursor = conn.cursor()
+
 try:
     cursor.execute('''CREATE DATABASE public;''')
 except: pass
@@ -115,10 +117,11 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                    ''')
         
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',quoting=3, error_bad_lines=False)
+            encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples() :
                 por=['NÃO INFORMADO','MICRO EMPRESA','EMPRESA DE PEQUENO PORTE','DEMAIS']
-                if row.porte == 0:
+                
+                if row.porte== 0:
                     c=por[0]
                 if row.porte == 1:
                     c=por[1]
@@ -127,9 +130,10 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 if row.porte == 5:
                     c=por[3]
                 a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
-                ("{row.cnpjBasico}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{c}","{row.responsavel}")"""
-                cursor.execute(a)
+                ("{row.cnpjBasico}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{c}","{row.responsavel}");"""
                 
+                cursor.execute(a)
+                conn.commit()
         print("terminado empresas")
     if chave == 'SOCIOS':
         cursor.execute('USE public')
@@ -141,12 +145,13 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 
                    ''')
             
-     
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',quoting=3, error_bad_lines=False)
+            encoding='latin-1', error_bad_lines=False)
+        print(df)
         for row in df.itertuples() :
             if row.identificadorSocio:
-                identificadorSocio = ["PESSOA JURÍDICA", "PESSOA FÍSICA"," ESTRANGEIRO"][int(row.identificadorSocio)]
+                
+                identificadorSocio = ["PESSOA JURÍDICA", "PESSOA FÍSICA"," ESTRANGEIRO"][int(row.identificadorSocio)-1]
             try:
                 a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
                 ("{row.cnpjBasico}",
@@ -160,72 +165,77 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             except:
                 pass
         print("terminado socios")
+        conn.commit()
     if chave == 'ESTABELECIMENTOS':
         cursor.execute('USE public')
         cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()}")
+        conn.commit()
         
         cursor.execute(f'''
          	    CREATE TABLE {chave} (
                 {''.join(valor[1])}
          		);
                    ''')
-        
+        conn.commit()
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',quoting=3, error_bad_lines=False)
+            encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples():
             situ = ['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA']
-            if row.situacaoCadastral <5:
-                a = situ[row.situacaoCadastral-1]
+            if int(row.situacaoCadastral) <5:
+                a = situ[int(row.situacaoCadastral)-1]
             else:a = situ[-1]
             ma=['MATRIX','FILIAL']
-            m=ma[row.matriz-1]
+    
+            m=ma[int(row.matriz)-1]
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
-            ("{row.cnpjBasico}",
-            "{row.cnpjOrdem}",
-            "{row.cnpjDv}",
-            "{m}",
-            "{row.nomeFantasia}",
-            "{a}","{row.dataSituacaoCadastral}",
-            "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{row.dataAtividade}",
-            "{row.cnaePrincipal}","{row.cnaeSecundario}","{row.tipoLogradouro}","{row.logradouro}",
-            "{row.numero}",
-            "{row.complemento}",
-            "{row.bairro}","{row.cep}","{row.uf}","{row.municipio}","{row.ddd1}","{row.telefone1}","{row.ddd2}","{row.telefone2}","{row.dddFax}",
-            "{row.fax}","{row.correioEletronico}","{row.situacaoEspecial}","{row.dataSituacaoEspecial}")"""
+            (
+            "{row.cnpjBasico}",
+           "{row.cnpjOrdem}",
+           "{row.cnpjDv}",
+           "{m}",
+           "{row.nomeFantasia}",
+           "{a}","{row.dataSituacaoCadastral}",
+           "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{row.dataAtividade}",
+           "{row.cnaePrincipal}","{row.cnaeSecundario}","{row.tipoLogradouro}","{row.logradouro}",
+           "{row.numero}",
+           "{row.complemento}",
+           "{row.bairro}","{row.cep}","{row.uf}","{row.municipio}","{row.ddd1}","{row.telefone1}","{row.ddd2}","{row.telefone2}","{row.dddFax}","
+           {row.fax}","{row.correioEletronico}","{row.situacaoEspecial}","{row.dataSituacaoEspecial}")"""
 
             cursor.execute(a)
-
+            conn.commit()
             print("terminado estabelecimentos")
     if chave == "SIMPLES":
         cursor.execute('USE public')
+        conn.commit()
         cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()};")
-        
+        conn.commit()
         
         cursor.execute(f'''
          	    CREATE TABLE {chave} (
                 {''.join(valor[1])}
          		);
                    ''')
-       
+        conn.commit()
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1',quoting=3, error_bad_lines=False)
+            encoding='latin-1', error_bad_lines=False)
         
         for row in df.itertuples() :
         
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
-            ("{row.cnpjBasico}",
+            (
+            "{row.cnpjBasico}",
             "{row.opcaoSimples}",
             "{row.dataOpcao}",
             "{row.dataExclusao}",
             "{row.opcaoMei}",
             "{row.dataOpcaoMei}","{row.dataExclusaoMei}")"""
             cursor.execute(a)
-
+            conn.commit()
         print("terminado simples")
-conn.commit()
-cursor.close()
-conn.close()
 
+conn.close()
+cursor.close()
 """     
 empresasArquivos = ["naturezaJuridico","qualificacao"]
     establecimentosArquivos = ["cnae","municipio","pais"]

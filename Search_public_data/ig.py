@@ -73,10 +73,10 @@ def app():
              ,estabelecimento_municipio.descricao estabelecimento_municipio
              , public.estabelecimentos.ddd1
              ,public.estabelecimentos.telefone1
-             , public.estabelecimentos.dddFax 
-             , public.estabelecimentos.fax
-             , public.estabelecimentos.correioEletronico
-             , public.estabelecimentos.situacaoEspecial,public.estabelecimentos.dataSituacaoEspecial,
+             ,public.estabelecimentos.dddFax 
+             ,public.estabelecimentos.fax
+             ,public.estabelecimentos.correioEletronico
+             ,public.estabelecimentos.situacaoEspecial,public.estabelecimentos.dataSituacaoEspecial,
              socios.identificadorSocio,
              public.socios.nomeSociorazaoSocial,
              public.socios.cnpjcpfSocio,
@@ -100,8 +100,7 @@ def app():
              left outer join qualificacao qualificacao_repre on socios.qualificacoesRepresentante = qualificacao_repre.codigo
              left outer join cnae  cnae_principal on estabelecimentos.cnaePrincipal  = cnae_principal.codigo
              left outer join cnae  cnae_secundario on estabelecimentos.cnaeSecundario  = cnae_secundario.codigo
-             left outer join pais socios_Pais on socios.paisSocio = socios_Pais.codigo
-             
+             left outer join pais socios_Pais on socios.paisSocio = socios_Pais.codigo where 
              """
             num = 1
             for chave,valor in valores.items():
@@ -121,7 +120,7 @@ def app():
                             chave = chave[:-2]
                             valor = "N"
                         num-=1
-                        example+= f'where {chave} like "%{valor}%"'
+                        example+= f"where {chave} like '%{valor}%'"
                 else:
                     if valor:
                         print(chave,valor)
@@ -142,9 +141,10 @@ def app():
                         else:example+= f' and {chave} like "%{valor}%"'
             cursor.execute(example)
             a= cursor.fetchall()
+            print(a)
             colunas =["cnpjBasico","nomeSocial","natureza_juridico_Empresa","empresa_qualificacao","capital","porte","responsavel","cnpjOrdem","cnpjDv","matriz","nomeFantasia","situacaoCadastral","dataSituacaoCadastral","nomeCidadeExterior","estabelecimento_Pais","dataAtividade","cnae_principal","tipoLogradouro","logradouro","numero","complemento","bairro","cep","uf","estabelecimento_municipio","ddd1","telefone1","dddFax" ,"fax","correioEletronico","situacaoEspecial","dataSituacaoEspecial","identificadorSocio","nomeSociorazaoSocial","cnpjcpfSocio","dataEntradaSociedade","dataSituacaoCadastral","nomeCidadeExterior","paisSocio","qualificacao_repre","nomeRepresentante","qualificacao_socio","faixaEtaria"]     
             frame= pd.DataFrame(a,columns=colunas)
-            frame.to_csv("pesquisa")
+            frame.to_csv("pesquisa.csv")
             
                     
                
