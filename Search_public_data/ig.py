@@ -25,10 +25,10 @@ def app():
         [sg.Text("Situação cadastral: "), sg.Combo(['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA'],key="estabelecimentos.situacaoCadastral")],
         [sg.Text("Estado (UF)"), sg.Input(key="estabelecimentos.uf", size=(3, 1)), sg.Text("Municipio"), sg.Input(key="estabelecimento_municipio.descricao")],
         [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"),sg.Text("Rua"), sg.Input(key="estabelecimentos.logradouro"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
-        [sg.Text("Data de abertura - A partir de"), sg.Input(key="socio.dataOpcao"), sg.Text("Data de abertura - Até"), sg.Input(key="simples.dataOpcao")],
-        [sg.Text("Capital Social - A partir de"), sg.Input(key="empresas.capital"), sg.Text("Capital Social - Ate"), sg.Input(key="empresas.capital")],
-        [sg.Checkbox("Somente mei", key="simples.opcaoMei 3"), sg.Checkbox("Excluir MEI", key="simples.opcaoMei 4"), sg.Checkbox("Somente Matriz", key="estabelecimentos.matriz 0"), sg.Checkbox("Somente fixo", key="sf")],
-        [sg.Checkbox("Somente filial", key="estabelecimentos.matriz 1"), sg.Checkbox("Com contato de telefone", key="estabelecimentos.telefone1"), sg.Checkbox("Somente celular", key="sc")],
+        [sg.Text("Data de abertura - A partir de"), sg.Input(key="ab"), sg.Text("Data de abertura - Até"), sg.Input(key="abt")],
+        [sg.Text("Capital Social - A partir de"), sg.Input(key="emCDE"), sg.Text("Capital Social - Ate"), sg.Input(key="emCATE")],
+        [sg.Checkbox("Somente mei", key="simples.opcaoMei 3"), sg.Checkbox("Excluir MEI", key="simples.opcaoMei 4"), sg.Checkbox("Somente Matriz", key="estabelecimentos.matriz 0")],
+        [sg.Checkbox("Somente filial", key="estabelecimentos.matriz 1"), sg.Checkbox("Com contato de telefone", key="estabelecimentos.telefone1"), sg.Checkbox("Somente fixo", key="sf"), sg.Checkbox("Somente celular", key="sc")],
         [sg.Button('Exportar para xml "pesquisa.xml"', size=(20, 2)),sg.Button('Exportar para csv "pesquisa.csv"', size=(20, 2))],
         [sg.Text("", key="response")]]
 
@@ -104,14 +104,37 @@ def app():
              left outer join pais socios_Pais on socios.paisSocio = socios_Pais.codigo
              """
             num = 1
+            aber= []
+            capitald = []
             for chave,valor in valores.items():
                 
                 if num:
                     if valor:
+                        if chave =="emCDE" or "emCATE":
+                            capitald.append(valor)
+                            continue
+                        if len(capitald) ==2:
+                            example+= f'where empresas.capital >= "{capitald[0]}" and empresas.capital <= "{capitald[1]}" '
+                            continue
+                        if chave == 'ab':
+                            aber.append(valor)
+                            continue
+                        if chave =='abt':
+                            num-=1
+                            aber.append(valor)
+                            
+                        if chave =='sf':
+                            num-=1
+                            example += 'where estabelecimentos.telefone1 not like "9%" or  estabelecimentos.telefone1 not like "8%"  '
+                            continue
+                        if chave == 'sc':
+                            num-=1
+                            example += 'where estabelecimentos.telefone1  like "9%" or  estabelecimentos.telefone1  like "8%"  '
+                            continue
                         if chave =='estabelecimentos.telefone1':
                             num-=1
                             valor='nan'
-                            print(chave)
+                           
                             example+= f'where {chave} like "%{valor}%"'
                             continue
                         if chave[-1] == "0": 
@@ -127,10 +150,29 @@ def app():
                             chave = chave[:-2]
                             valor = "N"
                         num-=1
+                        if len(aber) ==2:
+                            for n,i in enumerate(aber):
+                             
+                                dia = aber[n][:2]
+                                mes= aber[n][3:5]
+                                ano = aber[n][6:11]
+                                aber[n] = f'{ano}-{mes}-{dia}'
+                                 
+                                                 
+                            example+= f'where estabelecimentos.dataAtividade >= "{aber[0]}" and estabelecimentos.dataAtividade <= "{aber[1]}" '
+                            continue
                         example+= f'where {chave} like "%{valor}%"'
                 else:
                     if valor:
-                        print(chave,valor)
+                        if chave =='sf':
+                            num-=1
+                            example += ' and estabelecimentos.telefone1 not like "9%" or  estabelecimentos.telefone1 not like "8%"  '
+                            continue
+                        if chave == 'sc':
+                            num-=1
+                            example += ' and estabelecimentos.telefone1  like "9%" or  estabelecimentos.telefone1  like "8%"  '
+                            continue
+                        
                         if chave[-1] == "0": 
                             chave = chave[:-2]
                             valor = "MATRIX"
@@ -143,16 +185,16 @@ def app():
                         if chave[-1] == "4":
                             chave = chave[:-2]
                             valor = "N"
-                        print(chave,valor)
+                        
                         if valor == True:example+= f' and {chave} like "%{chave}%"'
                         else:example+= f' and {chave} like "%{valor}%"'
-            print(example)
+
             cursor.execute(example)
             a= cursor.fetchall()
             
             colunas =["Cnpj","nomeSocial","natureza_juridico_Empresa","empresa_qualificacao","capital","porte","responsavel","matriz","nomeFantasia","situacaoCadastral","dataSituacaoCadastral","nomeCidadeExterior","estabelecimento_Pais","dataAtividade","cnae_principal","cnae_secundario","tipoLogradouro","logradouro","numero","complemento","bairro","cep","uf","estabelecimento_municipio","ddd1","telefone1","dddFax" ,"fax","correioEletronico","situacaoEspecial","dataSituacaoEspecial","identificadorSocio","nomeSociorazaoSocial","cnpjcpfSocio","dataEntradaSociedade","dataSituacaoCadastral","nomeCidadeExterior","paisSocio","qualificacao_repre","nomeRepresentante","qualificacao_socio","faixaEtaria"]     
             frame= pd.DataFrame(a,columns=colunas)
-            print(frame)
+        
             frame.to_xml("pesquisa.xml")
         elif evento == 'Exportar para csv "pesquisa.csv"':
             # pegando todos os dados:
@@ -219,6 +261,14 @@ def app():
                 
                 if num:
                     if valor:
+                        if chave =='sf':
+                            num-=1
+                            example += ' where estabelecimentos.telefone1 not like "9%" or  estabelecimentos.telefone1 not like "8%"  '
+                            continue
+                        if chave == 'sc':
+                            num-=1
+                            example += ' where estabelecimentos.telefone1  like "9%" or  estabelecimentos.telefone1  like "8%"  '
+                            continue
                         if chave =='estabelecimentos.telefone1':
                             num-=1
                             valor='nan'
@@ -241,7 +291,14 @@ def app():
                         example+= f'where {chave} like "%{valor}%"'
                 else:
                     if valor:
-                        print(chave,valor)
+                        if chave =='sf':
+                            num-=1
+                            example += ' and estabelecimentos.telefone1 not like "9%" or  estabelecimentos.telefone1 not like "8%"  '
+                            continue
+                        if chave == 'sc':
+                            num-=1
+                            example += ' and estabelecimentos.telefone1  like "9%" or  estabelecimentos.telefone1  like "8%"  '
+                            continue
                         if chave[-1] == "0": 
                             chave = chave[:-2]
                             valor = "MATRIX"

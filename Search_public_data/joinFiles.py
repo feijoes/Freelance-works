@@ -17,16 +17,17 @@ ira buscar os arquivos na pasta ./files/EMPRESAS/ e criara o arquivo em ./files/
 A pasta com os arquivos tem que estar dentro de ./files/
 E o arquivo criado estara dentro de ./files/
 
+with open('output_file.txt','wb') as wfd:
+    for f in ['seg1.txt','seg2.txt','seg3.txt']:
+        with open(f,'rb') as fd:
+            shutil.copyfileobj(fd, wfd)
+
 depois ira traduzilos
 joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
 Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so mudar a linha abaixo
 """
 
 
-with open('output_file.txt','wb') as wfd:
-    for f in ['seg1.txt','seg2.txt','seg3.txt']:
-        with open(f,'rb') as fd:
-            shutil.copyfileobj(fd, wfd)
             
 estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
@@ -72,9 +73,7 @@ for i in simples[1:-1]:
     simplesSQL.append(f"{i} varchar(200),")
 simplesSQL.append("dataExclusaoMei varchar(200)")
 
-        
-with open('config.txt','r') as f:
-    f
+
     
 print("terminado parte1")
 conn = mysql.connector.connect(host='localhost',
@@ -147,18 +146,22 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
-        print(df)
         for row in df.itertuples() :
             if row.identificadorSocio:
                 
                 identificadorSocio = ["PESSOA JURÍDICA", "PESSOA FÍSICA"," ESTRANGEIRO"][int(row.identificadorSocio)-1]
+            if row.dataEntradaSociedade:
+                data = str(row.dataEntradaSociedade)
+ 
+                dataEntradaSociedade = f'{data[:4]}-{data[4:6]}-{"0"*(2-len(data[7:]))}{data[7:]}'
+                
             try:
                 a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
                 ("{row.cnpjBasico}",
                 "{identificadorSocio}",
                 "{row.nomeSociorazaoSocial}",
                 "{row.cnpjcpfSocio}","{row.qualificacaoCodigoSocio}",
-                "{row.dataEntradaSociedade}","{row.dataSituacaoCadastral}",
+                "{dataEntradaSociedade}","{row.dataSituacaoCadastral}",
                 "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.paisSocio}","{row.represetante}","{row.nomeRepresentante}","{row.qualificacoesRepresentante}","{row.faixaEtaria}")"""
                 
                 cursor.execute(a)
@@ -180,13 +183,39 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
         df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples():
-            situ = ['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA']
-            if int(row.situacaoCadastral) <5:
-                a = situ[int(row.situacaoCadastral)-1]
-            else:a = situ[-1]
-            ma=['MATRIX','FILIAL']
-    
-            m=ma[int(row.matriz)-1]
+            try:
+                situ = ['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA']
+                if int(row.situacaoCadastral) <5:
+                    a = situ[int(row.situacaoCadastral)-1]
+                else:a = situ[-1]
+            except: pass 
+            try:   
+                ma=['MATRIX','FILIAL']
+                m=ma[int(row.matriz)-1]
+            except: pass
+            data=str(row.dataAtividade)
+            ano =data[:4]
+            mes =data[4:6]
+            dia= data[7:]
+            inicio = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            
+            dataEspecial= row.dataSituacaoEspecial
+            
+            if len(str(row.dataSituacaoEspecial)) >4:
+                data=str(row.dataSituacaoEspecial)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dataEspecial = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+                
+            dataCadastral=row.dataSituacaoCadastral
+            if len(str(dataCadastral)) >4:
+                data=str(row.dataSituacaoCadastral)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dataEspecial = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             (
             "{row.cnpjBasico}",
@@ -195,12 +224,12 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
            "{m}",
            "{row.nomeFantasia}",
            "{a}","{row.dataSituacaoCadastral}",
-           "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{row.dataAtividade}",
+           "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{inicio}",
            "{row.cnaePrincipal}","{row.cnaeSecundario}","{row.tipoLogradouro}","{row.logradouro}",
            "{row.numero}",
            "{row.complemento}",
            "{row.bairro}","{row.cep}","{row.uf}","{row.municipio}","{row.ddd1}","{row.telefone1}","{row.ddd2}","{row.telefone2}","{row.dddFax}","
-           {row.fax}","{row.correioEletronico}","{row.situacaoEspecial}","{row.dataSituacaoEspecial}")"""
+           {row.fax}","{row.correioEletronico}","{row.situacaoEspecial}","{dataEspecial}")"""
 
             cursor.execute(a)
             conn.commit()
@@ -221,15 +250,47 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             encoding='latin-1', error_bad_lines=False)
         
         for row in df.itertuples() :
-        
+            dataOp= row.dataOpcao
+            
+            if len(str(row.dataOpcao)) >4:
+                data=str(row.dataOpcao)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dataOp = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            dataEx= row.dataExclusao
+            
+            if len(str(row.dataExclusao)) >4:
+                data=str(row.dataExclusao)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dataEx = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+                
+            dataExMEI= row.dataExclusaoMei
+
+            if len(str(row.dataExclusaoMei)) >4:
+                data=str(row.dataExclusaoMei)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dataExMEI = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            dafaopmei= row.dataOpcaoMei
+
+            if len(str(row.dataOpcaoMei)) >4:
+                data=str(row.dataOpcaoMei)
+                ano =data[:4]
+                mes =data[4:6]
+                dia= data[7:]
+                dafaopmei = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             (
             "{row.cnpjBasico}",
             "{row.opcaoSimples}",
-            "{row.dataOpcao}",
-            "{row.dataExclusao}",
+            "{dataOp}",
+            "{dataEx}",
             "{row.opcaoMei}",
-            "{row.dataOpcaoMei}","{row.dataExclusaoMei}")"""
+            "{dafaopmei}","{dataExMEI}")"""
             cursor.execute(a)
             conn.commit()
         print("terminado simples")
