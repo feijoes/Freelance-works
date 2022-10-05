@@ -74,7 +74,7 @@ simplesSQL.append("dataExclusaoMei varchar(200)")
 
         
 with open('config.txt','r') as f:
-    f.
+    f
     
 print("terminado parte1")
 conn = mysql.connector.connect(host='localhost',
