@@ -24,7 +24,7 @@ def app():
         [sg.Text("Natureza Jurídica: "), sg.Input(key="naturezajuridico.descricao"), sg.Text("Atividade secundaria (CNAE segundario):"), sg.Input(key="'cnae_secundario'.descricao")],
         [sg.Text("Situação cadastral: "), sg.Combo(['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA'],key="estabelecimentos.situacaoCadastral")],
         [sg.Text("Estado (UF)"), sg.Input(key="estabelecimentos.uf", size=(3, 1)), sg.Text("Municipio"), sg.Input(key="estabelecimento_municipio.descricao")],
-        [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"),sg.Text("Rua"), sg.Input(key="estabelecimentos.logradouro"), sg.Text("Numero"), sg.Input(key="estabelecimentos.numero", size=(12,1)),sg.Text("CEP"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
+        [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"),sg.Text("Rua"), sg.Input(key="estabelecimentos.logradouro"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
         [sg.Text("Data de abertura - A partir de"), sg.Input(key="socio.dataOpcao"), sg.Text("Data de abertura - Até"), sg.Input(key="simples.dataOpcao")],
         [sg.Text("Capital Social - A partir de"), sg.Input(key="empresas.capital"), sg.Text("Capital Social - Ate"), sg.Input(key="empresas.capital")],
         [sg.Checkbox("Somente mei", key="simples.opcaoMei 3"), sg.Checkbox("Excluir MEI", key="simples.opcaoMei 4"), sg.Checkbox("Somente Matriz", key="estabelecimentos.matriz 0"), sg.Checkbox("Somente fixo", key="sf")],
