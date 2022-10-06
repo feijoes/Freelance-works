@@ -17,10 +17,13 @@ ira buscar os arquivos na pasta ./files/EMPRESAS/ e criara o arquivo em ./files/
 A pasta com os arquivos tem que estar dentro de ./files/
 E o arquivo criado estara dentro de ./files/
 
-with open('output_file.txt','wb') as wfd:
-    for f in ['seg1.txt','seg2.txt','seg3.txt']:
-        with open(f,'rb') as fd:
-            shutil.copyfileobj(fd, wfd)
+for chave in ["EMPRESAS","ESTABECIMENTOS","SOCIOS",'SIMPLES']:
+    with open(chave+"ALL",'wb') as wfd:
+         
+        for f in next(walk(f"./files/{chave}/"), (None, None, []))[2]:
+            print(f)
+            with open(f,'rb') as fd:
+                shutil.copyfileobj(fd, wfd)
 
 depois ira traduzilos
 joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
@@ -28,7 +31,6 @@ Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so 
 """
 
 
-            
 estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
@@ -56,7 +58,6 @@ empresasSQL.append("responsavel nvarchar(200)")
 
 socios = ['cnpjBasico',"identificadorSocio","nomeSociorazaoSocial",
     "cnpjcpfSocio","qualificacaoCodigoSocio" ,'dataEntradaSociedade',
-    'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
     "paisSocio","represetante","nomeRepresentante",
     'qualificacoesRepresentante','faixaEtaria']
 
@@ -75,12 +76,17 @@ simplesSQL.append("dataExclusaoMei varchar(200)")
 
 
     
-print("terminado parte1")
+with open("config") as f:
+    lines= f.readlines()
+    user = lines[0]
+    password = lines[1]
+
 conn = mysql.connector.connect(host='localhost',
                                          database='public',
-                                         user='root',
-                                         password='225236')
+                                         user=user,
+                                         password=password)
 print("feita conecao")
+
 cursor = conn.cursor()
 
 try:
@@ -128,8 +134,12 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                     c=por[2]
                 if row.porte == 5:
                     c=por[3]
-                a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
-                ("{row.cnpjBasico}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{c}","{row.responsavel}");"""
+                if row.cnpjBasico:
+                    cnpj = str(row.cnpjBasico)
+                    cnpj = f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:]}/"
+                    
+                a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES
+                ("{cnpj}","{row.nomeSocial}","{row.naturezaJuridico}","{row.qualificacaoCodigo}","{row.capital}","{c}","{row.responsavel}");"""
                 
                 cursor.execute(a)
                 conn.commit()
@@ -154,19 +164,21 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 data = str(row.dataEntradaSociedade)
  
                 dataEntradaSociedade = f'{data[:4]}-{data[4:6]}-{"0"*(2-len(data[7:]))}{data[7:]}'
+            if row.cnpjBasico:
+                cnpj = str(row.cnpjBasico)
+                cnpj = f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:]}/"
                 
-            try:
-                a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
-                ("{row.cnpjBasico}",
-                "{identificadorSocio}",
-                "{row.nomeSociorazaoSocial}",
-                "{row.cnpjcpfSocio}","{row.qualificacaoCodigoSocio}",
-                "{dataEntradaSociedade}","{row.dataSituacaoCadastral}",
-                "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.paisSocio}","{row.represetante}","{row.nomeRepresentante}","{row.qualificacoesRepresentante}","{row.faixaEtaria}")"""
-                
-                cursor.execute(a)
-            except:
-                pass
+           
+            a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
+            ("{cnpj}",
+            "{identificadorSocio}",
+            "{row.nomeSociorazaoSocial}",
+            "{row.cnpjcpfSocio}","{row.qualificacaoCodigoSocio}",
+            "{dataEntradaSociedade}","{row.paisSocio}","{row.represetante}","{row.nomeRepresentante}","{row.qualificacoesRepresentante}","{row.faixaEtaria}")"""
+            
+            cursor.execute(a)
+            conn.commit()
+            
         print("terminado socios")
         conn.commit()
     if chave == 'ESTABELECIMENTOS':
@@ -215,12 +227,23 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 mes =data[4:6]
                 dia= data[7:]
                 dataEspecial = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            if row.cnpjBasico:
+                cnpj = str(row.cnpjBasico)
+                cnpj = f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:]}/"
+            if row.cnpjDv:
+                cnpjDv = str(row.cnpjDv)
+                cnpjDv = f"-{cnpjDv}"
+            
+            cnpjOrden = str(row.cnpjOrdem)  
+            
+            while len(cnpjOrden) < 4:
+                cnpjOrden = f"0{cnpjOrden}"
             
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             (
-            "{row.cnpjBasico}",
-           "{row.cnpjOrdem}",
-           "{row.cnpjDv}",
+            "{cnpj}",
+           "{cnpjOrden}",
+           "{cnpjDv}",
            "{m}",
            "{row.nomeFantasia}",
            "{a}","{row.dataSituacaoCadastral}",
@@ -283,9 +306,12 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 mes =data[4:6]
                 dia= data[7:]
                 dafaopmei = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
+            if row.cnpjBasico:
+                cnpj = row.cnpjBasico
+                cnpj = f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:]}"
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             (
-            "{row.cnpjBasico}",
+            "{cnpj}",
             "{row.opcaoSimples}",
             "{dataOp}",
             "{dataEx}",
@@ -293,7 +319,9 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             "{dafaopmei}","{dataExMEI}")"""
             cursor.execute(a)
             conn.commit()
+   
         print("terminado simples")
+
 
 conn.close()
 cursor.close()

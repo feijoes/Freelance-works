@@ -1,0 +1,23 @@
+PROXIGMA.ME | SISTEMA DE BUSCA EMPRESARIAL RF - <PROSBE Vs. 1.0.0>
+
+--- Modo de uso padrao ---:
+    Pre-requisitos:
+        Certificarse que esta conectado a mesma rede da base de dados MYSQL: 
+        tenha python instalado:
+
+    Depois: 
+        abra cmd/promp de comando:
+                    
+            python -m pip install PySimpleGUI,pandas,mysql-connector-pytho
+            agora va para cd "PATH para os arquivos
+            execute py ig.py
+
+            Coisas para ter em conta na hora de filtrar:
+
+    
+        
+-- configurar/Atualizar data base
+
+
+    
+            
