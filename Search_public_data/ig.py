@@ -1,4 +1,4 @@
-
+import time
 import PySimpleGUI as sg
 import pandas as pd
 import mysql.connector
@@ -30,7 +30,7 @@ def app():
         [sg.Text("Natureza Jurídica: "), sg.Input(key="naturezajuridico.descricao"), sg.Text("Atividade secundaria (CNAE segundario):"), sg.Input(key="cnae_secundario.descricao")],
         [sg.Text("Situação cadastral: "), sg.Combo(['NULA', 'ATIVA', 'SUSPENSA', 'INAPTA', 'BAIXADA'],key="estabelecimentos.situacaoCadastral")],
         [sg.Text("Estado (UF)"), sg.Input(key="estabelecimentos.uf", size=(3, 1)), sg.Text("Municipio"), sg.Input(key="estabelecimento_municipio.descricao")],
-        [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"),sg.Text("Rua"), sg.Input(key="estabelecimentos.logradouro"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
+        [sg.Text("Bairro"), sg.Input(key="estabelecimentos.bairro"),sg.Text("Rua"), sg.Input(key="estabelecimentos.logradouro"),sg.Text("CEP"), sg.Input(key="estabelecimentos.cep", size=(15, 1)), sg.Text("DDD - 2 digitos"), sg.Input(key="estabelecimentos.ddd1", size=(2,1))],
         [sg.Text("Data de abertura - A partir de"), sg.Input(key="ab"), sg.Text("Data de abertura - Até"), sg.Input(key="abt")],
         [sg.Text("Capital Social - A partir de"), sg.Input(key="emCDE"), sg.Text("Capital Social - Ate"), sg.Input(key="emCATE")],
         [sg.Checkbox("Somente mei", key="simples.opcaoMei 3"), sg.Checkbox("Excluir MEI", key="simples.opcaoMei 4"), sg.Checkbox("Somente Matriz", key="estabelecimentos.matriz 0")],
@@ -51,6 +51,9 @@ def app():
         if evento == sg.WIN_CLOSED:
             break
         elif evento == 'Exportar para xml "pesquisa.xml"':
+            layout1 = [[sg.Text("Aguarde, Carregando....")],[sg.Text("O janela se feixara depois de finalizado a buscas")]]
+            sg.Window("Telegram bot", layout=layout1, finalize=True)
+
             
             
             # pegando todos os dados:
@@ -237,12 +240,15 @@ def app():
             
             
             a= cursor.fetchall()
-            print(a)
             if a:
                 colunas =["CNPJ","Razão_Social","Natureza_Jurídica","Qualificação","Capital","Porte","Responsável","Matriz_ou_Filial","Nome_de_Fantasia","Situação_Cadastral","Data_da_Situação_Cadastral","Nome_da_Cidade_no_Exterior","País","Data_Início_Atividades","CNAE_Principal","CNAE_Secundários","Tipo_de_Logradouro","Logradouro","Numero","Complemento","Bairro","CEP","UF","Município" ,"DDD1","Telefone_1","DDD_Fax","FAX","E-Mail","Situação_Especial","Data_Situação_Especial","identificadorSocio","Nome_dos_Sócios","CPF_ou_CNPJ_Sócios","Data_Entrada_na_Sociedade","Pais_Socio","Qualificação_Representante","Nome_do_Representante","qualificacao_socio","faixaEtaria"]     
                 frame= pd.DataFrame(a,columns=colunas)
                 frame.to_xml(nome_arquivo+'.xml')
+            break
+           
         elif evento == 'Exportar para csv "pesquisa.csv"':
+            layout1 = [[sg.Text("Aguarde, Carregando....")],[sg.Text("O janela se feixara depois de finalizado a buscas")]]
+            sg.Window("Telegram bot", layout=layout1, finalize=True)
             # pegando todos os dados:
             example = """
            select CONCAT( empresas.cnpjBasico,
@@ -415,11 +421,21 @@ def app():
             print(example)
             cursor.execute(example)
             a= cursor.fetchall()
-            colunas= ["CNPJ","Razão_Social","Natureza_Jurídica","Qualificação","Capital","Porte","Responsável","Matriz_ou_Filial","Nome_de_Fantasia","Situação_Cadastral","Data_da_Situação_Cadastral","Nome_da_Cidade_no_Exterior","País","Data_Início_Atividades","CNAE_Principal","CNAE_Secundários","Tipo_de_Logradouro","Logradouro","Numero","Complemento","Bairro","CEP","UF","Município" ,"DDD1","Telefone_1","DDD_Fax","FAX","E-Mail","Situação_Especial","Data_Situação_Especial","identificadorSocio","Nome_dos_Sócios","CPF/CNPJ_Sócios","Data_Entrada_na_Sociedade","Pais_Socio","Qualificação_Representante","Nome_do_Representante","qualificacao_socio","faixaEtaria"]     
-            frame= pd.DataFrame(a,columns=colunas)
-            print(frame)
-            frame.to_csv(nome_arquivo+'.csv')
-         
+            if a:
+                colunas= ["CNPJ","Razão_Social","Natureza_Jurídica","Qualificação","Capital","Porte","Responsável","Matriz_ou_Filial","Nome_de_Fantasia","Situação_Cadastral","Data_da_Situação_Cadastral","Nome_da_Cidade_no_Exterior","País","Data_Início_Atividades","CNAE_Principal","CNAE_Secundários","Tipo_de_Logradouro","Logradouro","Numero","Complemento","Bairro","CEP","UF","Município" ,"DDD1","Telefone_1","DDD_Fax","FAX","E-Mail","Situação_Especial","Data_Situação_Especial","identificadorSocio","Nome_dos_Sócios","CPF/CNPJ_Sócios","Data_Entrada_na_Sociedade","Pais_Socio","Qualificação_Representante","Nome_do_Representante","qualificacao_socio","faixaEtaria"]     
+                frame= pd.DataFrame(a,columns=colunas)
+                frame.to_csv(nome_arquivo+'.csv')
+            break
+    
+    layout1 = [[sg.Text(f"Foram {len(a)} resultados para a sua busca")]]
+    win = sg.Window("Telegram bot", layout=layout1, finalize=True)
+    win.read(timeout=300000)
+
+    
+        
+            
+            
+            
                
                                 
 app()

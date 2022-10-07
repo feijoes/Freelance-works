@@ -17,20 +17,22 @@ ira buscar os arquivos na pasta ./files/EMPRESAS/ e criara o arquivo em ./files/
 A pasta com os arquivos tem que estar dentro de ./files/
 E o arquivo criado estara dentro de ./files/
 
-for chave in ["EMPRESAS","ESTABECIMENTOS","SOCIOS",'SIMPLES']:
-    with open(chave+"ALL",'wb') as wfd:
-         
-        for f in next(walk(f"./files/{chave}/"), (None, None, []))[2]:
-            print(f)
-            with open(f,'rb') as fd:
-                shutil.copyfileobj(fd, wfd)
+
 
 depois ira traduzilos
 joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
 Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so mudar a linha abaixo
 """
 
+for chave in ["EMPRESAS","ESTABECIMENTOS","SOCIOS",'SIMPLES']:
+    with open(chave+"ALL",'wb') as wfd:
+         
+        for f in next(walk(f"./files/{chave}/"), (None, None, []))[2]:
+          
+            with open(f"./files/{chave}/{f}",'rb') as fd:
+                shutil.copyfileobj(fd, wfd)
 
+            
 estabelecimento = ['cnpjBasico',"cnpjOrdem","cnpjDv",
     "matriz","nomeFantasia" ,'situacaoCadastral',
     'dataSituacaoCadastral', 'motivoSituacaoCadastral', "nomeCidadeExterior",
@@ -101,7 +103,7 @@ for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D
 			);
                ''')
     except:pass
-    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
+    df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
         encoding='latin-1',)
     for row in df.itertuples():
         try:
@@ -121,7 +123,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
         		);
                    ''')
         
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples() :
                 por=['NÃO INFORMADO','MICRO EMPRESA','EMPRESA DE PEQUENO PORTE','DEMAIS']
@@ -154,7 +156,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 
                    ''')
             
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples() :
             if row.identificadorSocio:
@@ -192,7 +194,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
         conn.commit()
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples():
             try:
@@ -269,7 +271,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
         conn.commit()
-        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         
         for row in df.itertuples() :
