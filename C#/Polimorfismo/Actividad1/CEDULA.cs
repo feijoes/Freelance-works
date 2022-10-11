@@ -7,9 +7,10 @@ namespace Polimorfismo.Actividade1
         {
             Console.WriteLine($"La cedula es: {cedulasinguiones}");
         }
-        public void ver(int serie,int secuencia , int digitoverificador)
+        public void ver(int serie,int secuencia,int digitoverificador)
         {
             Console.WriteLine($"La cedula es: {serie}{secuencia}{digitoverificador}");
         }
     }
 }
+// Tuve que usar Polimorfismo de Paramétrico

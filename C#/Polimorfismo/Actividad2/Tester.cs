@@ -11,3 +11,4 @@ namespace Polimorfismo.Actividade2
         }
     }
 }
+// tuve que usar Polimorfismo de Sobrecarga

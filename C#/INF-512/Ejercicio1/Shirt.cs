@@ -1,5 +1,6 @@
 using System;
-public class Shirt {
+namespace Ejercicio1{
+  public class Shirt {
 
   public int shirtID = 0; // Default ID for the shirt
   public String description = "-description required-"; // default
@@ -11,7 +12,7 @@ public class Shirt {
   
   Shirt() {  }
 
-    Shirt(int ID, String d, char c, double p, int q) 
+    public Shirt(int ID, String d, char c, double p, int q) 
 	{
 		shirtID = ID;
 		description = d;
@@ -32,6 +33,6 @@ public class Shirt {
 
   } // end of display method
 } // end of class
-
+}
 
 
