@@ -19,7 +19,7 @@ for nombreFichero in next(walk('\\'.join(__file__.split('\\')[:-1]) +"\\"+ folde
     fecha_cierre = date(year,month,day)
     numero_dias = (fecha_cierre-inicio).days
 
-    tir = (resultado/10000)**(365.25/numero_dias)
+    tir = (resultado/10000)**(365.25/numero_dias) -1
     lista_TIR.append(tir)
     
     lista_dict_proyectos.append({"nombre":nombreFichero[:-4],"resultado":resultado,"fecha de cierre":fecha_cierre,"numero dias": numero_dias,"TIR": tir})
