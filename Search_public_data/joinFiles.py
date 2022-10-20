@@ -1,8 +1,8 @@
-import csv
 import shutil
 from os import walk
-import pandas as pd
+
 import mysql.connector
+import pandas as pd
 
 """ 
 Arquivo python para leer todos os arquivos em uma pasta e juntar todos em 1 arquivo
@@ -24,7 +24,7 @@ joinfiles(f"./files/{sys.argv[1]}/",f"./files/{sys.argv[2]}")
 Em caso que queira modificar a localizacao da pasta ou onde arquivo é salvo so mudar a linha abaixo
 """
 
-for chave in ["EMPRESAS","ESTABECIMENTOS","SOCIOS",'SIMPLES']:
+for chave in ["EMPRESAS","ESTABELECIMENTOS","SOCIOS",'SIMPLES']:
     with open(chave+"ALL",'wb') as wfd:
          
         for f in next(walk(f"./files/{chave}/"), (None, None, []))[2]:
@@ -93,7 +93,7 @@ cursor = conn.cursor()
 
 try:
     cursor.execute('''CREATE DATABASE public;''')
-except: pass
+except Exception as e: print(e)
 for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D20910.MUNICCSV",'naturezaJuridico':"F.K03200$Z.D20910.NATJUCSV",
                     "pais":"F.K03200$Z.D20910.PAISCSV","qualificacao":"F.K03200$Z.D20910.QUALSCSV"}.items():
     try:cursor.execute(f'''
@@ -103,7 +103,7 @@ for chave,valor in {'cnae':"F.K03200$Z.D20910.CNAECSV",'municipio':"F.K03200$Z.D
 			);
                ''')
     except:pass
-    df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
+    df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/files/atributos/"+ valor,sep=';',names =["codigo","descricao"], 
         encoding='latin-1',)
     for row in df.itertuples():
         try:
@@ -116,15 +116,18 @@ print("terminado atributos")
 for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIMENTOS':["ESTABELECIMENTOSALL",estabelecimentoSQL,estabelecimento],'SOCIOS':["SOCIOSALL",sociosSQL,socios],"SIMPLES":["SIMPLESALL",simplesSQL,simples]}.items():
     if chave == 'EMPRESAS':
         cursor.execute('USE public')
+        conn.commit()
         cursor.execute(f"DROP TABLE IF EXISTS {chave}")
+        conn.commit()
         cursor.execute(f'''
         	    CREATE TABLE {chave} (
                 {''.join(empresasSQL)}
         		);
                    ''')
+        conn.commit()
         
-        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
-            encoding='latin-1', error_bad_lines=False)
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+            encoding='latin-1')
         for row in df.itertuples() :
                 por=['NÃO INFORMADO','MICRO EMPRESA','EMPRESA DE PEQUENO PORTE','DEMAIS']
                 
@@ -148,15 +151,17 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
         print("terminado empresas")
     if chave == 'SOCIOS':
         cursor.execute('USE public')
+        conn.commit()
         cursor.execute(f"DROP TABLE IF EXISTS {chave} ")
+        conn.commit()
         cursor.execute(f'''
         	    CREATE TABLE {chave} (
                 {''.join(valor[1])}
         		)
                 
                    ''')
-            
-        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        conn.commit()
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples() :
             if row.identificadorSocio:
@@ -182,10 +187,11 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             conn.commit()
             
         print("terminado socios")
-        conn.commit()
+
     if chave == 'ESTABELECIMENTOS':
         cursor.execute('USE public')
-        cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()}")
+        conn.commit()
+        cursor.execute(f"DROP TABLE IF EXISTS {chave}")
         conn.commit()
         
         cursor.execute(f'''
@@ -194,7 +200,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
         conn.commit()
-        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         for row in df.itertuples():
             try:
@@ -202,11 +208,12 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 if int(row.situacaoCadastral) <5:
                     a = situ[int(row.situacaoCadastral)-1]
                 else:a = situ[-1]
-            except: pass 
+            except Exception as e: print(e) 
+      
             try:   
                 ma=['MATRIX','FILIAL']
-                m=ma[int(row.matriz)-1]
-            except: pass
+                mamama=ma[int(row.matriz)-1]
+            except Exception as e: print(e)
             data=str(row.dataAtividade)
             ano =data[:4]
             mes =data[4:6]
@@ -246,7 +253,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             "{cnpj}",
            "{cnpjOrden}",
            "{cnpjDv}",
-           "{m}",
+           "{mamama}",
            "{row.nomeFantasia}",
            "{a}","{row.dataSituacaoCadastral}",
            "{row.motivoSituacaoCadastral}","{row.nomeCidadeExterior}","{row.pais}","{inicio}",
@@ -260,6 +267,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
             conn.commit()
             print("terminado estabelecimentos")
     if chave == "SIMPLES":
+        
         cursor.execute('USE public')
         conn.commit()
         cursor.execute(f"DROP TABLE IF EXISTS {chave.lower()};")
@@ -271,7 +279,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
          		);
                    ''')
         conn.commit()
-        df = pd.read_csv("/".join(_file_.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
+        df = pd.read_csv("/".join(__file__.split("\\")[:-1])+ f"/{valor[0]}",sep=';',names =valor[2], 
             encoding='latin-1', error_bad_lines=False)
         
         for row in df.itertuples() :
