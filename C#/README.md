@@ -14,4 +14,5 @@
 ## INF-512
   [INF-512_Lab_Arrays 1.pdf](https://github.com/feijoes/Frelance-works/files/9742565/INF-512_Lab_Arrays.1.pdf)
 
-
+## Herencia4
+  [Ejercicio Herencia unidad 4.pdf](https://github.com/feijoes/Frelance-works/files/9855419/Ejercicio.Herencia.unidad.4.2.pdf)
