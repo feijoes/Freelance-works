@@ -1,16 +1,23 @@
 import time
-import PySimpleGUI as sg
-import pandas as pd
+from turtle import onclick
+
 import mysql.connector
+import pandas as pd
+import PySimpleGUI as sg
+
+
 def app():
     with open("config") as f:
-        
         lines= f.readlines()
+        lines = [x[:-1] for x in lines]
         user = lines[0]
         password = lines[1]
-    
-    conn = mysql.connector.connect(host='localhost',
-                                         database='public',
+        host=lines[2]
+        database=lines[3]
+        
+
+    conn = mysql.connector.connect(host=host,
+                                         database=database,
                                          user=user,
                                          password=password)
     print("feita conecao")
@@ -48,11 +55,12 @@ def app():
     while True:
         nome_arquivo = 'pesquisa'
         evento, valores = window.read()
+
         if evento == sg.WIN_CLOSED:
             break
         elif evento == 'Exportar para xml "pesquisa.xml"':
             layout1 = [[sg.Text("Aguarde, Carregando....")],[sg.Text("O janela se feixara depois de finalizado a buscas")]]
-            sg.Window("Telegram bot", layout=layout1, finalize=True)
+            sg.Window("Carregando....", layout=layout1, finalize=True)
 
             
             
@@ -244,7 +252,8 @@ def app():
                 colunas =["CNPJ","Razão_Social","Natureza_Jurídica","Qualificação","Capital","Porte","Responsável","Matriz_ou_Filial","Nome_de_Fantasia","Situação_Cadastral","Data_da_Situação_Cadastral","Nome_da_Cidade_no_Exterior","País","Data_Início_Atividades","CNAE_Principal","CNAE_Secundários","Tipo_de_Logradouro","Logradouro","Numero","Complemento","Bairro","CEP","UF","Município" ,"DDD1","Telefone_1","DDD_Fax","FAX","E-Mail","Situação_Especial","Data_Situação_Especial","identificadorSocio","Nome_dos_Sócios","CPF_ou_CNPJ_Sócios","Data_Entrada_na_Sociedade","Pais_Socio","Qualificação_Representante","Nome_do_Representante","qualificacao_socio","faixaEtaria"]     
                 frame= pd.DataFrame(a,columns=colunas)
                 frame.to_xml(nome_arquivo+'.xml')
-            break
+            sg.Popup(f"Foram encontrados {len(a)} resultados para a sua busca", keep_on_top=True )
+                
            
         elif evento == 'Exportar para csv "pesquisa.csv"':
             layout1 = [[sg.Text("Aguarde, Carregando....")],[sg.Text("O janela se feixara depois de finalizado a buscas")]]
@@ -342,7 +351,7 @@ def app():
                         if chave =='estabelecimentos.telefone1':
                             num-=1
                             valor='nan'
-                            print(chave)
+                           
                             example+= f'where {chave} like "%{valor}%"'
                             continue
                         if chave[-1] == "0": 
@@ -418,18 +427,16 @@ def app():
                             continue
                         if valor == True:example+= f' and {chave} like "%{chave}%"'
                         else:example+= f' and {chave} like "%{valor}%"'
-            print(example)
+
             cursor.execute(example)
             a= cursor.fetchall()
             if a:
                 colunas= ["CNPJ","Razão_Social","Natureza_Jurídica","Qualificação","Capital","Porte","Responsável","Matriz_ou_Filial","Nome_de_Fantasia","Situação_Cadastral","Data_da_Situação_Cadastral","Nome_da_Cidade_no_Exterior","País","Data_Início_Atividades","CNAE_Principal","CNAE_Secundários","Tipo_de_Logradouro","Logradouro","Numero","Complemento","Bairro","CEP","UF","Município" ,"DDD1","Telefone_1","DDD_Fax","FAX","E-Mail","Situação_Especial","Data_Situação_Especial","identificadorSocio","Nome_dos_Sócios","CPF/CNPJ_Sócios","Data_Entrada_na_Sociedade","Pais_Socio","Qualificação_Representante","Nome_do_Representante","qualificacao_socio","faixaEtaria"]     
                 frame= pd.DataFrame(a,columns=colunas)
                 frame.to_csv(nome_arquivo+'.csv')
-            break
-    
-    layout1 = [[sg.Text(f"Foram {len(a)} resultados para a sua busca")]]
-    win = sg.Window("Telegram bot", layout=layout1, finalize=True)
-    win.read(timeout=300000)
+            sg.Popup(f"Foram encontrados {len(a)} resultados para a sua busca", keep_on_top=True )
+            
+
 
     
         

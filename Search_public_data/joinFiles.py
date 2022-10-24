@@ -82,9 +82,11 @@ with open("config") as f:
     lines= f.readlines()
     user = lines[0]
     password = lines[1]
+    host=lines[2]
+    database=lines[3]
 
-conn = mysql.connector.connect(host='localhost',
-                                         database='public',
+conn = mysql.connector.connect(host=host,
+                                         database=database,
                                          user=user,
                                          password=password)
 print("feita conecao")
@@ -317,7 +319,7 @@ for chave,valor in {'EMPRESAS':["EMPRESASALL",empresasSQL,empresas],'ESTABELECIM
                 dia= data[7:]
                 dafaopmei = f'{ano}-{mes}-{"0"*(2-len(dia))}{dia}'
             if row.cnpjBasico:
-                cnpj = row.cnpjBasico
+                cnpj = str(row.cnpjBasico)
                 cnpj = f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:]}"
             a= f"""INSERT INTO public.{chave.lower()} ({",".join(valor[2])}) VALUES 
             (
