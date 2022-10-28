@@ -16,3 +16,6 @@
 
 ## Herencia4
   [Ejercicio Herencia unidad 4.pdf](https://github.com/feijoes/Frelance-works/files/9855419/Ejercicio.Herencia.unidad.4.2.pdf)
+
+## Tarea 5
+  [Tarea 5.pdf](https://github.com/feijoes/Frelance-works/files/9890216/Tarea.5.pdf)
