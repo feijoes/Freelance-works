@@ -1,18 +1,22 @@
-﻿internal partial class Program
+﻿using System.Linq;
+internal partial class Program
 {
     private static void Main(string[] args)
     {   
-       
-        Console.WriteLine("Escriba un numero:");
-        var input = Console.ReadLine();
-        if (int.TryParse(input, out int number1)) {
-            Console.WriteLine($" Pusiste {number1} ");
-        }
-        else
+        try
         {
-            Console.WriteLine($"\"{input}\" no es valido");
+            Console.WriteLine("Escriba un numero:");
+            string numero = Console.ReadLine();
+            if(numero.All(char.IsDigit))
+            {
+                ;
+                
+            }
+            Console.WriteLine($"Pusiste el numero {numero}");
         }
-        
-       
+        catch (System.Exception)
+        {
+            Console.WriteLine("No es un numero valido");
+        }
     }
 }
