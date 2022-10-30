@@ -12,10 +12,10 @@ namespace ConsoleApp21{
             do
             {
                 Console.Clear();
-                string LETRA ="";
-                Console.Write("Digite una letra: ");
-                LETRA = Console.ReadLine();
-                if(LETRA !="")
+                string numero ="";
+                Console.Write("Digite una numero: ");
+                numero = Console.ReadLine();
+                if(numero !="")
                 {
                     O = 1;
                 }
@@ -23,14 +23,15 @@ namespace ConsoleApp21{
                 {
                     try
                     {
-                        int result =int.Parse(LETRA);
-                        Console.Write("No se permiten numeros....");
-                        O = 0;
+                        int result =int.Parse(numero);
+                        Console.Write("Numero: "+ numero);
+                        O = 1;
                     }
                     catch
                     {
                         Console.Clear();
-                        Console.Write("Letras: "+ LETRA);
+                        Console.Write(numero + " no es un numero");
+                        O = 0;
                     }
                     Console.Read();
                 }

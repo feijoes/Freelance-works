@@ -1,11 +1,18 @@
-import pages.HistoriaClinica.HistoriaClinica;
+
+import pages.PrincipalPage;
 
 public class Main {
 
 
     public static void main(String[] args) {
 
-        new HistoriaClinica();
+    
+
+        new PrincipalPage();
 
     }
+
+
+
+    
 }

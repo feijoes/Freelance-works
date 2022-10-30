@@ -1,9 +1,8 @@
-package components;
+package components.MyLabel;
 
 import java.awt.Dimension;
 import java.awt.Font;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public class MyLabel  extends JLabel{
@@ -16,7 +15,7 @@ public class MyLabel  extends JLabel{
         Dimension size = this.getPreferredSize();
         setSize((int)size.getWidth(), (int) size.getHeight());
         setLocation(x, y);
-     
+        setVisible(true);
         
     }
 }
