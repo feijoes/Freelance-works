@@ -1,5 +1,4 @@
-
-import pages.*;
+import pages.HistoriaClinica.HistoriaClinica;
 
 public class Main {
 
