@@ -44,7 +44,21 @@ public class TriagePaciente extends JFrame {
                 }
             }
         });
+        
         continuar.setVisible(true);
+        JButton verpacientes =new JButton("Ver Paciente");
+        verpacientes.setLocation(700, 350);
+        verpacientes.setSize(150,40);
+        verpacientes.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                dispose();
+                PrincipalPage.frame3();
+            }
+        });
+        verpacientes.setVisible(true);
+        this.add(verpacientes);
         this.add(continuar);
 
         this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);

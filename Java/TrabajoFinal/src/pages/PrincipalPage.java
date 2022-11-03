@@ -1,11 +1,6 @@
 package pages;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import pages.HistoriaClinica;
-import pages.TriagePaciente;
 
 public class PrincipalPage {
 

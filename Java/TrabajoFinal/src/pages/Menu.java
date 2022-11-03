@@ -21,7 +21,7 @@ public class Menu extends JFrame {
         this.setLayout(null);
         this.add(new MyLabel("     Menu     ",180,10,20));
         JButton nuevopaciente =new JButton("Adicionar Paciente");
-        nuevopaciente.setLocation(90, 350);
+        nuevopaciente.setLocation(110, 350);
         nuevopaciente.setSize(150,40);
         nuevopaciente.addActionListener(new ActionListener(){
             @Override
@@ -33,23 +33,12 @@ public class Menu extends JFrame {
         });
         nuevopaciente.setVisible(true);
 
-        JButton verpacientes =new JButton("Ver Paciente");
-        verpacientes.setLocation(280, 350);
-        verpacientes.setSize(150,40);
-        verpacientes.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                dispose();
-                PrincipalPage.frame3();
-            }
-        });
-        nuevopaciente.setVisible(true);
+        
         JLabel jl = new JLabel();
 
 
 
-        Dimension size = jl.getPreferredSize();
+        
         jl.setSize(200,200);
         jl.setLocation(120, 120);
         jl.setVisible(true);
@@ -69,7 +58,7 @@ public class Menu extends JFrame {
 
         this.add(jl);
 
-        this.add(verpacientes);
+       
         this.add(nuevopaciente);
         this.setSize(500, 500);
         this.setVisible(true);
