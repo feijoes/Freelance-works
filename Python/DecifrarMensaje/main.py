@@ -1,29 +1,28 @@
 
-i = [2,8,0,3,1,5,2,9,4,2,6,8]
-palabras = ["8","intro","la","de","es","a","mejor","peor","seccion","progra","7","pancito","el","a"]
 
+
+i = input("Escribir i con espacio para cada numero: ").split()
+palabras = input("Escribir cada palabra con un espacio cada palabra: ").split()
 
 def descifrarMensaje(i,palabras):
+    ## Creando la Palabra
     newString =""
     for numero in i:
         newString+= palabras[numero]
         newString += " "
     newList = []
-    
-    duplicates = {}
-    for k in palabras:
-        if palabras.count(k) > 1:
-            duplicates[k] = palabras.count(k)
-            
+
+    ## Palabras no utilizadas en i    
     for palabra in palabras:
-        if palabra in newString: 
-            if palabra in duplicates.keys():
-                duplicates[palabra] -=1
-                if duplicates[palabra] >= 1:
-                    newList.append(palabra)
-        else:
+        if not palabra in newString: 
             newList.append(palabra)
 
     return [newString] + newList
 
-print(descifrarMensaje(i,palabras))
+
+print()
+print("i=",[i])
+print()
+print("palabras=", palabras)
+print()
+print("Lista de descifrarMensaje = " , descifrarMensaje(i,palabras))

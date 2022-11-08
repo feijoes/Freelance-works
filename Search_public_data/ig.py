@@ -10,16 +10,14 @@ def app():
     with open("config") as f:
         lines= f.readlines()
         lines = [x[:-1] for x in lines]
-        user = lines[0]
-        password = lines[1]
-        host=lines[2]
-        database=lines[3]
+
+       
         
 
-    conn = mysql.connector.connect(host=host,
-                                         database=database,
-                                         user=user,
-                                         password=password)
+    conn = mysql.connector.connect(host="localhost",
+                                         database="public",
+                                         user="root",
+                                         password="225236")
     print("feita conecao")
     cursor = conn.cursor()
     sg.theme('Dark Grey 13')
