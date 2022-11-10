@@ -19,3 +19,6 @@
 
 ## Tarea 5
   [Tarea 5.pdf](https://github.com/feijoes/Frelance-works/files/9890216/Tarea.5.pdf)
+
+## GimnasioActivitie
+  ![GimnasioActivitie](https://user-images.githubusercontent.com/74252371/201198204-6c9e8186-e7dc-4626-8849-8505a4a3671c.jpeg)
