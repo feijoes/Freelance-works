@@ -1,8 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Hom";
 }
+@model string?
+
+
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    @using(Html.BeginForm())
+    {
+        <h2>inscripción Gimnasio:</h2>
+        <label for="Nombre">Nombre Usuario:</label>
+        <input type="text" id="Nombre" name="Nombre"><br><br>
+        <label for="nPersonas">Numero de personas a subscribirse:</label>
+        <select name="nPersonas" id="nPersonas">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        <input type="submit">
+    }
+    @if(!String.IsNullOrEmpty(@Model))
+    {
+        <h1>En tu Proxima cuota tendras un : @Model de descuento</h1>
+    }
+
+        
+
 </div>

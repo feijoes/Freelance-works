@@ -13,15 +13,31 @@ namespace Gimnasio.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
-        public IActionResult Privacy()
+    [HttpPost]
+    public ActionResult Index(string Nombre,int nPersonas)
+    {
+        Console.WriteLine(Nombre);
+        Console.WriteLine(nPersonas);
+        string mystring = "";
+        if (nPersonas.Equals(1))
         {
-            return View();
+            mystring = "50%";
         }
+        if (nPersonas.Equals(2))
+        {
+            mystring = "75%";
+        }
+        if (nPersonas.Equals(3))
+        {
+            mystring = "100%";
+        }
+        return View((object)mystring);
+
+    }   
+
+        public IActionResult Privacy() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
