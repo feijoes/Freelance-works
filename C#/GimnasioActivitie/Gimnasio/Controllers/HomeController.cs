@@ -1,7 +1,7 @@
 ﻿using Gimnasio.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
+using Gimnasio.DB;
 namespace Gimnasio.Controllers
 {
     public class HomeController : Controller
@@ -16,10 +16,15 @@ namespace Gimnasio.Controllers
         public IActionResult Index() => View();
 
     [HttpPost]
-    public ActionResult Index(string Nombre,int nPersonas)
+    public ActionResult Index(string Nombre,string contasena,int nPersonas)
     {
         Console.WriteLine(Nombre);
         Console.WriteLine(nPersonas);
+        ClienteContext context = HttpContext.RequestServices.GetService(typeof(Gimnasio.DB.ClienteContext)) as ClienteContext;
+        if (!String.IsNullOrEmpty(Nombre))
+        {
+            context.CrearUsuario(Nombre,contasena,nPersonas);
+        }
         string mystring = "";
         if (nPersonas.Equals(1))
         {
