@@ -8,22 +8,22 @@ Most part of it is just university or college projects
 
 
 * Bat
-    Bat Projects 
+    > Bat Projects 
 * C#
-    C# projects
+    > C# projects
 * Database_fundamentals
-    Not code projects, just the theory of how database works
+    > Not code projects, just the theory of how database works
 * Html
-    Html projects
+    > Html projects
 * Java
-    Java projects
+    > Java projects
 * Js
-    Javascript projects
+    > Javascript projects
 * Python
-    Python projects
+    > Python projects
 * Search_public_data
-    Project to search public data in very large files, made with python but very long to put in Python folder
+    > Project to search public data in very large files, made with python but very long to put in Python folder
 * Whatzapp_bots
-    Whatzapp bots using selenium/pyautogui
+    > Whatzapp bots using selenium/pyautogui
 
-Each folder has a README that explains in more detail each project
+**Each folder has a README that explains in more detail each project**
