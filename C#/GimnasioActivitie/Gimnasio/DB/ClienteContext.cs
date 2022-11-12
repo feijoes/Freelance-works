@@ -1,11 +1,6 @@
-using System.Runtime.InteropServices;
+
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Gimnasio.Models;
+
 namespace Gimnasio.DB
 {
   public class ClienteContext
@@ -24,6 +19,7 @@ namespace Gimnasio.DB
 
     public void CrearUsuario(string Nombre,string contrasena, int nPersonas)
     {
+      
 
       using (MySqlConnection conn = GetConnection())
       {

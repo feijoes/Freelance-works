@@ -16,14 +16,12 @@ namespace Gimnasio.Controllers
         public IActionResult Index() => View();
 
     [HttpPost]
-    public ActionResult Index(string Nombre,string contasena,int nPersonas)
+    public ActionResult Index(string Nombre,string contrasena,int nPersonas)
     {
-        Console.WriteLine(Nombre);
-        Console.WriteLine(nPersonas);
         ClienteContext context = HttpContext.RequestServices.GetService(typeof(Gimnasio.DB.ClienteContext)) as ClienteContext;
         if (!String.IsNullOrEmpty(Nombre))
         {
-            context.CrearUsuario(Nombre,contasena,nPersonas);
+            context.CrearUsuario(Nombre,contrasena,nPersonas);
         }
         string mystring = "";
         if (nPersonas.Equals(1))
