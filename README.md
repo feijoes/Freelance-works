@@ -1,4 +1,4 @@
-# About this repo
+# Repo info
 This repo i use to track/store all my works that i make for freelance.
 Of course with the client's permission.
 
