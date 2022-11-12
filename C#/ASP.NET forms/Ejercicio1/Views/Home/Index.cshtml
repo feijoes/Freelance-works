@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model string?
+
+@using(Html.BeginForm())
+{
+    <h2>Validacion de NIT</h2>
+    <input name="NIT" placeholder="Tu NIT" >
+  
+    
+    <input type="submit" value="Validar">
+
+}
+ @if(!String.IsNullOrEmpty(@Model))
+    {
+        <h1>@Model</h1>
+    }

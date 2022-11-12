@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<String?>
+
+@using(Html.BeginForm())
+{
+    <input name="NombreFormulario" placeholder="Nombre del formulario" >
+    <input name="Key" placeholder="Key" >
+    <input name="Label" placeholder="Label" >
+    <input name="Orden" placeholder="Orden" >
+    <br />
+    <br />
+    <label for="Requerido">Requerido</label>
+    @Html.CheckBox("Requerido", true)
+    <br />
+    <br />
+    <label for="ControlType">Control Type</label>
+    <select name="ControlType">
+        <option value="Texbox">Texbox</option>
+        <option value="Checkbox">Checkbox</option>
+        <option value="ComboBox">ComboBox</option>
+        <option value="Button">Button</option>
+        <option value="Texarea">Texarea</option>
+    </select>
+    <br />
+    <br />
+    <label for="Type">Type</label>
+    <select name="Type">
+        <option value="Text">Text</option>
+        <option value="Number">Number</option>
+        <option value="Date">Date</option>
+        <option value="Time">Time</option>
+ 
+    </select>
+    <br /><br />
+    
+    <input type="submit" value="Guardar">
+
+}
+
+@if(@Model !=null)
+{
+    <h2>Formulario:</h2>
+    <br />
+    @foreach (string item in @Model)
+    {
+        <span>
+            @item
+        </span>
+    }
+}
+    
