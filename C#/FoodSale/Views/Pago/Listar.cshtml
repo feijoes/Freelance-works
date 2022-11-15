@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Entity_Layer.PagoBO>
+
+@{
+    ViewBag.Title = "Listado de Pagos ";
+}
+
+<h2>Listado de Pagos</h2>
+
+<p>
+    @Html.ActionLink("Crear Metodo Nuevo", "Insert")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NUM_PAGO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUM_PAGO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NOMBRE)
+        </td>
+        <td>
+            @Html.ActionLink("Eliminar", "Delete", new { NUM_PAGO = item.NUM_PAGO })
+        </td>
+    </tr>
+}
+
+</table>
