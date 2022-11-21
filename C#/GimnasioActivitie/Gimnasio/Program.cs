@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.Add(new ServiceDescriptor(typeof(ClienteContext), new ClienteContext(Config.GetValue<string>("ConnectionStrings:Default"))));
 
 var app = builder.Build();
 
