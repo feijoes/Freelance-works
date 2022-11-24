@@ -1,0 +1,11 @@
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\bin\Debug\GUI.exe.config
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\bin\Debug\GUI.exe
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\bin\Debug\GUI.pdb
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.csproj.AssemblyReference.cache
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.csproj.SuggestedBindingRedirects.cache
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.Form1.resources
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.Properties.Resources.resources
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.csproj.GenerateResource.cache
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.csproj.CoreCompileInputs.cache
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.exe
+C:\Users\Pedro\OneDrive\Frelance-works\C#\GUI\obj\Debug\GUI.pdb
