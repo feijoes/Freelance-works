@@ -16,4 +16,4 @@
 
 
 ### TkinkerActivitie
-![thiker activitie(https://user-images.githubusercontent.com/74252371/203875981-3d16a0c1-2803-43cc-a4da-adde44db6e10.jpeg)
+![thiker activitie](https://user-images.githubusercontent.com/74252371/203875981-3d16a0c1-2803-43cc-a4da-adde44db6e10.jpeg)
