@@ -17,3 +17,5 @@
 
 ### TkinkerActivitie
 ![thiker activitie](https://user-images.githubusercontent.com/74252371/203875981-3d16a0c1-2803-43cc-a4da-adde44db6e10.jpeg)
+  * Reference [Referencia.pdf](https://github.com/feijoes/Frelance-works/files/10093404/202211242205A0E76F74C1350F54__Referencia.pdf)
+
