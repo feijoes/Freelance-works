@@ -78,7 +78,7 @@ class Ship:
     # rotate: event -> None
     # Si se produce un evento que utilice esta función, rota la figura ship
     def rotate(self, event=None):
-        t = self._d[event.keysym] * self.turnspeed * math.pi / 180 # the trig functions generally take radians as their arguments rather than degrees; pi/180 radians is equal to 1 degree
+        t = self._d[event] * self.turnspeed * math.pi / 180 # the trig functions generally take radians as their arguments rather than degrees; pi/180 radians is equal to 1 degree
 
         self.bearing -= t
 
@@ -106,7 +106,7 @@ class Ship:
         
         mh = int(self.canvas['height'])
         mw = int(self.canvas['width'])
-        self.speed += self.acceleration * self._d[event.keysym]
+        self.speed += self.acceleration * self._d[event]
 
         self.x0 += self.speed * math.cos(self.bearing)
         self.x1 += self.speed * math.cos(self.bearing)
