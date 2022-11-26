@@ -26,8 +26,11 @@ class Game:
     def gameWindow(self):
         self.frame = Frame(self.root)
         self.frame.pack(fill=BOTH, expand=YES)
-
+        
         self.canvas = Canvas(self.frame,width=self.gameWidth, height=self.gameHeight, bg="black", takefocus=1)
         self.canvas.pack(fill=BOTH, expand=YES)     
+        
+        self.controls = Canvas(self.frame,width=self.gameWidth, height=100, bg="gray",takefocus=5)
+        self.controls.pack(fill=BOTH)
 
 asteroids = Game(600,600)

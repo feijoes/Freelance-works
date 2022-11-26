@@ -1,5 +1,5 @@
 import math
-
+from tkinter import *
 # Campos:
 # _d: Dict
 # canvas: canvas
@@ -16,9 +16,10 @@ class Ship:
         return 1 / 3 * (self.x0 + self.x1 + self.x2), 1 / 3 * (self.y0 + self.y1 + self.y2)
 
     # Constructor
-    def __init__(self, canvas, x, y, width, height, turnspeed, acceleration=1):
+    def __init__(self, canvas: Canvas, x, y, width, height, turnspeed, acceleration=1):
         self._d = {'Up':1, 'Down':-1, 'Left':1, 'Right':-1}
-
+        self.color = ["white","red","blue","green","yellow"]
+        self.currentColor = 0
         self.canvas = canvas
         self.width = width
         self.height = height
@@ -26,25 +27,29 @@ class Ship:
         self.turnspeed = turnspeed
         self.acceleration = acceleration
 
-        self.x0, self.y0 = x, y
+        self.x0, self.y0 = x-self.width, y - self.height
 
         self.bearing = -math.pi / 2
 
-        self.x1 = self.x0 + self.width / 2
-        self.y1 = self.y0 - self.height
-
         self.x2 = self.x0 + self.width
-        self.y2 = self.y0
+        self.y2 = self.y0 - self.height
+
+        self.x1 = self.x0 + self.width
+        self.y1 = self.y0
+        
+        self.x3 , self.y3 = self.x0, self.y2
 
         self.x, self.y = self.centroid()
+       
 
-        self.ship = self.canvas.create_polygon((self.x0, self.y0, self.x1, self.y1, self.x2, self.y2), outline="white", width=3)
+        self.ship = self.canvas.create_polygon((self.x0, self.y0, self.x1, self.y1, self.x2, self.y2,self.x3,self.y3), outline=self.color[self.currentColor], width=3)
 
     # changeCoords: None -> None
     # Actualiza las coordenadas de la figura ship
     def changeCoords(self):
         self.canvas.coords(self.ship,self.x0, self.y0, self.x1, self.y1, self.x2, self.y2)
-
+        
+    
     # rotate: event -> None
     # Si se produce un evento que utilice esta función, rota la figura ship
     def rotate(self, event=None):
@@ -72,6 +77,7 @@ class Ship:
     # accel: event -> None
     # Si se produce un evento que utilice esta función, mueve la posición de la figura ship
     def accel(self, event=None):
+        
         mh = int(self.canvas['height'])
         mw = int(self.canvas['width'])
         self.speed += self.acceleration * self._d[event.keysym]
@@ -85,15 +91,15 @@ class Ship:
         self.y2 += self.speed * math.sin(self.bearing)
 
         self.x, self.y = self.centroid()
-
+      
         if self.y < - self.height / 2:
             self.y0 += mh
             self.y1 += mh
             self.y2 += mh
         elif self.y > mh + self.height / 2:
-            self.y0 += mh
-            self.y1 += mh
-            self.y2 += mh
+            self.y0 -= mh
+            self.y1 -= mh
+            self.y2 -= mh
 
         if self.x < -self.width / 2:
             self.x0 += mw
