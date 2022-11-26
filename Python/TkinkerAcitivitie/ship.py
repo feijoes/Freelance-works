@@ -13,19 +13,21 @@ class Ship:
     # centroid: None -> num, num
     # Calcula la posición del punto medio de la figura
     def centroid(self):
-        return 1 / 3 * (self.x0 + self.x1 + self.x2), 1 / 3 * (self.y0 + self.y1 + self.y2)
+        return 1 / 4 * (self.x0 + self.x1 + self.x2 + self.x3), 1 / 4 * (self.y0 + self.y1 + self.y2 + self.y3)
 
     # Constructor
     def __init__(self, canvas: Canvas, x, y, width, height, turnspeed, acceleration=1):
         self._d = {'Up':1, 'Down':-1, 'Left':1, 'Right':-1}
-        self.color = ["white","red","blue","green","yellow"]
-        self.currentColor = 0
+        self.Sizes = {"Big": 10, "Small": -10}
+        self.colors = ["white", "red", "green", "blue", "cyan", "yellow", "magenta" ]
+        self.currentColor = self.colors[0]
         self.canvas = canvas
         self.width = width
         self.height = height
         self.speed = 0
         self.turnspeed = turnspeed
         self.acceleration = acceleration
+        self.second = False
 
         self.x0, self.y0 = x-self.width, y - self.height
 
@@ -42,14 +44,37 @@ class Ship:
         self.x, self.y = self.centroid()
        
 
-        self.ship = self.canvas.create_polygon((self.x0, self.y0, self.x1, self.y1, self.x2, self.y2,self.x3,self.y3), outline=self.color[self.currentColor], width=3)
+        self.ship = self.canvas.create_polygon((self.x0, self.y0, self.x1, self.y1, self.x2, self.y2,self.x3,self.y3), outline=self.currentColor, width=3)
 
     # changeCoords: None -> None
     # Actualiza las coordenadas de la figura ship
     def changeCoords(self):
-        self.canvas.coords(self.ship,self.x0, self.y0, self.x1, self.y1, self.x2, self.y2)
+        self.canvas.coords(self.ship,self.x0, self.y0, self.x1, self.y1, self.x2, self.y2,self.x3,self.y3)
         
-    
+    def changeColor(self):
+        self.currentColor = self.colors[self.colors.index(self.currentColor) -1]  
+        self.canvas.itemconfig(self.ship,outline=self.currentColor)
+        
+    def changeSize(self,event=None):
+        self.width, self.height = self.width + self.Sizes[event], self.height + self.Sizes[event]
+
+        if self.second:
+            self.x0, self.y0 = self.x , self.y 
+        else:
+            self.x0, self.y0 = self.x-self.width , self.y +self.height
+
+        self.x2 = self.x0 + self.width
+        self.y2 = self.y0 - self.height
+
+        self.x1 = self.x0 + self.width
+        self.y1 = self.y0
+        
+        self.x3 , self.y3 = self.x0, self.y2
+        
+        self.x, self.y = self.centroid()
+
+        self.changeCoords()
+        self.second = not self.second
     # rotate: event -> None
     # Si se produce un evento que utilice esta función, rota la figura ship
     def rotate(self, event=None):
@@ -70,6 +95,7 @@ class Ship:
         self.x0, self.y0 = _rot(self.x0, self.y0)
         self.x1, self.y1 = _rot(self.x1, self.y1)
         self.x2, self.y2 = _rot(self.x2, self.y2)
+        self.x3, self.y3 = _rot(self.x3, self.y3)
         self.x, self.y = self.centroid()
 
         self.changeCoords()
@@ -85,10 +111,13 @@ class Ship:
         self.x0 += self.speed * math.cos(self.bearing)
         self.x1 += self.speed * math.cos(self.bearing)
         self.x2 += self.speed * math.cos(self.bearing)
+        self.x3 += self.speed * math.cos(self.bearing)
 
         self.y0 += self.speed * math.sin(self.bearing)
         self.y1 += self.speed * math.sin(self.bearing)
         self.y2 += self.speed * math.sin(self.bearing)
+        self.y3 += self.speed * math.sin(self.bearing)
+        
 
         self.x, self.y = self.centroid()
       
@@ -96,19 +125,23 @@ class Ship:
             self.y0 += mh
             self.y1 += mh
             self.y2 += mh
+            self.y3 += mh
         elif self.y > mh + self.height / 2:
             self.y0 -= mh
             self.y1 -= mh
             self.y2 -= mh
+            self.y3 -= mh
 
         if self.x < -self.width / 2:
             self.x0 += mw
             self.x1 += mw
             self.x2 += mw
+            self.x3 += mw
         elif self.x > mw + self.width / 2:
             self.x0 -= mw
             self.x1 -= mw
             self.x2 -= mw
+            self.x3 -= mw
             
         self.x, self.y = self.centroid()
 

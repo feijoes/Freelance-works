@@ -18,6 +18,9 @@ class Game:
         self.root.bind('<Right>', self.ship.rotate)
         self.root.bind('<Up>', self.ship.accel)
         self.root.bind('<Down>', self.ship.accel)
+        Button(self.controls, text='Color', width=10,height=2, bd='1', command=self.ship.changeColor).place(x=100,y=10)
+        Button(self.controls, text='Big', width=10,height=2, bd='1', command=lambda: self.ship.changeSize("Big")).place(x=400,y=10)
+        Button(self.controls, text='Small', width=10,height=2, bd='1', command=lambda: self.ship.changeSize("Small")).place(x=300,y=10)
 
         self.root.mainloop()
 
@@ -27,10 +30,13 @@ class Game:
         self.frame = Frame(self.root)
         self.frame.pack(fill=BOTH, expand=YES)
         
-        self.canvas = Canvas(self.frame,width=self.gameWidth, height=self.gameHeight, bg="black", takefocus=1)
+        self.canvas = Canvas(self.frame,width=self.gameWidth, height=self.gameHeight-100, bg="black", takefocus=1)
         self.canvas.pack(fill=BOTH, expand=YES)     
         
-        self.controls = Canvas(self.frame,width=self.gameWidth, height=100, bg="gray",takefocus=5)
+        self.controls = Canvas(self.frame,width=self.gameWidth, height=100, bg="white",takefocus=5)
         self.controls.pack(fill=BOTH)
+        
+  
+        
 
 asteroids = Game(600,600)
