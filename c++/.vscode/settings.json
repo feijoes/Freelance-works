@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "*.ejs": "html",
+        "*.py": "python",
+        "iostream": "cpp",
+        "string": "cpp",
+        "xstring": "cpp"
+    }
+}

@@ -28,7 +28,7 @@ namespace GUI
             Console.WriteLine(dia);
             DateTime date = DateTime.Parse(dia + "/" + mes + "/" +ano);
             TimeSpan myAge = DateTime.Now.Subtract(date);
-            MessageBox.Show("You are " + myAge.TotalDays + " days old!");
+            MessageBox.Show("You are " + ((int)myAge.TotalDays) + " days old!");
         }
 
         private void label1_Click(object sender, EventArgs e)

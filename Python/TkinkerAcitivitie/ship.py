@@ -1,5 +1,5 @@
 import math
-from tkinter import *
+
 # Campos:
 # _d: Dict
 # canvas: canvas
@@ -16,7 +16,7 @@ class Ship:
         return 1 / 4 * (self.x0 + self.x1 + self.x2 + self.x3), 1 / 4 * (self.y0 + self.y1 + self.y2 + self.y3)
 
     # Constructor
-    def __init__(self, canvas: Canvas, x, y, width, height, turnspeed, acceleration=1):
+    def __init__(self, canvas, x, y, width, height, turnspeed, acceleration=1):
         self._d = {'Up':1, 'Down':-1, 'Left':1, 'Right':-1}
         self.Sizes = {"Big": 10, "Small": -10}
         self.colors = ["white", "red", "green", "blue", "cyan", "yellow", "magenta" ]
