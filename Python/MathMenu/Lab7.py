@@ -1,9 +1,12 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+
+function: str = sys.argv[1]
 
 
-def f(x):
+def f(x) -> float: 
   return 0.2 + 25 * x - 200 * (x**2) + 675 * (x**3) - 900 * (x**4) + 400 * (x**5)
 
 
@@ -48,27 +51,27 @@ def simpson13(a, b, n):
   return integration * h / 3
 
 
+
 a = eval(input("Limite inferior (a): "))
 b = eval(input("Limite superior (b): "))
 n = eval(input("Numero de tramos:\n"))
 #a = 0
 #b = 0.8
 #n = 10
+if function == "simpson38":
+    simpson38_integration = simpson38(a, b, n)
+    print(f"El área bajo la curva usando el método de simpson 3/8 es {simpson38_integration}")
 
-simpson38_integration = simpson38(a, b, n)
-print(
-  f"El área bajo la curva usando el método de simpson 3/8 es {simpson38_integration}"
-)
-
-simpson13_integration = simpson13(a, b, n)
-print(
-  f"El área bajo la curva usando el método de simpson 1/3 es {simpson13_integration}"
-)
-
-trapezoidal_integration = trapezoidal(a, b, n)
-print(
-  f"El área bajo la curva usando el método de los trapecios es {trapezoidal_integration}"
-)
+if function == "simpson13":
+    simpson13_integration = simpson13(a, b, n)
+    print(
+      f"El área bajo la curva usando el método de simpson 1/3 es {simpson13_integration}"
+    )
+if function == "trapezoidal":
+    trapezoidal_integration = trapezoidal(a, b, n)
+    print(
+      f"El área bajo la curva usando el método de los trapecios es {trapezoidal_integration}"
+    )
 
 # Graficas
 x = np.linspace(a, b, n * 100)
@@ -81,17 +84,20 @@ fp = f(p)
 ax.plot(x, y)
 plt.plot(p, fp, color="orange", marker="o")
 plt.legend(["f(x)", "muestras"], loc="upper right")
-plt.text((b - a) / 2,
-         0.6,
-         "$\mathregular{I_{tr} = %.3f}$" % (trapezoidal_integration),
-         fontsize=15,
-         ha="center")
-plt.text((b - a) / 2,
+if function == "trapezoidal":
+    plt.text((b - a) / 2,
+            0.6,
+            "$\mathregular{I_{tr} = %.3f}$" % (trapezoidal_integration),
+            fontsize=15,
+            ha="center")
+if function == "simpson38":
+    plt.text((b - a) / 2,
          1,
          "$\mathregular{I_{38} = %.3f}$" % (simpson38_integration),
          fontsize=15,
          ha="center")
-plt.text((b - a) / 2,
+if function == "simpson13":
+    plt.text((b - a) / 2,
          1.4,
          "$\mathregular{I_{13} = %.3f}$" % (simpson13_integration),
          fontsize=15,
