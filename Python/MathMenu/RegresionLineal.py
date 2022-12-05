@@ -46,7 +46,3 @@ def main():
 		\nb = {}".format(b[1], b[0]))
 
     plot_regression_line(x, y, b)
-
-
-if __name__ == "__main__":
-    main()
