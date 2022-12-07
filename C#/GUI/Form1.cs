@@ -23,9 +23,6 @@ namespace GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(ano);
-            Console.WriteLine(mes);
-            Console.WriteLine(dia);
             DateTime date = DateTime.Parse(dia + "/" + mes + "/" +ano);
             TimeSpan myAge = DateTime.Now.Subtract(date);
             MessageBox.Show("You are " + ((int)myAge.TotalDays) + " days old!");
