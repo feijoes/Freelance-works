@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <body >
+  <center>
+    <p>El proceso se repite hasta el DNI sea diferente de 0</p>
+
+    DNI: <input id="DNI" type="text" name="fname" /><br /><br />
+    Tipo de Cargo:
+    <select id="mySelect">
+      <option>Operador</option>
+      <option>Programador</option>
+      <option>Supervisor informatico</option>
+      <option>Supervisor funcional</option>
+      <option>Responsable del area</option>
+    </select>
+    <br /><br />
+    <input type="button" id="btn" value="Submit" />
+
+    <div id="hideDiv" style="display: none">No agregaste ningun DNI</div>
+
+    <script>
+      const dictDePersonas = {
+        "Operador": 0,
+        "Programador" : 0,
+        "Supervisor informatico": 0,
+        "Supervisor funcional": 0,
+        "Responsable del area": 0
+      }
+      const input = document.getElementById("DNI")
+      const select = document.getElementById("mySelect")
+      const box =document.getElementById("hideDiv")
+      const btn = document.getElementById("btn")
+
+      btn.addEventListener('click', function handleClick() {
+        if (input.value === '0') {
+          box.style.display = 'block';
+          box.innerHTML = "<h1>Numero de Personas</h1><br>";
+          for(key in dictDePersonas){
+            box.innerHTML += `<p>${key} : ${dictDePersonas[key]}</p><br>`;
+          }
+         
+          
+        } else{
+          dictDePersonas[select.value] += 1
+          input.value = ""
+        }
+      });
+    </script>
+    </center>
+  </body>
+</html>
