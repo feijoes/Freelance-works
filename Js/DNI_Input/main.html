@@ -1,51 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <body >
-  <center>
-    <p>El proceso se repite hasta el DNI sea diferente de 0</p>
-
-    DNI: <input id="DNI" type="text" name="fname" /><br /><br />
-    Tipo de Cargo:
-    <select id="mySelect">
-      <option>Operador</option>
-      <option>Programador</option>
-      <option>Supervisor informatico</option>
-      <option>Supervisor funcional</option>
-      <option>Responsable del area</option>
-    </select>
-    <br /><br />
-    <input type="button" id="btn" value="Submit" />
-
-    <div id="hideDiv" style="display: none">No agregaste ningun DNI</div>
-
+  <body>
     <script>
       const dictDePersonas = {
-        "Operador": 0,
-        "Programador" : 0,
-        "Supervisor informatico": 0,
-        "Supervisor funcional": 0,
-        "Responsable del area": 0
-      }
-      const input = document.getElementById("DNI")
-      const select = document.getElementById("mySelect")
-      const box =document.getElementById("hideDiv")
-      const btn = document.getElementById("btn")
-
-      btn.addEventListener('click', function handleClick() {
-        if (input.value === '0') {
-          box.style.display = 'block';
-          box.innerHTML = "<h1>Numero de Personas</h1><br>";
-          for(key in dictDePersonas){
-            box.innerHTML += `<p>${key} : ${dictDePersonas[key]}</p><br>`;
-          }
-         
-          
-        } else{
-          dictDePersonas[select.value] += 1
-          input.value = ""
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+      };
+      while (true){
+        const DNI = prompt("Indicar DNI");
+        if (DNI === "0"){
+          break
         }
-      });
+        const cargo = prompt("Indicar cargo \n1 Operador\n2 Programador\n3 Supervisor informatico\n4 Supervisor funcional\n5 Responsable del area")
+        dictDePersonas[cargo] += 1
+       
+      String()
+        
+      }
+      let string = ""
+      number = 1
+      const Lista =  ["Operador","Programador","Supervisor informatico","Supervisor funcional" ,"Responsable del area"]
+      for(let i=0;i<Lista.length;i++)
+      {
+        
+        string += Lista[i] + " : " + dictDePersonas[number.toString()] + "\n"
+        number += 1
+      }
+      document.write(string)
+      
+      
+     
+
     </script>
-    </center>
   </body>
 </html>
