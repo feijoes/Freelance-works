@@ -1,31 +1,31 @@
 # Activities
 
-### Practica19-2022
+## Practica19-2022
 [practica19-2022.pdf](https://github.com/feijoes/Frelance-works/files/9815111/practica19-2022.pdf)
 
-### DecifrarMensaje
+## DecifrarMensaje
 ![Decifra mesanje](https://user-images.githubusercontent.com/74252371/200094621-e1d25117-ee56-4081-8ed4-25aeeef98420.jpeg)
 
 
-### ICC-211-Homework-1
+## ICC-211-Homework-1
 [ICC-211-Homework-1-Fall-2022 (3).pdf](https://github.com/feijoes/Frelance-works/files/9942711/ICC-211-Homework-1-Fall-2022.3.pdf)
 
 
-### ISC-423 ESTRUCTRAS DE DATOS
+## ISC-423 ESTRUCTRAS DE DATOS
 [ISC-423 ESTRUCTRAS DE DATOS.pdf](https://github.com/feijoes/Frelance-works/files/10060604/ICC-211-Lab-4-Fall-2022.pdf)
 
 
-### TkinkerActivitie
+## TkinkerActivitie
 ![thiker activitie](https://user-images.githubusercontent.com/74252371/203875981-3d16a0c1-2803-43cc-a4da-adde44db6e10.jpeg)
   * Reference [Referencia.pdf](https://github.com/feijoes/Frelance-works/files/10093404/202211242205A0E76F74C1350F54__Referencia.pdf)
 
-### MathMenu
+## MathMenu
   Project to make a menu for with python program run
 
-### Multithread_matrix
+## Multithread_matrix
   * Program to multiplcate matrix using multithread
 
-### ClassExercises
+## ClassExercises
 <p float="left">
 <img src="https://user-images.githubusercontent.com/74252371/210628482-233d6a47-6065-4883-8525-12eb715447f2.jpeg"  width="440"/>
 <img src="https://user-images.githubusercontent.com/74252371/210628488-a87acdfb-abf5-4d4d-a6be-dccb79a74d47.jpeg"  width="440"/>
