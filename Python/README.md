@@ -25,3 +25,12 @@
 ### Multithread_matrix
   * Program to multiplcate matrix using multithread
 
+### ClassExercises
+<p float="left">
+<img src="https://user-images.githubusercontent.com/74252371/210628482-233d6a47-6065-4883-8525-12eb715447f2.jpeg"  width="440"/>
+<img src="https://user-images.githubusercontent.com/74252371/210628488-a87acdfb-abf5-4d4d-a6be-dccb79a74d47.jpeg"  width="440"/>
+</p>
+<p float="left">
+<img src="https://user-images.githubusercontent.com/74252371/210628492-76cecc7f-2120-4f7e-a3f8-80d0e55a291f.jpeg"  width="440"/>
+<img src="https://user-images.githubusercontent.com/74252371/210628497-516e8ada-9950-4597-802b-30747c091093.jpeg"  width="490"/>
+</p>
