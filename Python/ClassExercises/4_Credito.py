@@ -1,7 +1,10 @@
 class Credito():
-    def __init__(self,titular,nCuotas,total,saldo):
+    def __init__(self,titular,nCuotas,saldo):
         self.titular = titular
         self.nCuotas = nCuotas
+        total = 0
+        for i in nCuotas:
+            total += i.monto_a_pagar
         self.total = total
         self.saldo = saldo
         self.estado = "vigente"
@@ -19,9 +22,9 @@ class Credito():
         
     def pagar(self):
         for i in self.nCuotas:
-            self.total -= i.total_a_pagar
+            self.saldo -= i.total_a_pagar
             i.actualizarEstado()
-        self.actualizarEstado
+        self.actualizarEstado()
     
 class Cuota():
     def __init__(self,nCuota,monto_a_pagar):
@@ -36,3 +39,8 @@ class Cuota():
             self.estado = "pendiente"
         else: 
             self.estado = "pagado"
+            
+credito = Credito("Cretido para funcionarios",[Cuota(1,1000),Cuota(2,3000)],10_000)
+print("Pagando las cuotas")
+credito.pagar()
+print(f"Pagado la cuotas el estado del credito es {credito.estado}")

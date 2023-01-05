@@ -17,8 +17,8 @@ load_dotenv()
 api_id  = int(os.getenv('APP_ID'))
 api_hash = os.getenv('API_HASH')
 
-phone = '+34000000000'     
-client = TelegramClient(phone, api_id, api_hash)
+phone = '+59891363661'     
+client :TelegramClient = TelegramClient(phone, api_id, api_hash)
 
 client.connect()
 if not client.is_user_authorized():
@@ -41,7 +41,7 @@ def add_users_to_group():
                 print ('users without id or access_hash')
             users.append(user)
 
-    #random.shuffle(users)
+    random.shuffle(users)
     chats = []
     last_date = None
     chunk_size = 10
