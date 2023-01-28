@@ -1,17 +1,10 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
+import os
 
+def main():
+    with open(".env") as f:
+        lines: list[str] = [line.strip("\n") for line in f.readlines()]
+        user , password = lines[0] ,lines[1]
+        
+    os.system(f"seleniumBot.py {user} {password}")
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--disable-extensions')
-chrome_options.add_argument('--profile-directory=Default')
-chrome_options.add_argument("--disable-plugins-discovery")
-chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-chrome_options.add_experimental_option('useAutomationExtension', False)
-chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options) 
-
-driver.get('https://blaze.com/pt/')
+main()
