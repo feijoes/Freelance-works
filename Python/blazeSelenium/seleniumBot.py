@@ -3,8 +3,15 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from time import sleep
+import requests
 
-# options
+
+# api-endpoint
+URL = "http://127.0.0.1:8000"
+  
+# sending get request and saving the response as response object
+
+
 def getDriver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--incognito")
@@ -32,9 +39,11 @@ def login(user: str,password: str):
 def getDouble():
     driver = getDriver()
     driver.get("https://blaze.com/pt/games/double")
-    sleep(10)
-    lastNumber = driver.find_element(By.XPATH,'//*[@id="roulette-recent"]/div/div[1]/div[1]/div/div/div').text
-    print(lastNumber)
+    while True:
+        
+        sleep(10)
+        lastNumber = driver.find_element(By.XPATH,'//*[@id="roulette-recent"]/div/div[1]/div[1]/div/div/div').text
+        requests.post(URL,json= {"text": lastNumber, "date": "2"})
     
     
 
