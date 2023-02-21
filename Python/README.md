@@ -38,3 +38,5 @@
 <img src="https://user-images.githubusercontent.com/74252371/210628497-516e8ada-9950-4597-802b-30747c091093.jpeg"  width="490"/>
 </p>
 
+## WordPress_images
+  Selenium automatization to add images in products of a wordpress web site
