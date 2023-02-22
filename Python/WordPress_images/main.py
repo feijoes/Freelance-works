@@ -10,4 +10,5 @@ PASSWORD = os.getenv('PASSWORD')
 
 bot = seleniumBot.Bot()
 bot.login( USERNAME, PASSWORD )
-bot.get_products(386)
+a = bot.get_products(386)
+bot.edit_image_product(a[0])
