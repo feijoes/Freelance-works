@@ -32,29 +32,51 @@ class Bot():
         self.driver.find_element(By.XPATH, '//*[@id="user_pass"]' ).send_keys( password )
         self.driver.find_element(By.XPATH, '//*[@id="wp-submit"]').click()
         
-    def get_products(self, pagina:int ):
-        self.driver.get(f'https://flosamed.mx/wp-admin/edit.php?post_type=product&all_posts=1&paged={pagina}')
+    def get_products(self, page:int ) -> dict[str:int]:
+        self.driver.get(f'https://flosamed.mx/wp-admin/edit.php?post_type=product&all_posts=1&paged={page}')
         products: list[WebElement] = self.driver.find_elements(By.XPATH,'//*[@id="the-list"]/*/td[1]/a/img')
-        id_products:list[str] = []
+        id_products:dict[str:int] = []
 
         for product in products:
+            
             if  "woocommerce-placeholder" in product.get_attribute("class"):
-                link = product.find_element(By.XPATH,'..').get_attribute("href")
-                id_products.append(re.search(r'post=(\d+)', link ).group(1))
-    
+                
+                link_tag = product.find_element(By.XPATH,'..')
+                nombre = link_tag.find_element(By.XPATH,'..').find_element(By.XPATH,'..').find_element(By.XPATH,'//*/td[2]/strong/a').text
+                id = re.search(r'post=(\d+)', link_tag.get_attribute("href") ).group(1)
+                id_products.append({"nombre": nombre, "id": id , "error" : ""})
+        
+        
         return id_products
     
-    def edit_image_product(self, post_id:int, path:str="" ,URL:str="https://odontodo.mx/wp-content/uploads/2021/08/CAMPOS-BOLSA-CON-50-MEDICOM-COLORES.jpg"):
-        
+    def find_image(self, nombre:str,id:int,path:str)-> None:
+        self.driver.get(f'https://www.google.com/search?q={nombre.replace(" ","+")}')
+        self.driver.find_element(By.XPATH, '//*[@id="hdtb-msb"]/div[1]/div/div[2]/a').click()
+        self.driver.find_element(By.XPATH, '//*[@id="islrg"]/div[1]/div[1]').click()
+        sleep(3)
+        URL = self.driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div/div[2]/div[2]/div[2]/c-wiz/div/div[1]/div[2]/div[2]/div/a/img').get_attribute("src")
         picture_req = requests.get(URL,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0'})
         if picture_req.status_code == 200:
-            with open("file_name.jpg", 'wb') as f:
+            os.makedirs(os.path.dirname(path + id), exist_ok=True)
+            with open(f"{path + id}.jpg", 'wb') as f:
                 f.write(picture_req.content)
         
+        return 
+    
+    def edit_image_product(self, post_id:int, path:str,name:str):
+        
+        
         self.driver.get(f'https://flosamed.mx/wp-admin/media-upload.php?post_id={post_id}&type=image')
-        self.driver.find_element(By.XPATH,'//*[@id="plupload-upload-ui"]/p/a').click()
-        self.driver.find_element(By.XPATH,'//*[@id="async-upload"]').send_keys("file_name.jpg")
-        sleep(212)         
+    
+        #self.driver.find_element(By.XPATH,'//*[@id="plupload-upload-ui"]/p/a').click()
+        self.driver.find_element(By.XPATH,'//*[@id="async-upload"]').send_keys(os.path.dirname(__file__)+"\\"+path)
+        
+        sleep(4)
+        self.driver.find_element(By.XPATH,'//*[@id="html-upload"]').click()
+        self.driver(finally)
+        sleep(100)
+        
 
+    
 a = '<img width="370" height="250" src="https://flosamed.mx/wp-content/uploads/woocommerce-placeholder-370x250.png" class="woocommerce-placeholder wp-post-image" alt="Marcador" decoding="async" loading="lazy">'
 test  = 'https://flosamed.mx/wp-admin/edit.php?s&post_status=all&post_type=product&action=-1&product_cat&product_type&stock_status&paged=386&action2=-1'
