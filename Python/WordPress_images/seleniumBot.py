@@ -21,7 +21,7 @@ chrome_options.add_argument('--disable-blink-features=AutomationControlled')
 
 class Bot():
     driver: webdriver.Chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options) 
-    categorias = ["patente","ortopedia"]
+    
     def __init__(self) -> None:
         self.driver.implicitly_wait(10)
         
@@ -36,11 +36,13 @@ class Bot():
         self.driver.get(f'https://flosamed.mx/wp-admin/edit.php?post_type=product&all_posts=1&paged={page}')
         products: list[WebElement] = self.driver.find_elements(By.XPATH,'//*[@id="the-list"]/*')
         id_products:dict[str:int] = []
-
+        
+        count = 1
         for product in products:
             
             if  "woocommerce-placeholder" in product.find_element(By.XPATH,f'//*[@id="{product.get_attribute("id")}"]/td[1]/a/img').get_attribute("class"):
-                
+                print(count)
+                count+=1
                 link_tag = product.find_element(By.XPATH,f'//*[@id="{product.get_attribute("id")}"]/td[1]/a')
                 nombre = link_tag.find_element(By.XPATH,f'//*[@id="{product.get_attribute("id")}"]/td[2]/strong/a').text
                 id = re.search(r'post=(\d+)', link_tag.get_attribute("href") ).group(1)
@@ -59,19 +61,22 @@ class Bot():
                 sleep(3)
             
                 URL = self.driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div/div[2]/div[2]/div[2]/c-wiz/div/div[1]/div[2]/div[2]/div/a/img').get_attribute("src")
-                if URL.startswith("data:image"):
+                if not URL.startswith("data:image"):
                     break
+                if num >10:
+                    break
+                num += 1
+                
             picture_req = requests.get(URL,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0'})
             if picture_req.status_code == 200:
                 os.makedirs(os.path.dirname(path + id), exist_ok=True)
+    
                 with open(f"{path + id}.jpg", 'wb') as f:
                     f.write(picture_req.content)
+            
         except Exception as e:
-
             file_object = open('fail.txt', 'a')
-# Append 'hello' at the end of file
             file_object.write(id  + "\n")
-# Close the file
             file_object.close()
             return False
         return True
@@ -89,9 +94,7 @@ class Bot():
             self.driver.find_elements(By.XPATH,'//*[@id="save"]')[-1].click()
         except Exception as e:
             file_object = open('fail.txt', 'a')
-# Append 'hello' at the end of file
             file_object.write(str(post_id) + "\n")
-# Close the file
             file_object.close()
         
         
