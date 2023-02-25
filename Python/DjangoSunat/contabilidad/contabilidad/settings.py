@@ -30,7 +30,10 @@ ALLOWED_HOSTS = []
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Application definition
-TOKEN = "ssksksks"
+CLIENT_ID = "29bf3f3a-7d9c-4545-a7cb-25ac195ee528"
+CLIENT_SECRET = "JVtBQ9yMtbtg2mmRwOsinQ=="
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

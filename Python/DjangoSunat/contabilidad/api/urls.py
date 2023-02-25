@@ -2,6 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
- 
+    path('ruc', views.index, name='index'),
+    path('nruc', views.Ruc,name="ruc")
 ]

@@ -1,0 +1,39 @@
+
+{% extends "main.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body %}
+
+<form method="POST" action="{% url 'ruc' %}" class="post-form">  
+        {% csrf_token %}  
+         {{form|crispy}}
+        <button type="submit" class="save btn btn-primary">Confirmar</button>  
+</form>  
+{% if messageValido %}
+        <div style="display:flex"><img width="20px" src="{% static '4436481.png' %}"> <h2>{{messageValido}}</h2></div>
+{% else %}
+{% endif %}
+{% if messageNoValido %}
+        <div style="display:flex"><img width="20px" src="{% static '5219070.png' %}"><h2>{{messageNoValido}}</h2></div>
+{% else %}
+{% endif %}
+{% if info %}
+<div class="d-flex justify-content-center">
+  <ul class="list-group rounded-0">
+        {% for key in info.keys %}
+            <li class="list-group-item list-group-item-secondary border-right-0">{{key}}</li>
+        {% endfor %}
+  </ul>
+  <ul class="list-group rounded-0">
+   {% for value in info.values %}
+       {% if value %}
+        <li class="list-group-item border-left-0">{{value}}</li>
+       {% else %}
+        <li class="list-group-item border-left-0">-</li>
+       {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+{% endif %}
+{% endblock %}

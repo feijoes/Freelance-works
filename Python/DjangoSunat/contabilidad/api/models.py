@@ -1,51 +1,45 @@
 from django.db import models
 
 # Create your models here.
-
-class TipoComprobante(models.Model):
-    OPCIONES_COMPROBANTE = [
-        ('01', 'Factura'),
-        ('02', 'Boleta'),
-        ('05', 'Nota de crédito'),
+class NRuc_info(models.Model):
+    ESTADO_CONTRIBUYENTE = [
+        ('00', 'ACTIVO'),
+        ('01', 'BAJA PROVISIONAL'),
+        ('02', 'BAJA PROV. POR OFICIO'),
+        ('03', 'SUSPENSION TEMPORAL'),
+        ('10', 'BAJA DEFINITIVA'),
+        ('11', 'BAJA DE OFICIO'),
+        ('22', 'INHABILITADO-VENT.UNICA'),
     ]
+    CONDICION_DOMICILIO_CONTRIBUYENTE = [
+        ('00', 'HABIDO'),
+        ('09', 'PENDIENTE'),
+        ('11', 'POR VERIFICAR'),
+        ('12', 'NO HABIDO'),
+        ('20', 'NO HALLADO'),
+    ]
+    ruc= models.CharField(max_length=11,primary_key=True)
+    nombre = models.CharField(max_length=255)
+    tipoDocumento = models.CharField(max_length=255)
+    numeroDocumento = models.CharField(max_length=255)
+    estado = models.CharField(max_length=255,choices=ESTADO_CONTRIBUYENTE,default="ACTIVO")
+    condicion = models.CharField(max_length=255,choices=CONDICION_DOMICILIO_CONTRIBUYENTE)
+    direccion = models.CharField(max_length=255)
+    ubigeo = models.CharField(max_length=255)
+    viaTipo = models.CharField(max_length=255)
+    viaNombre =models.CharField(max_length=255)
+    zonaCodigo = models.CharField(max_length=255)
+    zonaTipo = models.CharField(max_length=255)
+    numero = models.CharField(max_length=255)
+    interior = models.CharField(max_length=255)
+    lote = models.CharField(max_length=255)
+    dpto = models.CharField(max_length=255)
+    manzana = models.CharField(blank=True,max_length=255)
+    kilometro = models.CharField(blank=True,max_length=255)
+    distrito = models.CharField(blank=True,max_length=255)
+    provincia = models.CharField(blank=True,max_length=255)
+    departamento = models.CharField(blank=True,max_length=255)
     
-    TIPO_MONEDA = [
-        ('soles', 'Soles'),
-        ('dolares', 'Dolares'),       
-    ]
-
-    GLOSA_GENERAL = [
-        ('combustible', 'Combustible'),
-        ('sctr', 'SCTR'),
-        ('examen_medico', 'EXAMEN MEDICO'),
-    ]
-
-    IGV = [
-        ('18', '18%'),
-        ('10', '10%'),
-        ('0', '0%'),
-    ]
-
-
-    tipo_comprobante = models.CharField(max_length=20, choices=OPCIONES_COMPROBANTE, default='Factura')
-    tipo_moneda = models.CharField(max_length=20, choices=TIPO_MONEDA, default='Soles')
-    serieFactura=models.CharField(max_length=50)
-    numeroFactura =models.CharField(max_length=50)
-    glosa_general = models.CharField(max_length=20, choices=GLOSA_GENERAL)
-    fecha_emision = models.DateField()
-    ruc_emisor = models.CharField(max_length=11, default='')
-    ruc_receptor = models.CharField(max_length=11)
-    glosa_especifica = models.CharField(max_length=255, default='Glosa por defecto')
-    igv = models.CharField(max_length=20, choices=IGV, default='18%')
-    sub_total = models.DecimalField(max_digits=10, decimal_places=2)
-    monto_igv = models.DecimalField(max_digits=10, decimal_places=2)
-    monto_total = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-    def __str__(self):
-        return f"{self.tipo_comprobante} - {self.tipo_moneda} - {self.serieFactura} - {self.numeroFactura} - {self.ruc_emisor} - ({self.fecha_emision}) - {self.monto_total}"
-
-
 class RucVerificado(models.Model):
     ESTADO_CONTRIBUYENTE = [
         ('00', 'ACTIVO'),
@@ -71,11 +65,13 @@ class RucVerificado(models.Model):
         ("3","AUTORIZADO"),
         ("4","NO AUTORIZADO"),
     ]
-    success  = models.BooleanField()
-    estadoCp =  models.CharField(max_length=20, choices=ESTADO_COPROBANTE, default='NO EXISTE')
-    estadoRuc = models.CharField(max_length=20, choices=ESTADO_CONTRIBUYENTE, default='ACTIVO')
-    condDomiRuc = models.CharField(max_length=20, choices=CONDICION_DOMICILIO_CONTRIBUYENTE, default='HABIDO')
+    razonSocial = models.CharField(max_length=255)
+    estadoCp =  models.CharField(max_length=20, choices=ESTADO_COPROBANTE, default='NO EXISTE',null=True,blank=True)
+    estadoRuc = models.CharField(max_length=20, choices=ESTADO_CONTRIBUYENTE, default='ACTIVO',null=True,blank=True)
+    condDomiRuc = models.CharField(max_length=20, choices=CONDICION_DOMICILIO_CONTRIBUYENTE, default='HABIDO',null=True,blank=True)
+    ruc_info =  models.ForeignKey(NRuc_info,on_delete=models.CASCADE)
     
+
     
 class VerificarRuc(models.Model):
     
@@ -94,5 +90,10 @@ class VerificarRuc(models.Model):
     numero = models.IntegerField()
     fechaEmision = models.DateField()
     monto = models.DecimalField(max_digits=10,decimal_places=2,blank=True,null=True)
+   
+
     
     
+    
+    
+   
