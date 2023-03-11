@@ -1,0 +1,22 @@
+la class math cuenta con 3 clases y 45 metodo
+BigDecimal	
+BigInteger	
+MathContext
+
+la classe String cuenta con los metodos para comparar strings
+
+equals(Object obj): Este método compara si la cadena actual es igual a la cadena especificada en el objeto obj. Retorna true si son iguales y false si no lo son.
+
+equalsIgnoreCase(String anotherString): Este método compara si la cadena actual es igual a la cadena especificada en anotherString ignorando las diferencias entre mayúsculas y minúsculas. Retorna true si son iguales y false si no lo son.
+
+compareTo(String anotherString): Este método compara la cadena actual con la cadena especificada en anotherString y devuelve un valor entero. Retorna un valor negativo si la cadena actual es menor que anotherString, un valor positivo si es mayor y 0 si son iguales.
+
+compareToIgnoreCase(String str): Este método compara la cadena actual con la cadena especificada en str ignorando las diferencias entre mayúsculas y minúsculas, y devuelve un valor entero. Retorna un valor negativo si la cadena actual es menor que str, un valor positivo si es mayor y 0 si son iguales.
+
+contentEquals(CharSequence cs): Este método compara si la cadena actual es igual a la secuencia de caracteres especificada en cs. Retorna true si son iguales y false si no lo son.
+
+regionMatches(int toffset, String other, int ooffset, int len): Este método compara una subcadena de la cadena actual con una subcadena de la cadena especificada en other. El parámetro toffset especifica el índice de inicio de la subcadena de la cadena actual, ooffset especifica el índice de inicio de la subcadena de other y len especifica la longitud de las subcadenas a comparar.
+
+startsWith(String prefix): Este método comprueba si la cadena actual comienza con la subcadena especificada en prefix. Retorna true si la cadena comienza con prefix y false si no lo hace.
+
+endsWith(String suffix): Este método comprueba si la cadena actual termina con la subcadena especificada en suffix. Retorna true si la cadena termina con suffix y false si no lo hace.
