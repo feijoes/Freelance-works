@@ -11,8 +11,8 @@ Most part of it is just university or college projects
     > Bat Projects 
 * C#
     > C# projects
-* Database_fundamentals
-    > Not code projects, just the theory of how database works
+* SQL
+    > SQL projects
 * Html
     > Html projects
 * Java
