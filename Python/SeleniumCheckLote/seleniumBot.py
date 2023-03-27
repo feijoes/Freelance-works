@@ -55,7 +55,7 @@ def check_numero(numeros : list[int],clave: str,API_KEY:str) -> None:
         sleep(1)
         write_in_input((121,570+ margen),clave,0.5)
         pyautogui.screenshot("test.jpg",region=(290,600, 270, 130))
-        printy("sending to 2capcha","")
+        printy("sending to 2capcha","y")
         result = captchaSolver("./test.jpg",API_KEY)
         
         write_in_input((150,787+ margen),result,0.5)
