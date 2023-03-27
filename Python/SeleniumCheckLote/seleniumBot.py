@@ -22,32 +22,33 @@ def write_in_input(img: str, text:str,wait:int):
 def click(img:str):
     pyautogui.moveTo(list(img))
     pyautogui.click()
-import asyncio
-import concurrent.futures
+
 from twocaptcha import TwoCaptcha
 
 
 
-async def captchaSolver(image):
-    loop = asyncio.get_running_loop()
-    with concurrent.future.ThreadPoolExecutor() as pool:
-        result = await loop.run_in_executor(pool, lambda: TwoCaptcha("API_KEY").normal(image))
-        return result
+def captchaSolver(image,key):
+    solver = TwoCaptcha(key)
+    id = solver.send(file=image)
+    sleep(15)
+    code = solver.get_result(id)
+    print(code)
+    return code
 
 
 
-def check_numero(numeros : list[int],clave: str) -> None:
+def check_numero(numeros : list[int],clave: str,API_KEY:str) -> None:
     try:
-        for numero in numeros:
-            for _ in range(20): 
-                inputNumero = pyautogui.locateOnScreen(inputNumeroImg,confidence=.5)
-                if inputNumero:
-                    break
-                sleep(0.5)
-            write_in_input(inputNumeroImg,numero,0.5)
-            sleep(1)
-            write_in_input(inputClaveImg,clave,0.5)
-        
+        #for numero in numeros:
+        #    for _ in range(20): 
+        #        inputNumero = pyautogui.locateOnScreen(inputNumeroImg,confidence=.5)
+        #        if inputNumero:
+        #            break
+        #        sleep(0.5)
+        #    write_in_input(inputNumeroImg,numero,0.5)
+        #    sleep(1)
+        #    write_in_input(inputClaveImg,clave,0.5)
+        #
         pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
         
     
@@ -58,9 +59,9 @@ def check_numero(numeros : list[int],clave: str) -> None:
         text:str = pytesseract.image_to_string(img,config=f'-l eng --psm 12 -c tessedit_char_whitelist=0123456789abcdfghijkmnlopqrsturstuvwxyz')
         print(text.split())
         sleep(4)
-    
-        #result = await captchaSolver("./test.jpg")
-        
+        print("sending to 2capcha")
+        result = captchaSolver("./test.jpg",API_KEY)
+        print(result)
         pyautogui.locateOnScreen(SiguienteImg,confidence=.5)
             
         
