@@ -8,4 +8,8 @@ API_KEY = os.getenv("API_KEY")
 with open("numeros.txt") as f:
     numeros = [x.strip() for x in f.readlines()]
 
-seleniumBot.check_numero(numeros,CLAVE,API_KEY)
+numeros_validos = seleniumBot.check_numero(numeros,CLAVE,API_KEY)
+
+with open("live.txt","a") as f:
+    for i in numeros_validos:
+        f.write(f"{i}\n")
