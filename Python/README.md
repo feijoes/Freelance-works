@@ -46,3 +46,8 @@
 
 ## SeleniumCheckLote
   Selenium app to check valid lote number
+
+## RecetaCocina
+ Tkinker activitie
+ 
+ <img alt="activitie RecetaCocina" src="https://user-images.githubusercontent.com/74252371/229660718-8d8a7f66-8bd4-4afd-a3cb-b951d2375e22.jpeg" width="730"/>
