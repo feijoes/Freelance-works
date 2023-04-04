@@ -1,5 +1,5 @@
 import tkinter as tk
-import csv
+import json
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
@@ -58,30 +58,48 @@ class Recetario:
 
 def cargar_recetas():
     recetario = Recetario()
-    with open("recetas.csv", "r", newline="",encoding="utf-8") as archivo:
-        lector = csv.reader(archivo)
-        for fila in lector:
-            nombre = fila[0]
-            ingredientes = fila[1]
-            instrucciones = fila[2]
-            imagen = fila[3]
-            favorito = fila[4] == "True"
-            receta = Receta(nombre, ingredientes, instrucciones, imagen, favorito)
+    with open("recetas.csv", "r",encoding="utf-8") as archivo:
+        recetas = json.load(archivo)
+        for receta in recetas["recetas"]:
+            nombre = receta["nombre"]
+            ingredientes = receta["ingredientes"]
+            instrucciones = receta["instrucciones"]
+            imagen = receta["imagen"]
+            tiempoPreparacion = receta["tiempoPreparacion"]
+            tiempoCoccion = receta["tiempoCoccion"]
+            favorito = receta["favorito"]
+            receta = Receta(nombre, ingredientes, instrucciones, imagen,tiempoPreparacion,tiempoCoccion, favorito)
             recetario.agregar_receta(receta)
     return recetario
 
 def guardar_recetas(recetario):
-    with open("recetas.csv", "w", newline="",encoding="utf-8") as archivo:
-        escritor = csv.writer(archivo)
+            
+    with open("recetas.json", "r+",encoding="utf-8") as archivo:
+        json_data = json.load(archivo)
         for receta in recetario.recetas:
-            escritor.writerow([receta.nombre, receta.ingredientes, receta.instrucciones, receta.imagen, receta.favorito])
+            recetaDict = {
+                "nombre":receta.nombre, 
+                "ingredientes":receta.ingredientes,
+                "instruciones":receta.instrucciones,
+                "imagen":receta.imagen,
+                "favorito":receta.favorito,
+                "tiempoPreparacion": receta.tiempoPreparacion,
+                "tiempoCoccion": receta.tiempoCoccion
+                }
+            json_data["recetas"].append(recetaDict)
+        json.dumps(json_data,archivo,ensure_ascii=False,indent=4)
+            
+            
 
 def agregar_receta():
     nombre = nombre_entry.get()
     ingredientes = ingredientes_text.get("1.0", "end-1c")
     instrucciones = instrucciones_text.get("1.0", "end-1c")
     imagen = imagen_path.get()
+    tiempoPreparacion
+    tiempoCoccion 
     favorito = False
+    
     receta = Receta(nombre, ingredientes, instrucciones, imagen, favorito)
     recetario.agregar_receta(receta)
     guardar_recetas(recetario)
@@ -193,6 +211,19 @@ imagen_label.grid(row=5, column=0, padx=5, pady=5, columnspan=2)
 
 imagen_path = tk.StringVar()
 imagen_path.set("")
+
+tiempoPreparacion_label = tk.Label(root, text="Tiempo Preparacion")
+tiempoPreparacion_label.grid(row=5, column=4, padx=5, pady=5)
+
+tiempoPreparacion_text = tk.Text(root,height=10)
+tiempoPreparacion_text.grid(row=5, column=4, padx=5, pady=5)
+
+ 
+tiempoCoccion_label = tk.Label(root, text="Tiempo Coccion")
+tiempoCoccion_label.grid(row=5, column=4, padx=5, pady=5)
+
+tiempoCoccion_text = tk.Text(root,height=10)
+tiempoCoccion_text.grid(row=5, column=4, padx=5, pady=5)
 
 cargar_imagen_button = tk.Button(root, text="Cargar imagen", command=cargar_imagen)
 cargar_imagen_button.grid(row=10, column=0, padx=5, pady=5,sticky="s")
