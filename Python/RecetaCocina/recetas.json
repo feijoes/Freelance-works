@@ -1,3 +1,49 @@
 {
-    "recetas": []
+    "recetas": [
+        {
+            "nombre": "3",
+            "ingredientes": [
+                {
+                    "nombre": "1",
+                    "unidadMedida": "2",
+                    "cantidad": "3"
+                },
+                {
+                    "nombre": "d",
+                    "unidadMedida": "d",
+                    "cantidad": "c"
+                }
+            ],
+            "instrucciones": "",
+            "imagen": "",
+            "favorito": false,
+            "tiempoPreparacion": "",
+            "tiempoCoccion": ""
+        },
+        {
+            "nombre": "ddc",
+            "ingredientes": [
+                {
+                    "nombre": "2",
+                    "unidadMedida": "d",
+                    "cantidad": "a"
+                },
+                {
+                    "nombre": "c",
+                    "unidadMedida": "s",
+                    "cantidad": "w"
+                },
+                {
+                    "nombre": "e",
+                    "unidadMedida": "c",
+                    "cantidad": "sa"
+                }
+            ],
+            "instrucciones": "",
+            "imagen": "",
+            "favorito": true,
+            "tiempoPreparacion": "",
+            "tiempoCoccion": ""
+        }
+    ]
 }
