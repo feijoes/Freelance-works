@@ -2,15 +2,15 @@ import tkinter as tk
 import json
 from tkinter import filedialog
 from PIL import ImageTk, Image
-
+from random import choice
 from tkinter import messagebox
-
+from datetime import datetime
 
 class Receta:
     
     """Se define la clase Receta"""
     
-    def __init__(self, nombre, ingredientes, instrucciones, imagen, tiempoPreparacion ,tiempoCoccion , favorito=False):
+    def __init__(self, nombre, ingredientes, instrucciones, imagen, tiempoPreparacion ,tiempoCoccion, fecha , favorito=False):
         self.nombre = nombre
         self.ingredientes = ingredientes
         self.instrucciones = instrucciones
@@ -18,7 +18,7 @@ class Receta:
         self.favorito = favorito
         self.tiempoPreparacion = tiempoPreparacion
         self.tiempoCoccion = tiempoCoccion
-    
+        self.fecha = fecha
     def __dict__(self):
         return {
             "nombre": self.nombre,
@@ -26,6 +26,7 @@ class Receta:
             "instrucciones": self.instrucciones,
             "imagen": self.imagen,
             "favorito": self.favorito,
+            "fechaDeCreacion": self.fecha,
             "tiempoPreparacion": self.tiempoPreparacion,
             "tiempoCoccion": self.tiempoCoccion,
         }
@@ -43,6 +44,7 @@ class Recetario:
     """Se define la clase Recetario"""
     def __init__(self):
         self.recetas = []
+        self.receta_del_dia = None
         
 
     def agregar_receta(self, receta):
@@ -52,6 +54,7 @@ class Recetario:
         self.recetas.remove(receta)
 
     def modificar_receta(self, receta, nuevo_nombre, nuevos_ingredientes, nuevas_instrucciones, nueva_imagen,nuevo_tiempoPreparacion,nuevo_tiempoCoccion,nuevo_favorito=False):
+        fecha = receta.fecha
         self.recetas.remove(receta)
         nueva_receta = Receta(
             nuevo_nombre,
@@ -60,11 +63,15 @@ class Recetario:
             nueva_imagen,
             nuevo_tiempoPreparacion,
             nuevo_tiempoCoccion,
+            fecha,
             nuevo_favorito
         )
         self.recetas.append(nueva_receta)
         return nueva_receta
 
+    def elegir_receta_del_dia(self):
+        
+        self.receta_del_dia = choice(self.recetas)
     def ver_receta(self, receta):
         limpiar_formulario()
         nombre_entry.insert(0, receta.nombre)
@@ -108,8 +115,13 @@ def cargar_recetas():
             tiempoPreparacion = receta["tiempoPreparacion"]
             tiempoCoccion = receta["tiempoCoccion"]
             favorito = receta["favorito"]
+            
             receta = Receta(nombre, ingredientesList, instrucciones, imagen,tiempoPreparacion,tiempoCoccion, favorito)
             recetario.agregar_receta(receta)
+ 
+    if recetario.recetas:
+        recetario.elegir_receta_del_dia()
+
     return recetario
 
 
@@ -145,8 +157,12 @@ def agregar_receta():
     tiempoPreparacion = tiempoPreparacion_text.get("1.0", "end-1c")
     tiempoCoccion = tiempoCoccion_text.get("1.0", "end-1c")
     favorito = False
+    
 
-    receta = Receta(nombre, ingredientesList, instrucciones, imagen,tiempoPreparacion,tiempoCoccion, favorito)
+    now = datetime.now()
+    now = str(now)
+    
+    receta = Receta(nombre, ingredientesList, instrucciones, imagen,tiempoPreparacion,tiempoCoccion,now ,favorito)
     recetario.agregar_receta(receta)
 
     guardar_recetas(recetario)
@@ -173,8 +189,10 @@ def eliminar_receta():
     
 def modificar_receta():
     seleccion = lista_recetas.curselection()
+   
     if seleccion:
         receta = recetario.recetas[seleccion[0]]
+        
         nuevo_nombre = nombre_entry.get()
         nuevos_ingredientes = ingredientes_text.get("1.0", "end-1c")
         nuevos_ingredientesList = IngredientesText_to_List(nuevos_ingredientes)
@@ -186,7 +204,7 @@ def modificar_receta():
         guardar_recetas(recetario,updateReceta=receta)
         limpiar_formulario()
         actualizar_lista_recetas()
-        
+    
 def marcar_favorito():
     seleccion = lista_recetas.curselection()
     if seleccion:
@@ -205,16 +223,27 @@ def marcar_favorito():
         actualizar_lista_recetas()
 def ver_receta():
     seleccion = lista_recetas.curselection()
+    seleccion2 = receta_del_dia.curselection()
+    
     if seleccion:
         receta = recetario.recetas[seleccion[0]]
+    if seleccion2:
+        
+        receta = recetario.recetas[seleccion2[0]]
+    if receta: 
         recetario.ver_receta(receta)
     
 def mostrar_recetas():
-     cursor = lista_recetas.curselection()
-     if cursor:
-        receta = recetario.recetas[cursor[0]]
+    seleccion = lista_recetas.curselection()
+    seleccion2 = receta_del_dia.curselection()
+    receta = None
+   
+    if seleccion:
+        receta = recetario.recetas[seleccion[0]]
+    elif seleccion2:
+        receta = recetario.receta_del_dia
+    if receta: 
         recetario.ver_receta(receta)
-
 
 def cargar_imagen():
     ruta_imagen = filedialog.askopenfilename()
@@ -229,6 +258,8 @@ def actualizar_lista_recetas():
     lista_recetas.delete(0, tk.END)
     for receta in recetario.recetas:
         lista_recetas.insert(tk.END, receta.nombre)
+    if recetario.receta_del_dia:
+        receta_del_dia.insert(tk.END, recetario.receta_del_dia.nombre)
 
 def limpiar_formulario():
     nombre_entry.delete(0, tk.END)
@@ -247,7 +278,7 @@ root = tk.Tk()
 root.title("Recetario")
 
 
-root.geometry('1480x800')
+root.geometry('1480x700')
 
 recetario = cargar_recetas()
 
@@ -306,18 +337,30 @@ eliminar_button.grid(row=8, column=1, padx=5, pady=5)
 modificar_button = tk.Button(root, text="Modificar", command=modificar_receta)
 modificar_button.grid(row=8, column=2, padx=5, pady=5)
 
-ver_button = tk.Button(root, text="Ver", command=mostrar_recetas)
-ver_button.grid(row=8, column=3, padx=5, pady=5)
+
 
 marcar_favorito_button = tk.Button(root, text="Marcar como favorito", command=marcar_favorito)
 marcar_favorito_button.grid(row=8, column=4, padx=5, pady=5)
 
-instrucciones_label = tk.Label(root, text="Recetas:")
-instrucciones_label.grid(row=0, column=3, padx=5, pady=5)
 
-lista_recetas = tk.Listbox(root, width=50, height=10)
-lista_recetas.grid(row=0, column=4, padx=5, pady=5)
+recetas_frames = tk.Frame(root)
+recetas_frames.grid(row=0,column=2)
+
+instrucciones_label = tk.Label(recetas_frames, text="Recetas:")
+instrucciones_label.grid(row=1, column=0, padx=5, pady=5)
+
+lista_recetas = tk.Listbox(recetas_frames, width=50, height=10)
+lista_recetas.grid(row=1, column=1, padx=5, pady=5)
+
 lista_recetas.bind("<<ListboxSelect>>", lambda x: mostrar_recetas())
+
+receta_del_dia_label = tk.Label(recetas_frames, text="Receta del dia")
+receta_del_dia_label.grid(row=0, column=0, padx=5, pady=5)
+
+receta_del_dia = tk.Listbox(recetas_frames, width=15, height=1)
+receta_del_dia.grid(row=0,column=1)
+receta_del_dia.bind("<<ListboxSelect>>", lambda x: mostrar_recetas())
+
 actualizar_lista_recetas()
 
 root.mainloop()

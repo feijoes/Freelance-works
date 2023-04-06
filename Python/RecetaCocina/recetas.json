@@ -1,49 +1,41 @@
 {
     "recetas": [
         {
-            "nombre": "3",
+            "nombre": "s",
             "ingredientes": [
                 {
-                    "nombre": "1",
-                    "unidadMedida": "2",
-                    "cantidad": "3"
-                },
-                {
-                    "nombre": "d",
-                    "unidadMedida": "d",
-                    "cantidad": "c"
+                    "nombre": "s",
+                    "unidadMedida": "ss",
+                    "cantidad": "s"
                 }
             ],
-            "instrucciones": "",
+            "instrucciones": "s",
             "imagen": "",
             "favorito": false,
-            "tiempoPreparacion": "",
-            "tiempoCoccion": ""
+            "fechaDeCreacion": "2023-04-04 16:54:25.277436",
+            "tiempoPreparacion": "1",
+            "tiempoCoccion": "1"
         },
         {
-            "nombre": "ddc",
+            "nombre": "torta",
             "ingredientes": [
                 {
-                    "nombre": "2",
-                    "unidadMedida": "d",
-                    "cantidad": "a"
+                    "nombre": "leche",
+                    "unidadMedida": "40",
+                    "cantidad": "litros"
                 },
                 {
-                    "nombre": "c",
-                    "unidadMedida": "s",
-                    "cantidad": "w"
-                },
-                {
-                    "nombre": "e",
-                    "unidadMedida": "c",
-                    "cantidad": "sa"
+                    "nombre": "pan",
+                    "unidadMedida": "50",
+                    "cantidad": "gramos"
                 }
             ],
-            "instrucciones": "",
+            "instrucciones": "poner el pan con l rby5juybrvecd",
             "imagen": "",
-            "favorito": true,
-            "tiempoPreparacion": "",
-            "tiempoCoccion": ""
+            "favorito": false,
+            "fechaDeCreacion": "2023-04-04 17:07:55.909338",
+            "tiempoPreparacion": "10",
+            "tiempoCoccion": "50"
         }
     ]
 }
