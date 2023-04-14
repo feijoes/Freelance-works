@@ -44,8 +44,8 @@
 ## DjangoSunat
   Django APP to verifiy bills makeing connection to APISUNAT
 
-## SeleniumCheckLote
-  Selenium app to check valid lote number
+## CheckLote
+  app to check valid lote number
 
 ## RecetaCocina
  Tkinker activitie
