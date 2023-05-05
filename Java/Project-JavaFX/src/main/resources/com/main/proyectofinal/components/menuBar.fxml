@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.proyectofinal.controllers.MenuController">
+    <children>
+        <MenuBar prefHeight="26.0" prefWidth="502.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Data">
+                    <items>
+                        <MenuItem fx:id="penis" mnemonicParsing="false" text="Ver info" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="EdIt data">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Inserir info" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
+</VBox>

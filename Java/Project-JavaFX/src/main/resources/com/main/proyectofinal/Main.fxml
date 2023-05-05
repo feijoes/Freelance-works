@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.proyectofinal.controllers.HelloController">
+<fx:include source="components/menuBar.fxml" />
+   <Label alignment="CENTER" prefHeight="82.0" prefWidth="291.0" text="Inventario">
+      <font>
+         <Font size="40.0" />
+      </font>
+   </Label>
+
+
+</VBox>
