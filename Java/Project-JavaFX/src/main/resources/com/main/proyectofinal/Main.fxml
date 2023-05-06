@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.proyectofinal.controllers.HelloController">
+<VBox alignment="TOP_CENTER" prefHeight="481.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.proyectofinal.controllers.MainController">
 <fx:include source="components/menuBar.fxml" />
-   <ScrollPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-   </content>
-   <VBox.margin>
-      <Insets top="10.0" />
-   </VBox.margin>
-</ScrollPane>
-   <Button mnemonicParsing="false" onAction="#switchToScene2" text="Button" />
-
-
+   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="119.0" prefWidth="318.0" text="Welcome to the inventory" />
+   <Label text="Go to data to see all coputers or edit data to insert a new one" />
 </VBox>
