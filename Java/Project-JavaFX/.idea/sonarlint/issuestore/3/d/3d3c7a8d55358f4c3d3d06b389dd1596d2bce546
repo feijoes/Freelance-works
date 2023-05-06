@@ -1,0 +1,12 @@
+
+Z
+java:S1128"=Remove this unused import 'javafx.collections.FXCollections'.(´¶²Æ8èü†øş0
+_
+java:S1128
+"=Remove this unused import 'javafx.scene.control.TableColumn'.(›¢øùÿÿÿÿ8èü†øş0
+X
+java:S1128";Remove this unused import 'javafx.scene.control.TableView'.(Ãàè˜8èü†øş0
+h
+java:S1128"KRemove this unused import 'javafx.scene.control.cell.PropertyValueFactory'.(àÎ¬õ8èü†øş0
+R
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿ8èü†øş0

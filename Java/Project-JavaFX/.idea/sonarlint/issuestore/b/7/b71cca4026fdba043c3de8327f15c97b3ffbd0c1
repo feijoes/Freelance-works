@@ -1,0 +1,8 @@
+
+€
+java:S1450"^Remove the "compuRepository" field and declare it as a local variable in the relevant methods.(ù›üâüÿÿÿÿ8°Ÿªòþ0
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(þ àºùÿÿÿÿ8ÇŸªòþ0
+R
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èýÿÿÿÿ8ÈŸªòþ0
+Q
+java:S1128"/Remove this unused import 'java.util.Optional'.(¨˜ëÝüÿÿÿÿ8ÈŸªòþ0
