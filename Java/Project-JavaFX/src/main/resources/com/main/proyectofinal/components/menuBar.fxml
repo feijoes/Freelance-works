@@ -11,12 +11,12 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Data">
                     <items>
-                        <MenuItem fx:id="penis" mnemonicParsing="false" text="Ver info" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToScene2" text="Ver info" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="EdIt data">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Inserir info" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToScene1" text="Inserir compu" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

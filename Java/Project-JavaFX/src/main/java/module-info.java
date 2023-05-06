@@ -4,6 +4,7 @@ module com.main.proyectofinal {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires java.sql;
 
     opens com.main.proyectofinal to javafx.fxml;
     exports com.main.proyectofinal;
