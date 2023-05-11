@@ -51,3 +51,6 @@
  Tkinker activitie
  
  <img alt="activitie RecetaCocina" src="https://user-images.githubusercontent.com/74252371/229660718-8d8a7f66-8bd4-4afd-a3cb-b951d2375e22.jpeg" width="730"/>
+
+## PDF-image-to-text
+  A program that open all pdf in a folder , read text in image, and trasform to a pdf text
