@@ -7,9 +7,8 @@ from PIL.Image import Image
 pytesseract.pytesseract.tesseract_cmd =  "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 import glob
 
-folder: str = argv[1]
 
-typefile: str = "pdf" if len(argv) < 3 else argv[2]
+
 
 
 
@@ -30,8 +29,9 @@ def create_file(content: list[str], filename: str) -> None:
     with open(filename, "w") as f:
         f.writelines(content)
 
-for file in glob.glob(f"{folder}/*.{typefile}"):
-    filename = file.split("\\")[-1]
-    text = extract_text(file)
-    create_file(text,f"{folder}_txt/{filename}_txt.txt")
+def main(folder: str, typefile="pdf"):
+    for file in glob.glob(f"{folder}/*.{typefile}"):
+        filename = file.split("\\")[-1]
+        text = extract_text(file)
+        create_file(text,f"{folder}_txt/{filename}_txt.txt")
     
