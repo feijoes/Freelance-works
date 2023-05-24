@@ -7,7 +7,7 @@ import glob
 import pandas as pd
 
 def search_word_in_files(folder_path: str, target_words : list[str]):
-    print(target_words)
+    
     file_paths = glob.glob(os.path.join(folder_path, '**/*.txt'), recursive=True)
     results = []
 

@@ -33,5 +33,5 @@ def main(folder: str, typefile="pdf"):
     for file in glob.glob(f"{folder}/*.{typefile}"):
         filename = file.split("\\")[-1]
         text = extract_text(file)
-        create_file(text,f"{folder}_txt/{filename}_txt.txt")
+        create_file(text,f"{folder}/{filename}_txt.txt")
     

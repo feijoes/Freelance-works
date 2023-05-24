@@ -13,7 +13,7 @@ def boton1_click():
     
         folder_entry = tk.Entry(new_window, width=70)
         folder_entry.pack()
-        tk.Button(new_window,text="confirmar", command=lambda:Digitalizar(folder_path)).pack()
+        tk.Button(new_window,text="confirmar", command=lambda:(Digitalizar(folder_path), tk.Label(new_window,text="process finished, close this window"))).pack()
         folder_entry.delete(0, tk.END)
         folder_entry.insert(0, folder_path)
         new_window.lift()
