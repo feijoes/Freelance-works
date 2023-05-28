@@ -54,3 +54,6 @@
 
 ## PDF-image-to-text
   A program that open all pdfs files in a folder , read text in image, and trasform to a pdf text with a tk interface to seach for a specify word in the pdf text
+
+## Tienda
+  Django app for see products of a market
