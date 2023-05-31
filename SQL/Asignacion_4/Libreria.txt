@@ -1,0 +1,134 @@
+CREATE DATABASE libreria;
+
+USE libreria;
+
+-- Tabla Libro
+CREATE TABLE Libro (
+    IdLibro INT PRIMARY KEY,
+    IdEditora INT,
+    Titulo NVARCHAR(100),
+    ISBN NVARCHAR(20)
+);
+
+-- Tabla Editora
+CREATE TABLE Editora (
+    IdEditora INT PRIMARY KEY,
+    Nombre NVARCHAR(100),
+    Direccion NVARCHAR(200)
+);
+
+-- Tabla AutorEditora
+CREATE TABLE AutorEditora (
+    IdEditora INT,
+    IdAutor INT,
+    PRIMARY KEY (IdEditora, IdAutor)
+);
+
+-- Tabla Autor
+CREATE TABLE Autor (
+    IdAutor INT PRIMARY KEY,
+    Nombre NVARCHAR(100),
+    Apellido NVARCHAR(100),
+    FechaNacim DATE
+);
+
+-- Tabla AutorLibro
+CREATE TABLE AutorLibro (
+    IdLibro INT,
+    IdAutor INT,
+    PRIMARY KEY (IdLibro, IdAutor)
+);
+
+INSERT INTO Autor (IdAutor, Nombre, Apellido, FechaNacim)
+VALUES
+    (1, 'Autor1', 'Apellido1', '1990-01-01'),
+    (2, 'Autor2', 'Apellido2', '1991-02-02'),
+    (3, 'Autor3', 'Apellido3', '1992-03-03'),
+    (4, 'Autor4', 'Apellido4', '1993-04-04'),
+    (5, 'Autor5', 'Apellido5', '1994-05-05'),
+    (6, 'Autor6', 'Apellido6', '1995-06-06'),
+    (7, 'Autor7', 'Apellido7', '1996-07-07'),
+    (8, 'Autor8', 'Apellido8', '1997-08-08'),
+    (9, 'Autor9', 'Apellido9', '1998-09-09'),
+    (10, 'Autor10', 'Apellido10', '1999-10-10');
+
+-- Inserción de datos de ejemplo para editoras
+INSERT INTO Editora (IdEditora, Nombre, Direccion)
+VALUES
+    (1, 'Editora1', 'Dirección1'),
+    (2, 'Editora2', 'Dirección2'),
+    (3, 'Editora3', 'Dirección3'),
+    (4, 'Editora4', 'Dirección4'),
+    (5, 'Editora5', 'Dirección5'),
+    (6, 'Editora6', 'Dirección6'),
+    (7, 'Editora7', 'Dirección7'),
+    (8, 'Editora8', 'Dirección8'),
+    (9, 'Editora9', 'Dirección9'),
+    (10, 'Editora10', 'Dirección10');
+
+-- Inserción de datos de ejemplo para libros
+INSERT INTO Libro (IdLibro, IdEditora, Titulo, ISBN)
+VALUES
+    (1, 1, 'Libro1', 'ISBN1'),
+    (2, 2, 'Libro2', 'ISBN2'),
+    (3, 3, 'Libro3', 'ISBN3'),
+    (4, 4, 'Libro4', 'ISBN4'),
+    (5, 5, 'Libro5', 'ISBN5'),
+    (6, 6, 'Libro6', 'ISBN6'),
+    (7, 7, 'Libro7', 'ISBN7'),
+    (8, 8, 'Libro8', 'ISBN8'),
+    (9, 9, 'Libro9', 'ISBN9'),
+    (10, 10, 'Libro10', 'ISBN10');
+
+INSERT INTO AutorEditora (IdEditora, IdAutor)
+VALUES
+    -- Relaciones para Editora1
+    (1, 1),
+    (1, 2),
+    -- Relaciones para Editora2
+    (2, 2),
+    -- Relaciones para Editora3
+    (3, 3),
+    -- Relaciones para Editora4
+    (4, 4),
+    (4, 5),
+    -- Relaciones para Editora5
+    (5, 6),
+    -- Relaciones para Editora6
+    (6, 7),
+    -- Relaciones para Editora7
+    (7, 8),
+    -- Relaciones para Editora8
+    (8, 9),
+    -- Relaciones para Editora9
+    (9, 10),
+    -- Relaciones para Editora10
+    (10, 10);
+
+-- Relaciones entre autores y libros
+INSERT INTO AutorLibro (IdLibro, IdAutor)
+VALUES
+    -- Autores para Libro1
+    (1, 1),
+    (1, 2),
+    -- Autores para Libro2
+    (2, 3),
+    (2, 4),
+    -- Autores para Libro3
+    (3, 5),
+    -- Autores para Libro4
+    (4, 6),
+    -- Autores para Libro5
+    (5, 7),
+    -- Autores para Libro6
+    (6, 8),
+    -- Autores para Libro7
+    (7, 9),
+    -- Autores para Libro8
+    (8, 10),
+    -- Autores para Libro9
+    (9, 1),
+    (9, 3),
+    -- Autores para Libro10
+    (10, 2),
+    (10, 5);
