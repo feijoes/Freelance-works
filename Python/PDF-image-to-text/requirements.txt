@@ -1,6 +1,5 @@
 pillow
 pdf2image
 pytesseract
-glob
 tk
 pandas
