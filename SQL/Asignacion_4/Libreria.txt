@@ -1,6 +1,6 @@
-CREATE DATABASE libreria;
+CREATE DATABASE libreria10131705;
 
-USE libreria;
+USE libreria10131705;
 
 -- Tabla Libro
 CREATE TABLE Libro (
