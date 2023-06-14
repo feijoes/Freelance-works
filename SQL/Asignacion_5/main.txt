@@ -1,0 +1,41 @@
+a)
+SELECT COUNT(*) AS CantidadAutores
+FROM AutorLibro
+WHERE IdLibro = 1;
+
+b)
+SELECT COUNT(*) AS CantidadAutores
+FROM AutorLibro al
+JOIN Autor a ON al.IdAutor = a.IdAutor
+JOIN AutorEditora ae ON a.IdAutor = ae.IdAutor
+WHERE al.IdLibro = 1
+AND ae.IdEditora = 1;
+
+c) 
+SELECT l.Titulo
+FROM AutorLibro al
+JOIN Libro l ON al.IdLibro = l.IdLibro
+JOIN Editora e ON l.IdEditora = e.IdEditora
+WHERE al.IdAutor = 1
+AND e.IdEditora = 1;
+d)
+formato completo 
+SELECT Nombre + ' ' + Apellido AS NombreAutorCompleto
+FROM Autor
+WHERE IdAutor = 1;
+
+formato reducido
+SELECT CONCAT(Nombre, ' ', LEFT(Apellido, 1), '.') AS NombreAutorReducido1
+FROM Autor
+WHERE IdAutor = 1;
+
+formato reducido 2
+SELECT CONCAT(Nombre, ' ', LEFT(Apellido, 1), '.', ' ', LEFT(Apellido, 2), '.') AS NombreAutorReducido2
+FROM Autor
+WHERE IdAutor = 1;
+
+e)
+SELECT STRING_AGG(CONCAT(Nombre, ' ', LEFT(Apellido, 1), '.', ' ', LEFT(Apellido, 2), '.'), ', ') AS AutoresLibro
+FROM AutorLibro al
+JOIN Autor a ON al.IdAutor = a.IdAutor
+WHERE al.IdLibro = <Id del libro>;
