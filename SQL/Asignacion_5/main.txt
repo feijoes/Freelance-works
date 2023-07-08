@@ -1,3 +1,4 @@
+1)
 a)
 SELECT COUNT(*) AS CantidadAutores
 FROM AutorLibro
@@ -38,4 +39,20 @@ e)
 SELECT STRING_AGG(CONCAT(Nombre, ' ', LEFT(Apellido, 1), '.', ' ', LEFT(Apellido, 2), '.'), ', ') AS AutoresLibro
 FROM AutorLibro al
 JOIN Autor a ON al.IdAutor = a.IdAutor
-WHERE al.IdLibro = <Id del libro>;
+WHERE al.IdLibro = 1;
+
+2)
+a)
+CREATE VIEW AutoresPorCasaEditora AS
+SELECT l.IdLibro, l.Titulo, e.Nombre AS CasaEditora, a.Nombre AS NombreAutor, a.Apellido AS ApellidoAutor
+FROM Libro l
+JOIN Editora e ON l.IdEditora = e.IdEditora
+JOIN AutorLibro al ON l.IdLibro = al.IdLibro
+JOIN Autor a ON al.IdAutor = a.IdAutor;
+b)
+CREATE VIEW LibrosConCasasEditoraAutores AS
+SELECT l.Titulo AS TituloLibro, e.Nombre AS CasaEditora, CONCAT(a.Nombre, ' ', a.Apellido) AS NombreAutor
+FROM Libro l
+JOIN Editora e ON l.IdEditora = e.IdEditora
+JOIN AutorLibro al ON l.IdLibro = al.IdLibro
+JOIN Autor a ON al.IdAutor = a.IdAutor;
