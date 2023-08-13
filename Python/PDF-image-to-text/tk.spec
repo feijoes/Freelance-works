@@ -6,7 +6,7 @@ block_cipher = None
 
 a = Analysis(
     ['tk.py'],
-    pathex=['venv\\Lib\\site-packages'],
+    pathex=['./vwnc/lib/python3.10/site-packages'],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -41,5 +41,4 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='C:\\Users\\Pedro\\OneDrive\\Frelance-works\\Python\\PDF-image-to-text\\pngegg.ico'
 )
