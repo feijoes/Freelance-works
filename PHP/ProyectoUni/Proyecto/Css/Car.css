@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+}
+body{
+    font-family: sans-serif;
+    background-color:rgb(221, 139, 210);
+    padding-top: 80px;
+}
+h1{
+    font-family: sans-serif;
+    text-align: center;
+    margin: 30px 0px;   
+}
+img{
+    width: 320px;
+    height: 340px;
+    object-fit: cover;
+    border-radius: 20px 20px 0px 0px;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    height: 70px;
+    top: 0;
+    position: fixed;
+    width: 100%;
+}
+.carrito{
+    filter: invert(100%);
+    width: 45px;
+    height: auto;
+}
+.contenedor{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+.contenedor>div{
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    background-color:rgb(175, 35, 156);
+    border-radius: 20px;
+}
+.contenedor>div:hover{
+    background-color: rgb(170, 30, 151);
+}
+
+.informacion{
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+.informacion>p:first-child{
+   font-family: sans-serif;
+   font-size: 25px;
+   font-weight: 300;
+}
+.informacion .precio{
+    font-size: 20px;
+    font-weight: 500;
+}
+.informacion .precio span{
+    font-size: 17px;
+    font-weight: 300;
+    }
+  .informacion button{
+    background-color: #e636e6;
+    width: 100px;
+    height: 35;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: 300;
+    cursor: pointer;
+  }  
+  .informacion button:hover{
+    background-color: #df10ab;
+  }
+
+  .add-to-cart{
+    text-decoration: none;
+  }

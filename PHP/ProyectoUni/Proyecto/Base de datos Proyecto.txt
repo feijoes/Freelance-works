@@ -1,0 +1,163 @@
+-- TABLA PERSONA
+create table PERSONA (
+CVE_PERSONA int not null,
+CVE_ESTADO int null,
+CVE_COLONIA int null,
+CVE_MUNICIPIO int null,
+TELEFONO varchar(10) null,
+CORREO varchar(30) null,
+DIRECCION varchar(35) null,
+NOMBRE varchar(30) null,
+APE_MAT varchar(30) null,
+APE_PAT varchar(30) null,
+CLIENTE bit null,
+EMPLEADO bit null,
+primary key (CVE_PERSONA)
+)
+--TABLA CITA
+create table CITA (
+CVE_CITA int not null,
+CVE_CLIENTE int null,
+CVE_EMPLEADO int null,
+HORA time null,
+DIA date null,
+TIPO_SERVICIO varchar(30) null,
+primary key (CVE_CITA)
+)
+--TABLA FACTURAS
+create table FACTURAS (
+FIRMA varchar(255) null,
+FECHA_FAC date null,
+CVE_FACTURAS int not null,
+CVE_PROVEEDOR int null,
+primary key (CVE_FACTURAS)
+)
+--TABLA PROVEEDOR
+create table PROVEEDOR (
+CVE_PROVEEDOR int not null,
+CVE_MUNICIPIO int null,
+CVE_COLONIA int null,
+CVE_ESTADO int null,
+NOMBRE varchar(40) null,
+DIRECCION varchar(40) null,
+TELEFONO varchar(10) null,
+CORREO varchar(40) null,
+primary key (CVE_PROVEEDOR)
+)
+--TABLA DISTRIBUIR
+create table DISTRIBUIR (
+CVE_PROVEEDOR int null,
+CVE_PRODUCTO int null
+)
+--PRODUCTO
+create table PRODUCTO (
+CVE_PRODUCTO int not null,
+NOMBRE_PROD varchar(30) null,
+PRECIO money null,
+FECHA_VENC date null,
+CANT_EXIS varchar(50) null,
+primary key (CVE_PRODUCTO)
+)
+--TABLA COMPRAS
+create table COMPRAS (
+CVE_COMPRAS int not null,
+CVE_CLIENTES int null,
+FECHA date null,
+primary key (CVE_COMPRAS)
+)
+--TABLA DETALLES_PRODUCTO
+create table DETALLES_PRODUCTO (
+CVE_DETALLES_PRODUCTO int not null,
+CVE_PRODUCTO int null,
+CVE_COMPRAS int null,
+CANTIDAD varchar(50) null,
+primary key (CVE_DETALLES_PRODUCTO)
+)
+--TABLA CITA_SERVICIO
+create table CITA_SERVICIO (
+CVE_CITA int null,
+CVE_SERVICIOS int null
+)
+--TABLA SERVICIOS
+create table SERVICIOS (
+CVE_SERVICIOS int not null,
+NOMBRE varchar(30) null,
+COSTO money null,
+primary key (CVE_SERVICIOS)
+)
+--TABLA MUNICIPIO
+create table MUNICIPIO (
+CVE_MUNICIPIO int not null,
+NOMBRE varchar(35) null,
+primary key (CVE_MUNICIPIO)
+)
+--TABLA COLONIA
+create table COLONIA (
+CVE_COLONIA int not null,
+NOMBRE varchar(35) null,
+primary key (CVE_COLONIA)
+)
+-- TABLA ESTADO
+create table ESTADO (
+CVE_ESTADO int not null,
+NOMBRE varchar(35) null,
+primary key (CVE_ESTADO)
+)
+-- Relaciones
+-- PERSONA
+alter table PERSONA
+add constraint FK_PERSONA_REFERENCE_ESTADO foreign key (CVE_ESTADO)
+references ESTADO (CVE_ESTADO)
+alter table PERSONA
+add constraint FK_PERSONA_REFERENCE_COLONIA foreign key (CVE_COLONIA)
+references COLONIA (CVE_COLONIA)
+alter table PERSONA
+add constraint FK_PERSONA_REFERENCE_MUNICIPI foreign key (CVE_MUNICIPIO)
+references MUNICIPIO (CVE_MUNICIPIO)
+--CITA
+alter table CITA
+add constraint FK_CITA_REFERENCE_PERSONA foreign key (CVE_CLIENTE)
+references PERSONA (CVE_PERSONA)
+ALTER TABLE CITA
+ADD CONSTRAINT FK_CITA_PERSONA_EMPLEADO
+FOREIGN KEY (CVE_EMPLEADO)
+REFERENCES PERSONA(CVE_PERSONA)
+--FACTURAS
+alter table FACTURAS
+add constraint FK_FACTURAS_REFERENCE_PROVEEDO foreign key (CVE_PROVEEDOR)
+references PROVEEDOR (CVE_PROVEEDOR)
+--PROEEVEDOR
+alter table PROVEEDOR
+add constraint FK_PROVEEDO_REFERENCE_MUNICIPI foreign key (CVE_MUNICIPIO)
+references MUNICIPIO (CVE_MUNICIPIO)
+alter table PROVEEDOR
+add constraint FK_PROVEEDO_REFERENCE_COLONIA foreign key (CVE_COLONIA)
+references COLONIA (CVE_COLONIA)
+alter table PROVEEDOR
+add constraint FK_PROVEEDO_REFERENCE_ESTADO foreign key (CVE_ESTADO)
+references ESTADO (CVE_ESTADO)
+--DISTRIBUIR
+alter table DISTRIBUIR
+add constraint FK_DISTRIBU_REFERENCE_PROVEEDO foreign key (CVE_PROVEEDOR)
+references PROVEEDOR (CVE_PROVEEDOR)
+alter table DISTRIBUIR
+add constraint FK_DISTRIBU_REFERENCE_PRODUCTO foreign key (CVE_PRODUCTO)
+references PRODUCTO (CVE_PRODUCTO)
+--COMPRAS
+alter table COMPRAS
+add constraint FK_COMPRAS_REFERENCE_PERSONA foreign key (CVE_CLIENTES)
+references PERSONA (CVE_PERSONA)
+--CITA SERVICIO
+alter table CITA_SERVICIO
+add constraint FK_CITA_SER_REFERENCE_CITA foreign key (CVE_CITA)
+references CITA (CVE_CITA)
+alter table CITA_SERVICIO
+add constraint FK_CITA_SER_REFERENCE_SERVICIO foreign key (CVE_SERVICIOS)
+references SERVICIOS (CVE_SERVICIOS)
+-- DETALLES_PRODUCTO
+alter table DETALLES_PRODUCTO
+add constraint FK_DETALLES_REFERENCE_COMPRAS foreign key (CVE_COMPRAS)
+references COMPRAS (CVE_COMPRAS)
+alter table DETALLES_PRODUCTO
+add constraint FK_DETALLES_REFERENCE_PRODUCTO foreign key (CVE_PRODUCTO)
+references PRODUCTO (CVE_PRODUCTO)

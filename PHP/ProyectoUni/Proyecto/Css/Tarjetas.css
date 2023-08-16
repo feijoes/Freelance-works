@@ -1,0 +1,164 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background-color: rgb(221, 139, 210);
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+header {
+  display: flex;
+  height: 70px;
+  background-color: pink;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+nav a {
+  font-weight: 600;
+  padding-right: 10px;
+}
+
+nav a:hover {
+  color: white;
+}
+
+.product-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.product {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+p {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.add-to-cart {
+  padding: 10px 15px;
+  background-color: #e636e6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  background-color: #df10ab;
+}
+
+.botones {
+  padding-left: 90px;
+  
+}
+
+.Titulo {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 20px;
+}
+.pie-pagina{
+  width: 100%;
+  background-color: #c526ca;
+}
+
+.pie-pagina .grupo-1{
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 50px;
+  padding: 45px 0px
+}
+.pie-pagina .grupo-1 .box figure{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;   
+}
+.pie-pagina .grupo-1 .box figure img{
+  width: 250px;
+}
+.pie-pagina .grupo-1 .box h2{
+  color: #fff;
+  margin-bottom: 25px;
+  font-size: 20px;
+
+
+}
+.pie-pagina .grupo-1 .box p{
+  color: #efefef;
+  margin-bottom: 10px;
+}
+.pie-pagina .grupo-1 .red-social a{
+  display: inline-block;
+  text-decoration: none;
+  width: 45px;
+  line-height: 45px;
+  color: #fff;
+  margin-right: 10px;
+  background-color: #940f99;
+  text-align: center;
+  transition: all 300ms ease;
+}
+.pie-pagina .grupo-1 .red-social a:hover{
+  color: aqua;
+}
+.pie-pagina .grupo-2{
+  background-color: #9e12a3;
+  padding: 15px 10px;
+  text-align: center;
+  color: #fff;
+}
+.pie-pagina .grupo-2 small{
+  font-size: 15px;
+}
+
+@media screen and (max-width:800px){
+  .pie-pagina .grupo-1{
+      width: 90%;
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 30px;
+      padding: 35px 0px
+}
+}

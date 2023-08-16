@@ -1,0 +1,119 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: rgb(221, 139, 210);
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Encabezado */
+header {
+    display: flex;
+    height: 70px;
+    background-color: pink;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+nav a {
+    font-weight: 600;
+    padding-right: 10px;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* Estilos para el formulario */
+.container {
+    position: absolute;
+    top: 70%; /* Ajustamos el valor del top para que el contenedor esté más abajo */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: rgb(221, 139, 210);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+    text-align: right; /* Alineamos el texto de las etiquetas a la derecha */
+}
+
+form input,
+form select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+form select {
+    width: 100%;
+    appearance: none;
+    background-color: #f1f1f1;
+    padding: 12px;
+}
+
+form .nombre,
+form .correo,
+form .calendario,
+form .hora,
+form .servicio {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: rgb(221, 139, 210);
+    float: left; /* Alineamos los campos a la izquierda */
+}
+
+/* Estilos para el botón del formulario */
+form .enviar {
+    text-align: center; /* Alineamos el botón al centro */
+    margin-top: 20px;
+}
+
+form a.add-to-cart {
+    background-color: #770952;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+    display: inline-block; /* Hacemos que el botón sea un bloque en línea */
+}
+
+form a.add-to-cart:hover {
+    background-color: #d45a9d;
+}
+
+form a.add-to-cart:hover {
+    background-color: #d45a9d;
+}
+
+.Titulo{
+    padding-left: 550PX;
+}

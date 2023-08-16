@@ -1,0 +1,97 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: rgb(221, 139, 210);
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header {
+    display: flex;
+    height: 70px;
+    background-color: pink;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+nav a {
+    font-weight: 600;
+    padding-right: 10px;
+}
+
+nav a:hover {
+    color: white;
+}
+
+.gallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
+}
+
+.image {
+    text-align: center;
+    margin: 0 40px;
+}
+
+.image img {
+    width: 400px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0; /* Eliminamos el borde redondeado */
+}
+
+.image h3 {
+    margin-top: 10px;
+    font-size: 40px;
+}
+
+.image p {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.image button {
+    margin-top: 10px;
+    background-color: pink;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.image button:hover {
+    background-color: darkpink;
+}
+
+/* Nuevos estilos para la galería */
+.gallery {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.image {
+    flex: 0 0 auto;
+}
+
+.Titulo{
+    margin-left:700px;
+    margin-top: 60px;
+    font-size: 20px;
+}
